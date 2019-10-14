@@ -85,11 +85,16 @@ You should see two notebooks that replicate the results in our paper. Open and r
 ## Sample usage
 
 ```python
-import torch
 from heinsen_routing import Routing
-x = torch.rand(100, 4, 4)  # 100 capsules of shape 4 x 4
+
+# Route 100 capsules of shape 4 x 4 to 10 capsules of shape 4 x 4.
 m = Routing(d_spc=4, d_out=4, n_out=10, d_inp=4, n_inp=100)
-h = m(x)  # 10 capsules of shape 4 x 4
+
+# Input capsules.
+x = torch.rand(100, 4, 4)
+
+# Route to output capsules.
+h = m(x)
 ```
 
 
