@@ -4,7 +4,10 @@ Official implementation of "Routing Capsules by Their Net Cost to Use or Ignore,
 
 ## Why?
 
-This is the first time we have produced original research that (a) we could clean up, apply to academic datasets, and release without having to disclose any proprietary intellectual property we consider valuable, and (b) could be of significant value to the wider AI research community, to whom we are incredibly grateful for all the work they have done and made public and/or released as open-source software over the years.
+This is the first time we have produced original research that:
+
+* we could clean up, apply to academic datasets, and release without having to disclose any proprietary intellectual property we consider valuable, and
+* could be of significant value to the wider AI research community, to whom we are incredibly grateful for all the work they have done and made public and/or released as open-source software over the years.
 
 ## How do you use this routing algorithm at GlassRoom?
 
@@ -14,7 +17,7 @@ We regularly replicate new AI research that we find interesting or promising. So
 
 ## Installation
 
-If you wish to replicate our results, we recommend recreating our setup in a virtual environment, with the same versions of all libraries and dependencies. Note: tested only on Ubuntu Linux 18.04 with Python 3.6+.
+If you wish to replicate our results, we recommend recreating our setup in a virtual environment, with the same versions of all libraries and dependencies. Note: requires a working installation of CUDA 10. Tested only on Ubuntu Linux 18.04 with Python 3.6+.
 
 1. Change to the directory in which you cloned this repository:
 
