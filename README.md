@@ -16,9 +16,9 @@ We hope others find our work useful.
 
 ## How do you use this routing algorithm at GlassRoom?
 
-We conceived and implemented this routing algorithm to be a component (i.e., a layer) of larger models that are in turn part of our AI software, Graham. The algorithm is designed to be plugged into or tacked unto any model. That said, we can neither confirm nor deny that we are using this routing algorithm as part of any of Graham's models.
+We conceived and implemented this routing algorithm to be a component (i.e., a layer) of larger models that are in turn part of our AI software, Graham. The algorithm is designed to be plugged into or tacked unto any model. That said, we can neither confirm nor deny that we are using this same routing algorithm as part of any of Graham's models.
 
-We regularly replicate new AI research that we find interesting or promising. Soon after we came across the routing-by-agreement algorithm Geoff Hinton et al proposed in their recent paper, "Matrix Routing with EM Capsules," we decided to replicate it, and then, as always, started thinking of ways to improve and extend it. The result is the routing algorithm in this repository. Please see the paper for details.
+We regularly replicate new AI research that we find interesting or promising for our domain of expertise. Soon after we came across the routing-by-agreement algorithm Geoff Hinton et al proposed in their recent paper, "[Matrix Routing with EM Capsules](https://openreview.net/pdf?id=HJWLfGWRb)," we decided to replicate it, and then, as always, started thinking of and experimenting with ways to improve and extend it. The result is the routing algorithm in this repository. Please see our paper for details.
 
 ## Installation
 
