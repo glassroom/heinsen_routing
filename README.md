@@ -87,13 +87,11 @@ You should see two notebooks that replicate the results in our paper. Open and r
 ```python
 from heinsen_routing import Routing
 
-# Route 100 capsules of shape 4 x 4 to 10 capsules of shape 4 x 4.
-m = Routing(d_spc=4, d_out=4, n_out=10, d_inp=4, n_inp=100)
-
-# Input capsules.
+# 100 input capsules of shape 4 x 4
 x = torch.rand(100, 4, 4)
 
-# Route to output capsules.
+# Route to 10 capsules of shape 4 x 4.
+m = Routing(d_spc=4, d_out=4, n_out=10, d_inp=4, n_inp=100)
 h = m(x)
 ```
 
