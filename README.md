@@ -8,7 +8,7 @@ The algorithm is implemented as a composable PyTorch module.
 
 This is the first time we have produced original research that:
 
-* we believe could be of value to the wider AI research community, to whom we are incredibly grateful for all the work they have done and made public and/or released as open-source software over the years, and
+* we believe could be of value to the wider AI research community, to whom we are grateful for all the work they have done and made public and/or released as open-source software over the years, and
 
 * we could clean up of internal code, apply to public academic datasets, and release as open-source code, without having to disclose any proprietary intellectual property we consider valuable.
 
@@ -80,3 +80,14 @@ cd ../..
 You should see two notebooks that replicate the results in our paper. Open and run them.
 
 
+## Citing
+
+If our work is helpful to your research, please cite it:
+
+```
+@misc{heinsenrouting2019,
+	title	= {Routing Capsules by Their Net Cost to Use or Ignore, with Sample Applications in Vision and Language},
+	author	= {Franz A. Heinsen},
+	year	= {2019},
+}
+```
