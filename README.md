@@ -1,13 +1,16 @@
 # heinsen_routing
 
-Official implementation of "Routing Capsules by Their Net Cost to Use or Ignore, with Sample Applications in Vision and Language" (Heinsen, 2019). Please note that the paper is a _draft_. We are still finding and fixing typos and errors. Feedback and suggestions are welcome.
+Official implementation of "Routing Capsules by Their Net Cost to Use or Ignore, with Sample Applications in Vision and Language" (Heinsen, 2019). The code in this repository uses our routing algorithm, _without change_, in two different domains, vision and language, and achieves state-of-the-art results in both. Please see the paper for details.
+
+The algorithm is implemented as a composable PyTorch module.
 
 ## Why?
 
 This is the first time we have produced original research that:
 
-* we could clean up, apply to academic datasets, and release without having to disclose any proprietary intellectual property we consider valuable, and
-* could be of significant value to the wider AI research community, to whom we are incredibly grateful for all the work they have done and made public and/or released as open-source software over the years.
+* could be of significant value to the wider AI research community, to whom we are incredibly grateful for all the work they have done and made public and/or released as open-source software over the years, and
+
+* we were able to clean up of internal code, apply to public academic datasets, and release as open-source code, without having to disclose any proprietary intellectual property we consider valuable.
 
 ## How do you use this routing algorithm at GlassRoom?
 
