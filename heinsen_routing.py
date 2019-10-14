@@ -29,8 +29,8 @@ class Routing(nn.Module):
         sig2_out: [..., n_out, d_spc, d_out] variances of shape d_spc x d_out
 
     Sample usage:
-        >>> a_inp = torch.rand(100)  # 100 input scores
-        >>> mu_inp = torch.rand(100, 4, 4)  # 100 capsules of shape 4 x 4
+        >>> a_inp = torch.randn(100)  # 100 input scores
+        >>> mu_inp = torch.randn(100, 4, 4)  # 100 capsules of shape 4 x 4
         >>> m = Routing(d_spc=4, d_out=4, n_out=10, d_inp=4, n_inp=100)
         >>> a_out, mu_out, sig2_out = m(x)
         >>> print(mu_out)  # 10 capsules of shape 4 x 4
