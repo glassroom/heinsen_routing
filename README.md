@@ -39,7 +39,7 @@ virtualenv --python=python3 python
 3. Activate the virtual environment:
 
 ```
-source ./python/bin/activate`
+source ./python/bin/activate
 ```
 
 4. Install required Python libraries in environment:
@@ -57,7 +57,7 @@ git clone https://github.com/glassroom/torch_train_test_loop.git deps/torch_trai
 git clone https://github.com/ndrplz/small_norb.git deps/small_norb
 ```
 
-6. Download and gunzip smallNORB files:
+6. Download and decompress smallNORB files:
 
 ```
 mkdir .data
