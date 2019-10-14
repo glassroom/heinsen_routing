@@ -27,6 +27,11 @@ class Routing(nn.Module):
         a_out: [..., n_out] output scores
         mu_out: [..., n_out, d_spc, d_out] capsules of shape d_spc x d_out
         sig2_out: [..., n_out, d_spc, d_out] variances of shape d_spc x d_out
+
+    Sample usage:
+        >>> x = torch.rand(100, 4, 4)  # 100 capsules of shape 4 x 4
+        >>> m = Routing(d_spc=4, d_out=4, n_out=10, d_inp=4, n_inp=100)
+        >>> h = m(x)  # 10 capsules of shape 4 x 4
     """
     def __init__(self, d_spc, d_out, n_out, d_inp, n_inp=-1, n_iters=3, eps=1e-5):
         super().__init__()
