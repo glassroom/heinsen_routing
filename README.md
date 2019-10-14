@@ -8,9 +8,9 @@ The algorithm is implemented as a composable PyTorch module.
 
 This is the first time we have produced original research that:
 
-* we believe could be of value to the wider AI research community, to whom we are grateful for all the work they have done and made public and/or released as open-source software over the years, and
+* we believe is of value to the wider AI research community (to whom we are grateful for all the work they have done and made public and/or released as open-source software over the years), and
 
-* we could clean up, removing all traces of internal code, apply to public academic datasets, and release as open-source code, without having to disclose any proprietary intellectual property we consider valuable.
+* we could clean up, removing all traces of internal code, apply to public academic datasets, and release as open-source code, _without_ having to disclose any proprietary intellectual property we consider valuable.
 
 We hope others find our work useful.
 
