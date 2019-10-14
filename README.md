@@ -8,41 +8,43 @@ The algorithm is implemented as a composable PyTorch module.
 
 This is the first time we have produced original research that:
 
-* could be of significant value to the wider AI research community, to whom we are incredibly grateful for all the work they have done and made public and/or released as open-source software over the years, and
+* we believe could be of value to the wider AI research community, to whom we are incredibly grateful for all the work they have done and made public and/or released as open-source software over the years, and
 
-* we were able to clean up of internal code, apply to public academic datasets, and release as open-source code, without having to disclose any proprietary intellectual property we consider valuable.
+* we could clean up of internal code, apply to public academic datasets, and release as open-source code, without having to disclose any proprietary intellectual property we consider valuable.
+
+We hope others find our work useful.
 
 ## How do you use this routing algorithm at GlassRoom?
 
-We conceived and implemented this routing algorithm to be a component (i.e., a layer) of larger models that are part of our AI software, Graham. The algorithm can be plugged into or tacked unto any model. That said, we can neither confirm nor deny that we are using this routing algorithm as part of any of Graham's models.
+We conceived and implemented this routing algorithm to be a component (i.e., a layer) of larger models that are in turn part of our AI software, Graham. The algorithm is designed to be plugged into or tacked unto any model. That said, we can neither confirm nor deny that we are using this routing algorithm as part of any of Graham's models.
 
-We regularly replicate new AI research that we find interesting or promising. Soon after we came across the routing algorithm Geoff Hinton et al proposed in their recent paper, "Matrix Routing with EM Capsules," we decided to replicate it, and then, as always, we started thinking of ways to improve and extend it. The result is the routing algorithm in this repository.
+We regularly replicate new AI research that we find interesting or promising. Soon after we came across the routing-by-agreement algorithm Geoff Hinton et al proposed in their recent paper, "Matrix Routing with EM Capsules," we decided to replicate it, and then, as always, started thinking of ways to improve and extend it. The result is the routing algorithm in this repository. Please see the paper for details.
 
 ## Installation
 
-If you wish to replicate our results, we recommend recreating our setup in a virtual environment, with the same versions of all libraries and dependencies. Note: requires a working installation of CUDA 10. Tested only on Ubuntu Linux 18.04 with Python 3.6+.
+If you wish to replicate our results, we recommend recreating our setup in a virtual environment, with the same versions of all libraries and dependencies. Note: the code in this repository requires at least one higher-end (at least 11GB RAM) Nvidia GPU with a working installation of CUDA 10 or later. Tested only on Ubuntu Linux 18.04 with Python 3.6+.
 
 1. Change to the directory in which you cloned this repository:
 
-```python
+```
 cd /home/<my_name>/<my_directory>
 ```
 
 2. Create a new Python 3 virtual environment:
 
-```python
+```
 virtualenv --python=python3 python
 ```
 
 3. Activate the virtual environment:
 
-```python
+```
 source ./python/bin/activate`
 ```
 
 4. Install required Python libraries in environment:
 
-```python
+```
 pip install --upgrade pip
 pip install --upgrade -r requirements.txt
 ```
