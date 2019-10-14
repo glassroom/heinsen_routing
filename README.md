@@ -22,7 +22,7 @@ We regularly replicate new AI research that we find interesting or promising for
 
 ## Installation
 
-If you wish to replicate our results, we recommend recreating our setup in a virtual environment, with the same versions of all libraries and dependencies. Note: the code in this repository requires _at least one_ higher-end (11GB+ RAM) Nvidia GPU with a working installation of CUDA 10 or later. The code is meant to be easily modifiable to work with greater numbers of GPUs or TPUs. Tested only on Ubuntu Linux 18.04 with Python 3.6+.
+If you wish to replicate our results, we recommend recreating our setup in a virtual environment, with the same versions of all libraries and dependencies. Please note: the code in this repository requires _at least one_ higher-end (11GB+ RAM) Nvidia GPU with a working installation of CUDA 10 or later. The code is meant to be easily modifiable to work with greater numbers of GPUs or with TPUs. Transcribing our code to use TensorFlow should also be pretty straightforward. Caveat: Tested only on Ubuntu Linux 18.04 with Python 3.6+.
 
 1. Change to the directory in which you cloned this repository:
 
