@@ -32,7 +32,7 @@ class Routing(nn.Module):
         >>> a_inp = torch.randn(100)  # 100 input scores
         >>> mu_inp = torch.randn(100, 4, 4)  # 100 capsules of shape 4 x 4
         >>> m = Routing(d_spc=4, d_out=4, n_out=10, d_inp=4, n_inp=100)
-        >>> a_out, mu_out, sig2_out = m(x)
+        >>> a_out, mu_out, sig2_out = m(a_inp, mu_inp)
         >>> print(mu_out)  # 10 capsules of shape 4 x 4
     """
     def __init__(self, d_spc, d_out, n_out, d_inp, n_inp=-1, n_iters=3, eps=1e-5):

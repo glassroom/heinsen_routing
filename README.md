@@ -81,11 +81,15 @@ Please note: tested only on Ubuntu Linux 18.04 with Python 3.6+.
 from heinsen_routing import Routing
 
 # 100 input capsules of shape 4 x 4
-x = torch.rand(100, 4, 4)
+a_inp = torch.randn(100)         # 100 input scores
+mu_inp = torch.randn(100, 4, 4)  # 100 capsules of shape 4 x 4
 
-# Route to 10 capsules of shape 4 x 4.
+# Instantiate routing module.
 m = Routing(d_spc=4, d_out=4, n_out=10, d_inp=4, n_inp=100)
-h = m(x)
+
+# Route to 10 capsules of shape 4 x 4
+a_out, mu_out, sig2_out = m(a_inp, mu_inp)
+print(mu_out)  # 10 capsules of shape 4 x 4
 ```
 
 ## Citing
