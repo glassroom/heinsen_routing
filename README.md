@@ -92,7 +92,9 @@ cd ../..
 
 You should see two notebooks that replicate the results in our paper. Open and run them.
 
-Please note: tested only on Ubuntu Linux 18.04 with Python 3.6+.
+## Notes
+
+We have tested our code only on Ubuntu Linux 18.04 with Python 3.6+.
 
 ## Citing
 
