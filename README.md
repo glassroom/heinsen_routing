@@ -6,19 +6,19 @@ The algorithm is implemented as a composable PyTorch module.
 
 ## Why?
 
-This is the first time we have produced original research that (a) we believe will be of value to many others, and (b) we could clean up to remove all traces of internal code, evaluate on publicly available academic datasets, and release as open-source code, _without_ having to disclose any proprietary intellectual property.
+Most of the original work we do at GlassRoom tends to be tightly coupled to internal code and/or of a proprietary nature, so we cannot share it with others. This is the first time we have worked on something that (a) we believe could be valuable to others, and (b) we could clean up, release as open-source software, and write up in a paper.
 
-Over the years, we have benefited immensely from, and are forever thankful for, the work of a large number of AI researchers and practitioners how have made their work public and/or released it as open-source software.
+Over the years, we have benefited immensely from, and feel incredibly thankful for, the work of a large number of AI researchers and practitioners who have made their work public or released it as open-source software.
 
 We hope others find our work useful.
 
 ## How do you use this routing algorithm at GlassRoom?
 
-We conceived and implemented this routing algorithm to be a component (i.e., a layer) of larger models that are in turn part of our AI software, Graham. The algorithm is designed to be plugged into or tacked unto any model. That said, we can neither confirm nor deny that we are using this routing algorithm as part of any of Graham's models.
+We conceived and implemented this routing algorithm to be a component (i.e., a layer) of larger models that are in turn part of our AI software, Graham. The algorithm is designed to be plugged into or tacked unto any model. That said, we can neither confirm nor deny that we are using this exact same algorithm in any of Graham's models.
 
 ## Installation
 
-If you wish to replicate our results, we recommend recreating our setup in a virtual environment, with the same versions of all libraries and dependencies. The code requires _at least one_ 11GB+ RAM Nvidia GPU with a working installation of CUDA 10 or later. The code is meant to be easily modifiable to work with greater numbers of GPUs, or with TPUs. It is also meant to be easily modifiable to work with frameworks other than PyTorch, such as TensorFlow. Please note: Tested only on Ubuntu Linux 18.04 with Python 3.6+.
+If you wish to replicate our results, we recommend recreating our setup in a virtual environment, with the same versions of all libraries and dependencies. The code requires _at least one_ Nvidia GPU with 11GB+ RAM with a working installation of CUDA 10 or newer. The code is meant to be easily modifiable to work with greater numbers of GPUs, or with TPUs. It is also meant to be easily modifiable to work with frameworks other than PyTorch, e.g., TensorFlow. Please note: Tested only on Ubuntu Linux 18.04 with Python 3.6+.
 
 To replicate our environment, follow these steps:
 
