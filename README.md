@@ -12,6 +12,23 @@ Recent research has shown that capsule networks with routing by agreement can be
 
 Please see the paper for details.
 
+## Sample usage
+
+```python
+from heinsen_routing import Routing
+
+# 100 input capsules of shape 4 x 4
+a_inp = torch.randn(100)                    # 100 input scores
+mu_inp = torch.randn(100, 4, 4)             # 100 capsules of shape 4 x 4
+
+# Instantiate routing module.
+m = Routing(d_spc=4, d_out=4, n_out=10, d_inp=4, n_inp=100)
+
+# Route to 10 capsules of shape 4 x 4
+a_out, mu_out, sig2_out = m(a_inp, mu_inp)
+print(mu_out)                               # 10 capsules of shape 4 x 4
+```
+
 ## Installation
 
 If you wish to replicate our results, we recommend recreating our setup in a virtual environment, with the same versions of all libraries and dependencies. Runing the code requires _at least one_ Nvidia GPU with 11GB+ RAM, along with a working installation of CUDA 10 or newer. The code is meant to be easily modifiable to work with greater numbers of GPUs, or with TPUs. The code is also meant to be easily modifiable to work with frameworks other than PyTorch (as long as they support Einsten summation notation for describing multilinear operations), such as TensorFlow.
@@ -74,23 +91,6 @@ cd ../..
 You should see two notebooks that replicate the results in our paper. Open and run them.
 
 Please note: tested only on Ubuntu Linux 18.04 with Python 3.6+.
-
-## Sample usage
-
-```python
-from heinsen_routing import Routing
-
-# 100 input capsules of shape 4 x 4
-a_inp = torch.randn(100)         # 100 input scores
-mu_inp = torch.randn(100, 4, 4)  # 100 capsules of shape 4 x 4
-
-# Instantiate routing module.
-m = Routing(d_spc=4, d_out=4, n_out=10, d_inp=4, n_inp=100)
-
-# Route to 10 capsules of shape 4 x 4
-a_out, mu_out, sig2_out = m(a_inp, mu_inp)
-print(mu_out)  # 10 capsules of shape 4 x 4
-```
 
 ## Citing
 
