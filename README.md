@@ -6,11 +6,9 @@ The algorithm is implemented as a composable PyTorch module.
 
 ## Why?
 
-This is the first time we have produced original research that:
+This is the first time we have produced original research that (a) we believe will be of value to many others, and (b) we could clean up to remove all traces of internal code, evaluate on publicly available academic datasets, and release as open-source code, _without_ having to disclose any proprietary intellectual property.
 
-* we believe is of value to the wider AI research community (to whom we are grateful for all the work they have done and made public and/or released as open-source software over the years), and
-
-* we could clean up, removing all traces of internal code, apply to public academic datasets, and release as open-source code, _without_ having to disclose any proprietary intellectual property we consider valuable.
+Over the years, we have benefited immensely from, and are forever thankful for, the work of a large number of AI researchers and practitioners how have made their work public and/or released it as open-source software.
 
 We hope others find our work useful.
 
