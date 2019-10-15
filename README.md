@@ -101,7 +101,7 @@ We have tested our code only on Ubuntu Linux 18.04 with Python 3.6+.
 If our work is helpful to your research, please cite it:
 
 ```
-@misc{HeinsenRouting2019,
+@article{HeinsenRouting2019,
     title	= {Routing Capsules by Their Net Cost to Use or Ignore, with Sample Applications in Vision and Language},
     author	= {Franz A. Heinsen},
     year	= {2019},
