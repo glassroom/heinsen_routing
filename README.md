@@ -6,7 +6,7 @@ The algorithm is implemented as a composable PyTorch module.
 
 ## Why?
 
-Most of the research we do at GlassRoom tends to be proprietary in nature or tightly coupled to internal code, so we cannot share it with others. This is the first time we have worked on something that (a) we believe could be valuable to others, (b) we can release as stand-along open-source software and write up in a paper, and (c) is new, original research.
+Most of the research we do at GlassRoom tends to be proprietary in nature or tightly coupled to internal code, so we cannot share it with others. This is the first time we have worked on something that (a) we believe is valuable to others, (b) we can release as stand-alone open-source software, and (c) is new, original AI research.
 
 Over the years, we have benefited immensely from, and feel incredibly thankful for, the work of a large number of AI researchers and practitioners who have made their work public or released it as open-source software.
 
