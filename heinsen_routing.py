@@ -37,7 +37,7 @@ class Routing(nn.Module):
     """
     def __init__(self, d_spc, d_out, n_out, d_inp, n_inp=-1, n_iters=3, eps=1e-5):
         super().__init__()
-        (self.n_iters, self.eps) = n_iters, eps
+        self.n_iters, self.eps = (n_iters, eps)
         self.n_inp_is_fixed = (n_inp > 0)
         one_or_n_inp = max(1, n_inp)
         self.register_buffer('CONST_R_init', torch.tensor(1.0 / n_out))
