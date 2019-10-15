@@ -4,7 +4,7 @@ Official implementation of "Routing Capsules by Their Net Cost to Use or Ignore,
 
 ## Why?
 
-Initial evaluations show that our routing algorithm, _without change_, achieves state-of-the-art results in two domains, vision and language. In our experience, this is unusual, and therefore worthy of attention.
+Initial evaluations show that our routing algorithm, _without change_, achieves state-of-the-art results in two domains, vision and language. In our experience, this is unusual, and therefore worthy of attention and further research.
 
 Our routing algorithm is a new variant of "EM routing" ([Hinton et al., 2018](https://openreview.net/pdf?id=HJWLfGWRb)), a form of "routing by agreement" which uses expectation-maximization (EM) to cluster similar votes from input capsules to output capsules in a layer of a neural network. A capsule is a group of neurons whose outputs represent different properties of the same entity in different contexts. Routing by agreement is an iterative form of clustering in which each output capsule detects an entity by looking for agreement among votes from input capsules that have already detected parts of the entity in a previous layer.
 
