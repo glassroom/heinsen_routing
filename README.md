@@ -31,7 +31,7 @@ a_out, mu_out, sig2_out = m(a_inp, mu_inp)
 print(mu_out)                               # 10 capsules of shape 4 x 4
 ```
 
-## Installation
+## Installation and Replication of Results
 
 If you wish to replicate our results, we recommend recreating our setup in a virtual environment, with the same versions of all libraries and dependencies. Runing the code requires _at least one_ Nvidia GPU with 11GB+ RAM, along with a working installation of CUDA 10 or newer. The code is meant to be easily modifiable to work with greater numbers of GPUs, or with TPUs. The code is also meant to be easily modifiable to work with frameworks other than PyTorch (as long as they support Einsten summation notation for describing multilinear operations), such as TensorFlow.
 
