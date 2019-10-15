@@ -104,6 +104,4 @@ If our work is helpful to your research, please cite it:
 
 We conceived and implemented this routing algorithm to be a component (i.e., a layer) of larger models that are in turn part of our AI software, nicknamed Graham. Our code is designed to be plugged into or tacked unto any model.
 
-Most of the work we do at GlassRoom tends to be either proprietary in nature or tightly coupled to internal code, so we cannot share it with others. This is the first time we have something which (a) we believe is valuable to others, (b) we can release as stand-alone open-source software without disclosing valuable intellectual property, and (c) is new, original AI research.
-
-We hope others find our work useful.
+Most of the work we do at GlassRoom tends to be either proprietary in nature or tightly coupled to internal code, so we cannot share it with others. This is the first time we have something which (a) we believe is valuable to others, (b) we can release as stand-alone open-source software without disclosing any valuable intellectual property, and (c) is new, original AI research. We hope others find it useful.
