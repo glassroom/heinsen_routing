@@ -18,9 +18,9 @@ We conceived and implemented this routing algorithm to be a component (i.e., a l
 
 ## Installation
 
-If you wish to replicate our results, we recommend recreating our setup in a virtual environment, with the same versions of all libraries and dependencies. The code requires _at least one_ Nvidia GPU with 11GB+ RAM with a working installation of CUDA 10 or newer. The code is meant to be easily modifiable to work with greater numbers of GPUs, or with TPUs. It is also meant to be easily modifiable to work with frameworks other than PyTorch, e.g., TensorFlow. Please note: Tested only on Ubuntu Linux 18.04 with Python 3.6+.
+If you wish to replicate our results, we recommend recreating our setup in a virtual environment, with the same versions of all libraries and dependencies. Runing the code requires _at least one_ Nvidia GPU with 11GB+ RAM, along with a working installation of CUDA 10 or newer. The code is meant to be easily modifiable to work with greater numbers of GPUs, or with TPUs. The code is also meant to be easily modifiable to work with frameworks other than PyTorch that support Einsten summation notation, such as TensorFlow.
 
-To replicate our environment, follow these steps:
+To replicate our environment and replicate our results, follow these steps:
 
 1. Change to the directory in which you cloned this repository:
 
@@ -77,6 +77,7 @@ cd ../..
 
 You should see two notebooks that replicate the results in our paper. Open and run them.
 
+Please note: tested only on Ubuntu Linux 18.04 with Python 3.6+.
 
 ## Sample usage
 
