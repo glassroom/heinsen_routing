@@ -18,7 +18,7 @@ We conceived and implemented this routing algorithm to be a component (i.e., a l
 
 ## Installation
 
-If you wish to replicate our results, we recommend recreating our setup in a virtual environment, with the same versions of all libraries and dependencies. Runing the code requires _at least one_ Nvidia GPU with 11GB+ RAM, along with a working installation of CUDA 10 or newer. The code is meant to be easily modifiable to work with greater numbers of GPUs, or with TPUs. The code is also meant to be easily modifiable to work with frameworks other than PyTorch that support Einsten summation notation, such as TensorFlow.
+If you wish to replicate our results, we recommend recreating our setup in a virtual environment, with the same versions of all libraries and dependencies. Runing the code requires _at least one_ Nvidia GPU with 11GB+ RAM, along with a working installation of CUDA 10 or newer. The code is meant to be easily modifiable to work with greater numbers of GPUs, or with TPUs. The code is also meant to be easily modifiable to work with frameworks other than PyTorch (as long as they support Einsten summation notation for describing multilinear operations), such as TensorFlow.
 
 To replicate our environment and replicate our results, follow these steps:
 
