@@ -1,26 +1,22 @@
 # heinsen_routing
 
-Official implementation of "Routing Capsules by Their Net Cost to Use or Ignore, with Sample Applications in Vision and Language" (Heinsen, 2019). The code in this repository uses our routing algorithm, _without change_, in two different domains, vision and language, and achieves state-of-the-art results in both. Please see the paper for details.
-
-The algorithm is implemented as a composable PyTorch module.
+Official implementation of "Routing Capsules by Their Net Cost to Use or Ignore, with Sample Applications in Vision and Language" (Heinsen, 2019), as a composable PyTorch module. Please note: the paper is still a draft subject to revision.
 
 ## Why?
 
-Most of the work we do at GlassRoom tends to be either proprietary in nature or tightly coupled to internal code, so we cannot share it with others. This is the first time we have something which (a) we believe is valuable to others, (b) we can release as stand-alone open-source software, and (c) is new, original AI research.
+Initial evaluations show that our routing algorithm, _without change_, achieves state-of-the-art results in two domains, vision and language. In our experience, this is unusual, and therefore worthy of attention.
 
-Over the years, we have benefited immensely from, and feel incredibly thankful for, the work of a large number of AI researchers and practitioners who have made their work public or released it as open-source software.
+Our routing algorithm is a new variant of "EM routing" ([Hinton et al., 2018](https://openreview.net/pdf?id=HJWLfGWRb)), a form of routing by agreement that uses the expectation-maximization (EM) algorithm to cluster similar votes from input capsules to output capsules. A capsule is a group of neurons whose outputs represent different properties of the same entity in different contexts. Routing by agreement is an iterative form of clustering in which an output capsule in a layer detects an entity by looking for agreement among votes from input capsules that have already detected parts of the entity in a previous layer.
 
-We hope others find our work useful.
+Recent research has shown that capsule networks with routing by agreement can be more effective than convolutional neural networks for segmenting highly overlapping images ([Sabour et al., 2017](https://arxiv.org/pdf/1710.09829.pdf) and for generalizing to different poses of objects embedded in images and resisting white-box adversarial image attacks ([Hinton et al., 2018](https://openreview.net/pdf?id=HJWLfGWRb)). Here, we show that capsule networks with our routing algorithm can be more effective in two domains, vision and language.
 
-## How do you use this routing algorithm at GlassRoom?
-
-We conceived and implemented this routing algorithm to be a component (i.e., a layer) of larger models that are in turn part of our AI software, Graham. The algorithm is designed to be plugged into or tacked unto any model. That said, we can neither confirm nor deny that we are using this exact same algorithm in any of Graham's models.
+Please see the paper for details.
 
 ## Installation
 
 If you wish to replicate our results, we recommend recreating our setup in a virtual environment, with the same versions of all libraries and dependencies. Runing the code requires _at least one_ Nvidia GPU with 11GB+ RAM, along with a working installation of CUDA 10 or newer. The code is meant to be easily modifiable to work with greater numbers of GPUs, or with TPUs. The code is also meant to be easily modifiable to work with frameworks other than PyTorch (as long as they support Einsten summation notation for describing multilinear operations), such as TensorFlow.
 
-To replicate our environment and replicate our results, follow these steps:
+To replicate our environment and results, follow these steps:
 
 1. Change to the directory in which you cloned this repository:
 
@@ -92,7 +88,6 @@ m = Routing(d_spc=4, d_out=4, n_out=10, d_inp=4, n_inp=100)
 h = m(x)
 ```
 
-
 ## Citing
 
 If our work is helpful to your research, please cite it:
@@ -104,3 +99,11 @@ If our work is helpful to your research, please cite it:
     year	= {2019},
 }
 ```
+
+## How is this used at GlassRoom?
+
+We conceived and implemented this routing algorithm to be a component (i.e., a layer) of larger models that are in turn part of our AI software, nicknamed Graham. Our code is designed to be plugged into or tacked unto any model. That said, we can neither confirm nor deny that we are using this exact same algorithm in any of Graham's models.
+
+Most of the work we do at GlassRoom tends to be either proprietary in nature or tightly coupled to internal code, so we cannot share it with others. This is the first time we have something which (a) we believe is valuable to others, (b) we can release as stand-alone open-source software, and (c) is new, original AI research.
+
+We hope others find our work useful.
