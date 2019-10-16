@@ -52,6 +52,6 @@ class SmallNORBClassifier(nn.Module):
         mu = mu.view(mu.shape[0], -1, 4, 4)                    # [bs, (n_parts * h' * w'), 4, 4]
 
         for route in self.routings:
-            a, mu, _ = route(a, mu)
+            a, mu, sig2 = route(a, mu)
 
-        return a                                               # [bs, n_objs]
+        return a, mu, sig2                                     # [bs, n_objs], [bs, n_objs, 4, 4], [bs, n_objs, 4, 4]
