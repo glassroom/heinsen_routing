@@ -110,6 +110,6 @@ If our work is helpful to your research, please cite it:
 
 ## How is this used at GlassRoom?
 
-We conceived and implemented this routing algorithm to be a component (i.e., a layer) of larger models that are in turn part of our AI software, nicknamed Graham. Our code is designed to be plugged into or tacked unto any model.
+We conceived and implemented this routing algorithm to be a component (i.e., a layer) of larger models that are in turn part of our AI software, nicknamed Graham. Our code is designed to be plugged into or tacked onto any model.
 
 Most of the original work we do at GlassRoom tends to be either proprietary in nature or tightly coupled to internal code, so we cannot share it with outsiders. In this case, we are able to release our code as stand-alone open-source software without having to disclose any valuable intellectual property. We hope others find it useful.
