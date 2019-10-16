@@ -20,15 +20,15 @@ We have implemented our routing algorithm as a self-contained (one file) PyTorch
 from heinsen_routing import Routing
 
 # 100 input capsules of shape 4 x 4
-a_inp = torch.randn(100)                    # 100 input scores
-mu_inp = torch.randn(100, 4, 4)             # 100 capsules of shape 4 x 4
+a_inp = torch.randn(100)  # 100 input scores
+mu_inp = torch.randn(100, 4, 4)  # 100 capsules of shape 4 x 4
 
 # Instantiate routing module.
 m = Routing(d_spc=4, d_out=4, n_out=10, d_inp=4, n_inp=100)
 
-# Route to 10 capsules of shape 4 x 4
+# Route to 10 output capsules of shape 4 x 4
 a_out, mu_out, sig2_out = m(a_inp, mu_inp)
-print(mu_out)                               # 10 capsules of shape 4 x 4
+print(mu_out)  # 10 capsules of shape 4 x 4
 ```
 
 ## Installation and Replication of Results
