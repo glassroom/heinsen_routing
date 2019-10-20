@@ -10,7 +10,7 @@ class Routing(nn.Module):
     in Vision and Language" (Heinsen, 2019).
 
     Args:
-        d_spc: int, dimension 1 of input and output capsules.
+        d_cov: int, dimension 1 of input and output capsules.
         d_out: int, dimension 2 of output capsules.
         n_out: int, number of output capsules.
         d_inp: int, dimension 2 of input capsules.
@@ -21,28 +21,28 @@ class Routing(nn.Module):
 
     Input:
         a_inp: [..., n_inp] input scores
-        mu_inp: [..., n_inp, d_spc, d_inp] capsules of shape d_spc x d_inp
+        mu_inp: [..., n_inp, d_cov, d_inp] capsules of shape d_cov x d_inp
 
     Output:
         a_out: [..., n_out] output scores
-        mu_out: [..., n_out, d_spc, d_out] capsules of shape d_spc x d_out
-        sig2_out: [..., n_out, d_spc, d_out] variances of shape d_spc x d_out
+        mu_out: [..., n_out, d_cov, d_out] capsules of shape d_cov x d_out
+        sig2_out: [..., n_out, d_cov, d_out] variances of shape d_cov x d_out
 
     Sample usage:
         >>> a_inp = torch.randn(100)  # 100 input scores
         >>> mu_inp = torch.randn(100, 4, 4)  # 100 capsules of shape 4 x 4
-        >>> m = Routing(d_spc=4, d_out=4, n_out=10, d_inp=4, n_inp=100)
+        >>> m = Routing(d_cov=4, d_out=4, n_out=10, d_inp=4, n_inp=100)
         >>> a_out, mu_out, sig2_out = m(a_inp, mu_inp)
         >>> print(mu_out)  # 10 capsules of shape 4 x 4
     """
-    def __init__(self, d_spc, d_out, n_out, d_inp, n_inp=-1, n_iters=3, eps=1e-5):
+    def __init__(self, d_cov, d_out, n_out, d_inp, n_inp=-1, n_iters=3, eps=1e-5):
         super().__init__()
         self.n_iters, self.eps = (n_iters, eps)
         self.n_inp_is_fixed = (n_inp > 0)
         one_or_n_inp = max(1, n_inp)
         self.register_buffer('CONST_R_init', torch.tensor(1.0 / n_out))
         self.W = nn.Parameter(torch.empty(one_or_n_inp, n_out, d_inp, d_out).normal_() / d_inp)
-        self.B = nn.Parameter(torch.zeros(one_or_n_inp, n_out, d_spc, d_out))
+        self.B = nn.Parameter(torch.zeros(one_or_n_inp, n_out, d_cov, d_out))
         self.beta_use = nn.Parameter(torch.zeros(one_or_n_inp, n_out))
         self.beta_ign = nn.Parameter(torch.zeros(one_or_n_inp, n_out))
         self.f = nn.Sigmoid()

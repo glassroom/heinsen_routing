@@ -27,8 +27,8 @@ class SmallNORBClassifier(nn.Module):
         self.compute_a = nn.Sequential(nn.BatchNorm2d(d_chns), nn.Conv2d(d_chns, n_parts, 1))
         self.compute_mu = nn.Sequential(nn.BatchNorm2d(d_chns), nn.Conv2d(d_chns, n_parts * 4 * 4, 1))
         self.routings = nn.Sequential(
-            Routing(d_spc=4, d_out=4, n_out=n_parts, d_inp=4, n_iters=3),
-            Routing(d_spc=4, d_out=4, n_out=n_objs, d_inp=4, n_inp=n_parts, n_iters=3),
+            Routing(d_cov=4, d_out=4, n_out=n_parts, d_inp=4, n_iters=3),
+            Routing(d_cov=4, d_out=4, n_out=n_objs, d_inp=4, n_inp=n_parts, n_iters=3),
         )
 
     def add_coord_grid(self, x):
