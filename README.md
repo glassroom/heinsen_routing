@@ -16,7 +16,7 @@ We show that capsule networks with our routing algorithm can be more effective t
 
 ## Sample usage
 
-We have implemented our routing algorithm as a self-contained PyTorch module in one file (`heinsen_routing.py`):
+We have implemented our routing algorithm as a self-contained PyTorch module in one file ([heinsen_routing.py](heinsen_routing.py)):
 
 ```python
 from heinsen_routing import Routing
