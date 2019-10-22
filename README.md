@@ -1,6 +1,8 @@
 # heinsen_routing
 
-Official implementation of "Routing Capsules by Their Net Cost to Use or Ignore, with Sample Applications in Vision and Language" (Heinsen, 2019). Please note: the paper is still a draft subject to revision.
+Official implementation of "An Algorithm for Routing Capsules in All Domains" (Heinsen, 2019).
+
+Please note: the paper is still a draft, subject to revision.
 
 ## Why?
 
@@ -10,11 +12,11 @@ Our routing algorithm is a new variant of "EM routing" ([Hinton et al., 2018](ht
 
 Recent research has shown that capsule networks with routing by agreement can be more effective than convolutional neural networks for segmenting highly overlapping images ([Sabour et al., 2017](https://arxiv.org/pdf/1710.09829.pdf)) and for generalizing to different poses of objects embedded in images and resisting white-box adversarial image attacks ([Hinton et al., 2018](https://openreview.net/pdf?id=HJWLfGWRb)).
 
-We show that capsule networks with our routing algorithm can be more effective than other models in two domains, vision and language. Please see our paper for details.
+We show that capsule networks with our routing algorithm can be more effective than other models in two domains, vision and language. Our routing algorithm is readily usable in other domains. Please see our paper for details.
 
 ## Sample usage
 
-We have implemented our routing algorithm as a self-contained (one file) PyTorch module:
+We have implemented our routing algorithm as a self-contained PyTorch module in one file (`heinsen_routing.py`):
 
 ```python
 from heinsen_routing import Routing
@@ -24,16 +26,16 @@ a_inp = torch.randn(100)         # input scores
 mu_inp = torch.randn(100, 4, 4)  # input capsules
 
 # Instantiate routing module.
-m = Routing(d_spc=4, d_out=4, n_out=10, d_inp=4, n_inp=100)
+m = Routing(d_cov=4, d_out=4, n_out=10, d_inp=4, n_inp=100)
 
 # Route to 10 output capsules of shape 4 x 4
 a_out, mu_out, sig2_out = m(a_inp, mu_inp)
 print(mu_out)  # shape is 10 x 4 x 4
 ```
 
-## Installation and Replication of Results
+## Replication of Results
 
-If you wish to replicate our results, we recommend recreating our setup in a virtual environment, with the same versions of all libraries and dependencies. Runing the code requires _at least one_ Nvidia GPU with 11GB+ RAM, along with a working installation of CUDA 10 or newer. The code is meant to be easily modifiable to work with greater numbers of GPUs, or with TPUs. The code is also meant to be easily modifiable to work with frameworks other than PyTorch (as long as they support Einsten summation notation for describing multilinear operations), such as TensorFlow.
+If you wish to replicate our results, we recommend recreating our setup in a virtual Python environment, with the same versions of all libraries and dependencies. Runing the code requires at least one Nvidia GPU with 11GB+ RAM, along with a working installation of CUDA 10 or newer. The code is meant to be easily modifiable to work with greater numbers of GPUs, or with TPUs. It is also meant to be easily modifiable to work with frameworks other than PyTorch (as long as they support Einsten summation notation for describing multilinear operations), such as TensorFlow.
 
 To replicate our environment and results, follow these steps:
 
@@ -102,7 +104,7 @@ If our work is helpful to your research, please cite it:
 
 ```
 @article{HeinsenRouting2019,
-    title	= {Routing Capsules by Their Net Cost to Use or Ignore, with Sample Applications in Vision and Language},
+    title	= {An Algorithm for Routing Capsules in All Domains},
     author	= {Franz A. Heinsen},
     year	= {2019},
 }
@@ -110,6 +112,8 @@ If our work is helpful to your research, please cite it:
 
 ## How is this used at GlassRoom?
 
-We conceived and implemented this routing algorithm to be a component (i.e., a layer) of larger models that are in turn part of our AI software, nicknamed Graham. Our code is designed to be plugged into or tacked onto any model.
+We conceived and implemented this routing algorithm to be a component (i.e., a layer) of larger models that are in turn part of our AI software, nicknamed Graham. Our implementation of the algorithm is designed to be plugged into or tacked onto existing models.
 
-Most of the original work we do at GlassRoom tends to be either proprietary in nature or tightly coupled to internal code, so we cannot share it with outsiders. In this case, we are able to release our code as stand-alone open-source software without having to disclose any valuable intellectual property. We hope others find it useful.
+Most of the original work we do at GlassRoom tends to be either proprietary in nature or tightly coupled to internal code, so we cannot share it with outsiders. In this case, however, we are able to release our code as stand-alone open-source software without having to disclose any valuable intellectual property.
+
+We hope others find our work and our code useful.
