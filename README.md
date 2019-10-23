@@ -96,7 +96,11 @@ You should see two notebooks that replicate the results in our paper. Open and r
 
 ## Notes
 
-We have tested our code only on Ubuntu Linux 18.04 with Python 3.6+.
+Our paper is typeset with the ACL conference's LaTeX format, because we find its two-column format, with fewer words per line, easier to read.
+
+We have tried to optimize our code for clarity and brevity, so we have abstained from adding many nice-to-have features that would have increased the cognitive effort required to understand our routing algorithm and the models that use it.
+
+Finally, we have tested our code only on Ubuntu Linux 18.04 with Python 3.6+.
 
 ## Citing
 
