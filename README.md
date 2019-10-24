@@ -108,7 +108,7 @@ You should see two notebooks that replicate the results in our paper. Open and r
 
 We have tried to optimize our code for clarity and brevity, so we have abstained from adding many nice-to-have features that would have increased the cognitive effort required to understand our routing algorithm and the models that use it.
 
-Our draft paper is typeset with the ACL conference's LaTeX format, for no other reason than we find its two-column format, with fewer words per line, easier to read.
+Our draft paper is typeset with the ACL conference's LaTeX template, for no other reason than we find its two-column format, with fewer words per line, easier to read.
 
 Finally, we have tested our code only on Ubuntu Linux 18.04 with Python 3.6+.
 
