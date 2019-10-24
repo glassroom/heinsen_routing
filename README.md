@@ -96,7 +96,11 @@ cd ../..
 
 7. Launch Jupyter notebook:
 
-`jupyter notebook`
+```
+jupyter notebook
+```
+
+Make sure the virtual environment is activated before you do this.
 
 You should see two notebooks that replicate the results in our paper. Open and run them.
 
