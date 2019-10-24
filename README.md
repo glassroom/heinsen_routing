@@ -1,6 +1,6 @@
 # heinsen_routing
 
-Official implementation of "[An Algorithm for Routing Capsules in All Domains](assets/draft_paper_heinsen_routing.pdf)" (Heinsen, 2019).
+Official implementation of "[An Algorithm for Routing Capsules in All Domains](https://content.glassroom.com/An_Algorithm_for_Routing_Capsules_in_All_Domains.pdf)" (Heinsen, 2019).
 
 Please note: the paper is still a draft, subject to revision. Feedback and suggestions are welcome!
 
