@@ -10,6 +10,10 @@ Initial evaluations show that our routing algorithm, _without change_, achieves 
 
 > ![Figs. 1 and 2 from paper](assets/draft_paper_fig1_and_fig2.png)
 
+Moreover, we find evidence that our routing algorithm, as we apply to a visual task, learns to perform a form of "reverse graphics." Please see the paper for details.
+
+> ![Fig. 4 from paper](assets/draft_paper_fig4.png)
+
 Our routing algorithm is a new variant of "EM routing" ([Hinton et al., 2018](https://openreview.net/pdf?id=HJWLfGWRb)), a form of "routing by agreement" which uses expectation-maximization (EM) to cluster similar votes from input capsules to output capsules in a layer of a neural network. A capsule is a group of neurons whose outputs represent different properties of the same entity in different contexts. Routing by agreement is an iterative form of clustering in which each output capsule detects an entity by looking for agreement among votes from input capsules that have already detected parts of the entity in a previous layer.
 
 Recent research has shown that capsule networks with routing by agreement can be more effective than convolutional neural networks for segmenting highly overlapping images ([Sabour et al., 2017](https://arxiv.org/pdf/1710.09829.pdf)) and for generalizing to different poses of objects embedded in images and resisting white-box adversarial image attacks ([Hinton et al., 2018](https://openreview.net/pdf?id=HJWLfGWRb)).
@@ -18,7 +22,7 @@ We show that capsule networks with our routing algorithm can be more effective t
 
 ## Sample usage
 
-We have implemented our routing algorithm as a self-contained PyTorch module in [one file](heinsen_routing.py):
+We have implemented our routing algorithm as a self-contained PyTorch module in a [single file](heinsen_routing.py):
 
 ```python
 from heinsen_routing import Routing
