@@ -104,6 +104,29 @@ Make sure the virtual environment is activated before you do this.
 
 You should see two notebooks that replicate the results in our paper. Open and run them.
 
+## Pretrained weights
+
+We have made pretrained weights available for the smallNORB and SST models:
+
+```python
+import torch
+from models import SmallNORBClassifier, SSTClassifier
+
+# Load pretrained smallNORM model.
+model = SmallNORBClassifier(n_objs=5, n_parts=64, d_chns=64)
+model.load_state_dict(torch.load('smallNORB_pretrained_model_state_dict.pt'))
+
+# Load SST model pretrained on binary labels
+# (make sure order of label ids match those we used in training).
+model = SSTClassifier(d_depth=37, d_emb=1280, d_cap=2, n_parts=64, n_classes=2)
+model.load_state_dict(torch.load('SST2R_pretrained_model_state_dict.pt'))
+
+# Load SST model pretrained on fine-grained labels
+# (make sure order of label ids match those we used in training).
+model = SSTClassifier(d_depth=37, d_emb=1280, d_cap=2, n_parts=64, n_classes=5)
+model.load_state_dict(torch.load('SST5R_pretrained_model_state_dict.pt'))
+```
+
 ## Notes
 
 We have tried to optimize our code for clarity and brevity, so we have abstained from adding many nice-to-have features that would have increased the cognitive effort required to understand our routing algorithm and the models that use it.
