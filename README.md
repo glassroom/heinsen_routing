@@ -18,7 +18,7 @@ Our routing algorithm is a new variant of "EM routing" ([Hinton et al., 2018](ht
 
 Recent research has shown that capsule networks with routing by agreement can be more effective than convolutional neural networks for segmenting highly overlapping images ([Sabour et al., 2017](https://arxiv.org/pdf/1710.09829.pdf)) and for generalizing to different poses of objects embedded in images and resisting white-box adversarial image attacks ([Hinton et al., 2018](https://openreview.net/pdf?id=HJWLfGWRb)).
 
-We show that capsule networks with our routing algorithm can be more effective than other models in two domains, vision and language. Our routing algorithm is readily usable in other domains. Please see our paper for details.
+We show that capsule networks with our routing algorithm can be more effective than other models in two domains, vision and language. Our routing algorithm is readily usable in other domains too. Please see our paper for details.
 
 ## Sample usage
 
