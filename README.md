@@ -117,12 +117,12 @@ model = SmallNORBClassifier(n_objs=5, n_parts=64, d_chns=64)
 model.load_state_dict(torch.load('smallNORB_pretrained_model_state_dict.pt'))
 
 # Load SST model pretrained on binary labels (needs GPT-2-large model
-# too; also, make sure order of label ids match those used in training).
+# too; also, make sure order of label ids matches those used in training).
 model = SSTClassifier(d_depth=37, d_emb=1280, d_cap=2, n_parts=64, n_classes=2)
 model.load_state_dict(torch.load('SST2R_pretrained_model_state_dict.pt'))
 
 # Load SST model pretrained on fine-grained labels (needs GPT-2-large model
-# too; also, make sure order of label ids match those used in training).
+# too; also, make sure order of label ids matches those used in training).
 model = SSTClassifier(d_depth=37, d_emb=1280, d_cap=2, n_parts=64, n_classes=5)
 model.load_state_dict(torch.load('SST5R_pretrained_model_state_dict.pt'))
 ```
