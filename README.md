@@ -10,7 +10,7 @@ Initial evaluations show that our routing algorithm, _without change_, achieves 
 
 > ![Figs. 1 and 2 from paper](assets/draft_paper_fig1_and_fig2.png)
 
-Moreover, we find evidence that our routing algorithm, as we apply to a visual task, learns to perform a form of "reverse graphics." Please see the paper for details.
+Moreover, we find evidence that our routing algorithm, as we apply to a visual task, learns to perform a form of "reverse graphics." The following visualization shows a 2-dimensional approximation of the manner in which pose vectors of an activated class capsule vary as we change viewpoint elevation:
 
 > ![Fig. 4 from paper](assets/draft_paper_fig4.png)
 
