@@ -110,6 +110,8 @@ We have tried to optimize our code for clarity and brevity, so we have abstained
 
 Our draft paper is typeset with the ACL conference's LaTeX template, for no other reason than we find its two-column format, with fewer words per line, easier to read.
 
+We briefly considered submitting this work to an academic conference, but by the time we had finished running experiments on academic datasets, documenting and writing up the results in a paper, and removing all traces of internal code, the deadline for NIPS had already passed and we didn't want to wait until ICML. We decided to post everything here and let the work speak for itself.
+
 Finally, we have tested our code only on Ubuntu Linux 18.04 with Python 3.6+.
 
 ## Citing
