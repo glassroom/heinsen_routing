@@ -4,26 +4,40 @@ Official implementation of "[An Algorithm for Routing Capsules in All Domains](h
 
 ## Sample usage
 
+Detect objects with poses from parts with poses in images:
+
 ```python
+import torch
 from heinsen_routing import Routing
 
-# Input scores and capsules.
-parts = torch.randn(100)             # 100 scores for detected parts
-part_poses = torch.randn(100, 4, 4)  # 100 detected part poses, each a 4 x 4 matrix
+part_scores = torch.randn(100)       # 100 scores, one per detected part
+part_poses = torch.randn(100, 4, 4)  # 100 capsules, each a 4 x 4 pose matrix
 
-# Detect 10 objecs with 4 x 4 poses from 100 parts with 4 x 4 poses.
 detect_objs = Routing(d_cov=4, d_inp=4, d_out=4, n_inp=100, n_out=10)
-objs, obj_poses, obj_poses_sig2 = detect_objs(parts, part_poses)
+obj_scores, obj_poses, obj_poses_sig2 = detect_objs(part_scores, part_poses)
 
-# Output scores and capsules.
-print(objs)                          # 10 scores for detected objects
-print(obj_poses)                     # 10 detected object poses, each 4 x 4
+print(obj_scores)                    # 10 scores, one per detected object
+print(obj_poses)                     # 10 capsules, each a 4 x 4 pose matrix
+```
+
+Classify sequences of token embeddings:
+
+```python
+tok_scores = torch.randn(n)          # token scores, n is variable
+tok_embs = torch.randn(n, 1024)      # token embeddings, n is variable
+tok_caps = tok_embs.unsqueeze(1)     # reshape to n x 1 x 1024
+
+classify = Routing(d_cov=1, d_inp=1024, d_out=8, n_out=2)  # variable n_inp
+class_scores, class_caps, class_caps_sig2 = classify(tok_scores, tok_caps)
+
+print(class_scores)                   # 2 scores, one per class
+print(class_caps)                     # 2 capsules, each a 1 x 8 matrix
 ```
 
 ## Installation and use
 
 1. Download the file [heinsen_routing.py](heinsen_routing.py).
-2. Import the module with `from heinsen_routing import Routing`.
+2. Import the module: `from heinsen_routing import Routing`.
 3. Use it as shown above, in the previous section.
 
 ## Why?
