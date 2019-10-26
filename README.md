@@ -2,6 +2,26 @@
 
 Official implementation of "[An Algorithm for Routing Capsules in All Domains](https://content.glassroom.com/An_Algorithm_for_Routing_Capsules_in_All_Domains.pdf)" (Heinsen, 2019).
 
+## Sample usage
+
+```python
+from heinsen_routing import Routing
+
+# Input scores and capsules.
+parts = torch.randn(100)             # 100 scores for detected parts
+part_poses = torch.randn(100, 4, 4)  # 100 detected part poses, each a 4 x 4 matrix
+
+# Detect 10 objecs with 4 x 4 poses from 100 parts with 4 x 4 poses.
+m = Routing(d_cov=4, d_inp=4, d_out=4, n_inp=100, n_out=10)
+objs, obj_poses, obj_poses_sig2 = m(parts, poses)
+
+# Output scores and capsules.
+print(objs)                          # 10 scores for detected objects
+print(obj_poses)                     # 10 detected object poses, each 4 x 4
+```
+
+We have implemented our routing algorithm as a self-contained PyTorch module in a [single file](heinsen_routing.py).
+
 ## Why?
 
 Initial evaluations show that our routing algorithm, _without change_, achieves state-of-the-art results in two domains, vision and language. In our experience, this is unusual, and therefore worthy of attention and further research:
@@ -17,25 +37,6 @@ Our routing algorithm is a new variant of "EM routing" ([Hinton et al., 2018](ht
 Recent research has shown that capsule networks with routing by agreement can be more effective than convolutional neural networks for segmenting highly overlapping images ([Sabour et al., 2017](https://arxiv.org/pdf/1710.09829.pdf)) and for generalizing to different poses of objects embedded in images and resisting white-box adversarial image attacks ([Hinton et al., 2018](https://openreview.net/pdf?id=HJWLfGWRb)).
 
 We show that capsule networks with our routing algorithm can be more effective than other models in two domains, vision and language. Our routing algorithm is readily usable in other domains too. Please see our paper for details.
-
-## Sample usage
-
-We have implemented our routing algorithm as a self-contained PyTorch module in a [single file](heinsen_routing.py):
-
-```python
-from heinsen_routing import Routing
-
-# 100 input capsules of shape 4 x 4
-a_inp = torch.randn(100)         # input scores
-mu_inp = torch.randn(100, 4, 4)  # input capsules
-
-# Instantiate routing module.
-m = Routing(d_cov=4, d_out=4, n_out=10, d_inp=4, n_inp=100)
-
-# Route to 10 output capsules of shape 4 x 4
-a_out, mu_out, sig2_out = m(a_inp, mu_inp)
-print(mu_out)  # shape is 10 x 4 x 4
-```
 
 ## Replication of Results
 
