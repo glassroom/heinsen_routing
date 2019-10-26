@@ -4,7 +4,7 @@ Official implementation of "[An Algorithm for Routing Capsules in All Domains](h
 
 ## Sample usage
 
-Detect objects with poses from parts with poses in images:
+Detect objects with poses from parts with poses embedded in images:
 
 ```python
 import torch
@@ -30,15 +30,17 @@ tok_caps = tok_embs.unsqueeze(1)     # reshape to n x 1 x 1024
 classify = Routing(d_cov=1, d_inp=1024, d_out=8, n_out=2)  # variable n_inp
 class_scores, class_caps, class_caps_sig2 = classify(tok_scores, tok_caps)
 
-print(class_scores)                   # 2 scores, one per class
-print(class_caps)                     # 2 capsules, each a 1 x 8 matrix
+print(class_scores)                  # 2 scores, one per class
+print(class_caps)                    # 2 capsules, each a 1 x 8 matrix
 ```
+
+Try it on your data!
 
 ## Installation and use
 
-1. Download the file [heinsen_routing.py](heinsen_routing.py).
+1. Download one file: [heinsen_routing.py](heinsen_routing.py).
 2. Import the module: `from heinsen_routing import Routing`.
-3. Use it as shown above, in the previous section.
+3. Use it as shown above.
 
 ## Why?
 
