@@ -20,9 +20,11 @@ print(objs)                          # 10 scores for detected objects
 print(obj_poses)                     # 10 detected object poses, each 4 x 4
 ```
 
-## Installation
+## Installation and use
 
-We have implemented our routing algorithm as a self-contained PyTorch module in a single file, [heinsen_routing.py](heinsen_routing.py). To install, download the file. Import the module with `from heinsen_routing import Routing`.
+1. Download the file [heinsen_routing.py](heinsen_routing.py).
+2. Import the module with `from heinsen_routing import Routing`.
+3. Use it as shown above, in the previous section.
 
 ## Why?
 
