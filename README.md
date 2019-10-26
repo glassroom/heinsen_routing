@@ -4,7 +4,7 @@ Official implementation of "[An Algorithm for Routing Capsules in All Domains](h
 
 ## Examples
 
-Detect objects with poses from parts with poses embedded in images:
+Detect objects from parts and their poses in images:
 
 ```python
 import torch
