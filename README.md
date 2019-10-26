@@ -12,8 +12,8 @@ parts = torch.randn(100)             # 100 scores for detected parts
 part_poses = torch.randn(100, 4, 4)  # 100 detected part poses, each a 4 x 4 matrix
 
 # Detect 10 objecs with 4 x 4 poses from 100 parts with 4 x 4 poses.
-m = Routing(d_cov=4, d_inp=4, d_out=4, n_inp=100, n_out=10)
-objs, obj_poses, obj_poses_sig2 = m(parts, part_poses)
+detect_objs = Routing(d_cov=4, d_inp=4, d_out=4, n_inp=100, n_out=10)
+objs, obj_poses, obj_poses_sig2 = detect_objs(parts, part_poses)
 
 # Output scores and capsules.
 print(objs)                          # 10 scores for detected objects
