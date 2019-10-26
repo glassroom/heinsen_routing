@@ -2,8 +2,6 @@
 
 Official implementation of "[An Algorithm for Routing Capsules in All Domains](https://content.glassroom.com/An_Algorithm_for_Routing_Capsules_in_All_Domains.pdf)" (Heinsen, 2019).
 
-Please note: the paper is still a draft, subject to revision. Feedback and suggestions are welcome!
-
 ## Why?
 
 Initial evaluations show that our routing algorithm, _without change_, achieves state-of-the-art results in two domains, vision and language. In our experience, this is unusual, and therefore worthy of attention and further research:
@@ -131,7 +129,7 @@ model.load_state_dict(torch.load('SST5R_pretrained_model_state_dict.pt'))
 
 We have tried to optimize our code for clarity and brevity, so we have abstained from adding many nice-to-have features that would have increased the cognitive effort required to understand our routing algorithm and the models that use it.
 
-Our draft paper is typeset with the ACL conference's LaTeX template, for no other reason than we find its two-column format, with fewer words per line, easier to read.
+Our paper is still a draft, subject to revision. Feedback and suggestions are welcome! We will upload it to Arxiv after receiving a bit more feedback. We typeset the paper with the ACL conference's LaTeX template, for no other reason than we find its two-column format, with fewer words per line, easier to read.
 
 We briefly considered submitting this work to an academic conference, but by the time we had finished running experiments on academic datasets, documenting and writing up the results in a paper, and removing all traces of internal code, the deadline for NIPS had already passed and we didn't want to wait until ICML. We decided to post everything here and let the work speak for itself.
 
