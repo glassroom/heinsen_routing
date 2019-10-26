@@ -28,7 +28,7 @@ Initial evaluations show that our routing algorithm, _without change_, achieves 
 
 > ![Figs. 1 and 2 from paper](assets/draft_paper_fig1_and_fig2.png)
 
-Moreover, we find evidence that our routing algorithm, as we apply it to the smallNORB visual recognition task, _learns to perform a form of "reverse graphics."_ The following visualization, from the paper, shows a two-dimensional approximation of the trajectories of the pose vectors of an activated class capsule as we change viewpoint elevation of the same toy from one image to the next:
+We find evidence that our routing algorithm, when we apply it to a visual recognition task, _learns to perform a form of "reverse graphics."_ The following visualization, from the paper, shows a two-dimensional approximation of the trajectories of the pose vectors of an activated class capsule as we change viewpoint elevation of the same object from one image to the next:
 
 > ![Fig. 4 from paper](assets/draft_paper_fig4.png)
 
