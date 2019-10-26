@@ -20,7 +20,9 @@ print(objs)                          # 10 scores for detected objects
 print(obj_poses)                     # 10 detected object poses, each 4 x 4
 ```
 
-We have implemented our routing algorithm as a self-contained PyTorch module in a [single file](heinsen_routing.py).
+## Installation
+
+We have implemented our routing algorithm as a self-contained PyTorch module in a single file, [heinsen_routing.py](heinsen_routing.py). To install, download the file. Import the module with `from heinsen_routing import Routing`.
 
 ## Why?
 
@@ -38,7 +40,7 @@ Recent research has shown that capsule networks with routing by agreement can be
 
 We show that capsule networks with our routing algorithm can be more effective than other models in two domains, vision and language. Our routing algorithm is readily usable in other domains too. Please see our paper for details.
 
-## Replication of Results
+## Replication of results in paper
 
 If you wish to replicate our results, we recommend recreating our setup in a virtual Python environment, with the same versions of all libraries and dependencies. Runing the code requires at least one Nvidia GPU with 11GB+ RAM, along with a working installation of CUDA 10 or newer. The code is meant to be easily modifiable to work with greater numbers of GPUs, or with TPUs. It is also meant to be easily modifiable to work with frameworks other than PyTorch (as long as they support Einsten summation notation for describing multilinear operations), such as TensorFlow.
 
