@@ -25,16 +25,16 @@ Classify sequences of token embeddings:
 ```python
 tok_scores = torch.randn(n)          # token scores, n is variable
 tok_embs = torch.randn(n, 1024)      # token embeddings, n is variable
-tok_caps = tok_embs.unsqueeze(1)     # reshape to n x 1 x 1024
+tok_embs = tok_embs.unsqueeze(1)     # reshape to n x 1 x 1024 (n matrices)
 
 classify = Routing(d_cov=1, d_inp=1024, d_out=8, n_out=2)  # variable n_inp
-class_scores, class_caps, class_caps_sig2 = classify(tok_scores, tok_caps)
+class_scores, class_embs, class_embs_sig2 = classify(tok_scores, tok_embs)
 
 print(class_scores)                  # 2 scores, one per class
-print(class_caps)                    # 2 capsules, each a 1 x 8 matrix
+print(class_embs)                    # 2 capsules, each a 1 x 8 matrix
 ```
 
-Try it on your data!
+Try it on your data. You will be delightfully surprised at how well it works!
 
 ## Installation and use
 
