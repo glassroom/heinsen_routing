@@ -2,7 +2,7 @@
 
 Official implementation of "[An Algorithm for Routing Capsules in All Domains](https://content.glassroom.com/An_Algorithm_for_Routing_Capsules_in_All_Domains.pdf)" (Heinsen, 2019).
 
-Try it on your data. You will be delightfully surprised at how well it works!
+Try it on your data. You will be delightfully surprised at how well it works for vision, language, and other domains!
 
 ## Examples
 
