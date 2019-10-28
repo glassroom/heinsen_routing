@@ -2,6 +2,8 @@
 
 Official implementation of "[An Algorithm for Routing Capsules in All Domains](https://content.glassroom.com/An_Algorithm_for_Routing_Capsules_in_All_Domains.pdf)" (Heinsen, 2019).
 
+Try it on your data. You will be delightfully surprised at how well it works!
+
 ## Examples
 
 Detect objects from parts and their poses in images:
@@ -33,8 +35,6 @@ class_scores, class_embs, class_embs_sig2 = classify(tok_scores, tok_embs)
 print(class_scores)                  # 2 scores, one per class
 print(class_embs)                    # 2 capsules, each a 1 x 8 matrix
 ```
-
-Try it on your data. You will be delightfully surprised at how well it works!
 
 ## Installation and use
 
