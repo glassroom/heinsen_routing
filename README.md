@@ -1,6 +1,6 @@
 # heinsen_routing
 
-Official implementation of "[An Algorithm for Routing Capsules in All Domains](https://content.glassroom.com/An_Algorithm_for_Routing_Capsules_in_All_Domains.pdf)" (Heinsen, 2019) in PyTorch. The same learning algorithm, _without change_, achieves state-of-the-art results in two domains, vision and language.
+Official implementation of "[An Algorithm for Routing Capsules in All Domains](https://content.glassroom.com/An_Algorithm_for_Routing_Capsules_in_All_Domains.pdf)" (Heinsen, 2019) in PyTorch. This learning algorithm, _without change_, achieves state-of-the-art results in two domains, vision and language.
 
 Try it on your data!
 
