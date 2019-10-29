@@ -1,15 +1,14 @@
 # heinsen_routing
 
-Official implementation of "[An Algorithm for Routing Capsules in All Domains](https://content.glassroom.com/An_Algorithm_for_Routing_Capsules_in_All_Domains.pdf)" (Heinsen, 2019).
+Official implementation of "[An Algorithm for Routing Capsules in All Domains](https://content.glassroom.com/An_Algorithm_for_Routing_Capsules_in_All_Domains.pdf)" (Heinsen, 2019) in PyTorch. The same learning algorithm, _without change_, achieves state-of-the-art results in two domains, vision and language.
 
-Try it on your data. You will be delightfully surprised at how well it works for vision, language, and other domains!
+Try it on your data!
 
-## Examples
+## Sample usage
 
-Detect objects from parts and their poses in images:
+Detect objects from their component parts in images:
 
 ```python
-import torch
 from heinsen_routing import Routing
 
 part_scores = torch.randn(100)       # 100 scores, one per detected part
@@ -25,6 +24,8 @@ print(obj_poses)                     # 10 capsules, each a 4 x 4 pose matrix
 Classify sequences of token embeddings:
 
 ```python
+from heinsen_routing import Routing
+
 tok_scores = torch.randn(n)          # token scores, n is variable
 tok_embs = torch.randn(n, 1024)      # token embeddings, n is variable
 tok_embs = tok_embs.unsqueeze(1)     # reshape to n x 1 x 1024 (n matrices)
@@ -36,7 +37,7 @@ print(class_scores)                  # 2 scores, one per class
 print(class_embs)                    # 2 capsules, each a 1 x 8 matrix
 ```
 
-## Installation and use
+## Installation
 
 1. Download one file: [heinsen_routing.py](heinsen_routing.py).
 2. Import the module: `from heinsen_routing import Routing`.
@@ -44,11 +45,11 @@ print(class_embs)                    # 2 capsules, each a 1 x 8 matrix
 
 ## Why?
 
-Initial evaluations show that our routing algorithm, _without change_, achieves state-of-the-art results in two domains, vision and language. In our experience, this is unusual, and therefore worthy of attention and further research:
+Initial evaluations show that our learning algorithm, _without change_, achieves state-of-the-art results in two domains, vision and language. In our experience, this is unusual, and therefore worthy of attention and further research:
 
 > ![Figs. 1 and 2 from paper](assets/draft_paper_fig1_and_fig2.png)
 
-We find evidence that our routing algorithm, when we apply it to a visual recognition task, _learns to perform a form of "reverse graphics."_ The following visualization, from our [paper](https://content.glassroom.com/An_Algorithm_for_Routing_Capsules_in_All_Domains.pdf), shows a two-dimensional approximation of the trajectories of the pose vectors of an activated class capsule as we change viewpoint elevation of the same object from one image to the next:
+We find evidence that our learning algorithm, when we apply it to a visual recognition task, _learns to perform a form of "reverse graphics."_ The following visualization, from our [paper](https://content.glassroom.com/An_Algorithm_for_Routing_Capsules_in_All_Domains.pdf), shows a two-dimensional approximation of the trajectories of the pose vectors of an activated class capsule as we change viewpoint elevation of the same object from one image to the next:
 
 > ![Fig. 4 from paper](assets/draft_paper_fig4.png)
 
@@ -135,20 +136,18 @@ from models import SmallNORBClassifier, SSTClassifier
 model = SmallNORBClassifier(n_objs=5, n_parts=64, d_chns=64)
 model.load_state_dict(torch.load('smallNORB_pretrained_model_state_dict.pt'))
 
-# Load SST model pretrained on binary labels (needs GPT-2-large model
-# too; also, make sure order of label ids matches those used in training).
-model = SSTClassifier(d_depth=37, d_emb=1280, d_cap=2, n_parts=64, n_classes=2)
+# Load SST model pretrained on binary dataset.
+model = SSTClassifier(d_depth=37, d_emb=1280, d_inp=64, d_cap=2, n_parts=64, n_classes=2)
 model.load_state_dict(torch.load('SST2R_pretrained_model_state_dict.pt'))
 
-# Load SST model pretrained on fine-grained labels (needs GPT-2-large model
-# too; also, make sure order of label ids matches those used in training).
-model = SSTClassifier(d_depth=37, d_emb=1280, d_cap=2, n_parts=64, n_classes=5)
+# Load SST model pretrained on fine-grained dataset.
+model = SSTClassifier(d_depth=37, d_emb=1280, d_inp=64, d_cap=2, n_parts=64, n_classes=5)
 model.load_state_dict(torch.load('SST5R_pretrained_model_state_dict.pt'))
 ```
 
 ## Notes
 
-Our paper is still a draft, subject to revision. We will upload it to Arxiv after receiving a bit more feedback. Comments and suggestions are welcome!  We typeset the paper with the ACL conference's LaTeX template for no other reason than we find its two-column format, with fewer words per line, easier to read. We briefly considered submitting our work to an academic conference, but by the time we had finished running experiments on academic datasets, documenting and writing up the results, and removing all traces of internal code, the deadline for NIPS had already passed and we didn't want to wait until ICML. We decided to post everything here and let the work speak for itself.
+Our paper is still work-in-progress, subject to revision. We will upload it to Arxiv after receiving a bit more feedback from other AI researchers. Comments and suggestions are welcome!  We typeset the paper with the ACL conference's LaTeX template for no other reason than we find its two-column format, with fewer words per line, easier to read. We briefly considered submitting our work to an academic conference, but by the time we had finished running experiments on academic datasets, documenting and writing up the results, and removing all traces of internal code, the deadline for NIPS had passed and we didn't want to wait much longer. We decided to post everything here and let the work speak for itself.
 
 We have tested our code only on Ubuntu Linux 18.04 with Python 3.6+.
 
