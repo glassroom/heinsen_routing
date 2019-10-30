@@ -2,7 +2,7 @@
 
 Official implementation of "[An Algorithm for Routing Capsules in All Domains](https://content.glassroom.com/An_Algorithm_for_Routing_Capsules_in_All_Domains.pdf)" (Heinsen, 2019) in PyTorch. This learning algorithm, _without change_, achieves state-of-the-art results in two domains, vision and language.
 
-For example, a capsule network using this algorithm achieves greater accuracy on smallNORB than [Hinton et al. (2018)](https://openreview.net/pdf?id=HJWLfGWRb)'s capsule network, but uses _fewer parameters_ and requires _an order of magnitude fewer epochs to train_.
+For example, a capsule network using this algorithm achieves greater accuracy on smallNORB than [Hinton et al. (2018)](https://ai.google/research/pubs/pub46653)'s capsule network, but uses _fewer parameters_ and requires _an order of magnitude fewer epochs to train_.
 
 Try it on your data!
 
@@ -55,9 +55,9 @@ We find evidence that our learning algorithm, when we apply it to a visual recog
 
 > ![Fig. 4 from paper](assets/draft_paper_fig4.png)
 
-Our routing algorithm is a new variant of "EM routing" ([Hinton et al., 2018](https://openreview.net/pdf?id=HJWLfGWRb)), a form of "routing by agreement" which uses expectation-maximization (EM) to cluster similar votes from input capsules to output capsules in a layer of a neural network. A capsule is a group of neurons whose outputs represent different properties of the same entity in different contexts. Routing by agreement is an iterative form of clustering in which each output capsule detects an entity by looking for agreement among votes from input capsules that have already detected parts of the entity in a previous layer.
+Our routing algorithm is a new variant of "EM routing" ([Hinton et al., 2018](https://ai.google/research/pubs/pub46653)), a form of "routing by agreement" which uses expectation-maximization (EM) to cluster similar votes from input capsules to output capsules in a layer of a neural network. A capsule is a group of neurons whose outputs represent different properties of the same entity in different contexts. Routing by agreement is an iterative form of clustering in which each output capsule detects an entity by looking for agreement among votes from input capsules that have already detected parts of the entity in a previous layer.
 
-Recent research has shown that capsule networks with routing by agreement can be more effective than convolutional neural networks for segmenting highly overlapping images ([Sabour et al., 2017](https://arxiv.org/pdf/1710.09829.pdf)) and for generalizing to different poses of objects embedded in images and resisting white-box adversarial image attacks ([Hinton et al., 2018](https://openreview.net/pdf?id=HJWLfGWRb)).
+Recent research has shown that capsule networks with routing by agreement can be more effective than convolutional neural networks for segmenting highly overlapping images ([Sabour et al., 2017](https://arxiv.org/pdf/1710.09829.pdf)) and for generalizing to different poses of objects embedded in images and resisting white-box adversarial image attacks ([Hinton et al., 2018](https://ai.google/research/pubs/pub46653)).
 
 We show that capsule networks with our routing algorithm can be more effective than other models in two domains, vision and language. Our routing algorithm is readily usable in other domains too. Please see our paper for details.
 
