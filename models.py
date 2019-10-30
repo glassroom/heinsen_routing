@@ -107,7 +107,7 @@ class SmallNORBClassifier(nn.Module):
         mu = mu.permute(0, 1, 4, 5, 2, 3).contiguous()         # [bs, n_parts, m', n', 4, 4]
         mu = mu.view(mu.shape[0], -1, 4, 4)                    # [bs, (n_parts * m' * n'), 4, 4]
 
-        for route in self.routings:
-            a, mu, sig2 = route(a, mu)
+        for routing in self.routings:
+            a, mu, sig2 = routing(a, mu)
 
         return a, mu, sig2
