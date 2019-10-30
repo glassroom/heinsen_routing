@@ -24,12 +24,12 @@ class SSTClassifier(nn.Module):
 
     Input:
         mask: [..., n] tensor with 1.0 for tokens, 0.0 for padding.
-        embs: [..., n, d_depth, d_emb] embeddings for n tokens
+        embs: [..., n, d_depth, d_emb] embeddings for n tokens.
 
     Output:
-        a_out: [..., n_classes] class scores
-        mu_out: [..., n_classes, 1, d_cap] class capsules
-        sig2_out: [..., n_classes, 1, d_cap] class capsule variances
+        a_out: [..., n_classes] class scores.
+        mu_out: [..., n_classes, 1, d_cap] class capsules.
+        sig2_out: [..., n_classes, 1, d_cap] class capsule variances.
     """
     def __init__(self, d_depth, d_emb, d_inp, d_cap, n_parts, n_classes):
         super().__init__()
@@ -67,9 +67,9 @@ class SmallNORBClassifier(nn.Module):
         images: [..., 2, m, n] stacked smallNORB L and R m x n images.
 
     Output:
-        a_out: [..., n_objs] object scores
-        mu_out: [..., n_objs, 4, 4] object poses
-        sig2_out: [..., n_objs, 4, 4] object pose variances
+        a_out: [..., n_objs] object scores.
+        mu_out: [..., n_objs, 4, 4] object poses.
+        sig2_out: [..., n_objs, 4, 4] object pose variances.
     """
     def __init__(self, n_objs, n_parts, d_chns):
         super().__init__()
