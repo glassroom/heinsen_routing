@@ -2,7 +2,7 @@
 
 Official implementation of "[An Algorithm for Routing Capsules in All Domains](https://content.glassroom.com/An_Algorithm_for_Routing_Capsules_in_All_Domains.pdf)" (Heinsen, 2019) in PyTorch. This learning algorithm, _without change_, achieves state-of-the-art results in two domains, vision and language.
 
-For example, a model using this algorithm achieves greater accuracy on smallNORB than [Hinton et al., (2018)](https://openreview.net/pdf?id=HJWLfGWRb)) with _fewer parameters_ and requiring _an order of magnitude fewer epochs to train_.
+For example, a capsule network using this algorithm achieves greater accuracy on smallNORB than [Hinton et al. (2018)](https://openreview.net/pdf?id=HJWLfGWRb)'s capsule network using _fewer parameters_ and requiring _an order of magnitude fewer epochs to train_.
 
 Try it on your data!
 
