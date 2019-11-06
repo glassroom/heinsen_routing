@@ -2,7 +2,7 @@
 
 Official implementation of "[An Algorithm for Routing Capsules in All Domains](https://arxiv.org/abs/1911.00792)" (Heinsen, 2019) in PyTorch. This learning algorithm, _without change_, achieves state-of-the-art results in two domains, vision and language.
 
-For example, a capsule network using this algorithm outperforms [Hinton et al. (2018)](https://ai.google/research/pubs/pub46653)'s capsule network on a visual task using _fewer parameters_ and requiring _an order of magnitude less training_. A capsule network using the same algorithm outperforms [BERT](https://arxiv.org/abs/1810.04805) on a language task.
+For example, a capsule network using this algorithm outperforms [Hinton et al. (2018)](https://ai.google/research/pubs/pub46653)'s capsule network on a visual task using _fewer parameters_ and requiring _an order of magnitude less training_. A capsule network using the same algorithm outperforms [BERT](https://arxiv.org/abs/1810.04805) on a language task. In both of these examples, the same training regime was used to train the model (same hyperparameters, learning rate schedule, regularization, etc.).
 
 You can easily add the algorithm as a new layer to any model to improve its performance. Try it!
 
@@ -154,10 +154,13 @@ We have tested our code only on Ubuntu Linux 18.04 with Python 3.6+.
 If our work is helpful to your research, please cite it:
 
 ```
-@article{HeinsenRouting2019,
-    title	= {An Algorithm for Routing Capsules in All Domains},
-    author	= {Franz A. Heinsen},
-    year	= {2019},
+@misc{heinsen2019algorithm,
+    title={An Algorithm for Routing Capsules in All Domains},
+    author={Franz A. Heinsen},
+    year={2019},
+    eprint={1911.00792},
+    archivePrefix={arXiv},
+    primaryClass={cs.LG}
 }
 ```
 
