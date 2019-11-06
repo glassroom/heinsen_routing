@@ -1,10 +1,10 @@
 # heinsen_routing
 
-Official implementation of "[An Algorithm for Routing Capsules in All Domains](https://content.glassroom.com/An_Algorithm_for_Routing_Capsules_in_All_Domains.pdf)" (Heinsen, 2019) in PyTorch. This learning algorithm, _without change_, achieves state-of-the-art results in two domains, vision and language.
+Official implementation of "[An Algorithm for Routing Capsules in All Domains](https://arxiv.org/abs/1911.00792)" (Heinsen, 2019) in PyTorch. This learning algorithm, _without change_, achieves state-of-the-art results in two domains, vision and language.
 
-For example, a capsule network using this algorithm achieves new state-of-the-art accuracy on smallNORB, outperforming [Hinton et al. (2018)](https://ai.google/research/pubs/pub46653)'s capsule network, using _fewer parameters_ and requiring _an order of magnitude less training_.
+For example, a capsule network using this algorithm outperforms [Hinton et al. (2018)](https://ai.google/research/pubs/pub46653)'s capsule network on a visual task using _fewer parameters_ and requiring _an order of magnitude less training_. A capsule network using the same algorithm outperforms [BERT](https://arxiv.org/abs/1810.04805) on a language task.
 
-Try it on your data!
+You can easily add the algorithm as a new layer to any model to improve its performance. Try it!
 
 ## Sample usage
 
@@ -47,19 +47,15 @@ print(class_embs)                    # 2 capsules, each a 1 x 8 matrix
 
 ## Why?
 
-Initial evaluations show that our learning algorithm, _without change_, achieves state-of-the-art results in two domains, vision and language. In our experience, this is unusual, and therefore worthy of attention and further research:
+Initial evaluations show that our learning algorithm, without change, achieves state-of-the-art results in two domains, vision and language. In our experience, this is unusual, and therefore worthy of attention and further research:
 
 > ![Figs. 1 and 2 from paper](assets/draft_paper_fig1_and_fig2.png)
 
-We find evidence that our learning algorithm, when we apply it to a visual recognition task, _learns to perform a form of "reverse graphics."_ The following visualization, from our [paper](https://content.glassroom.com/An_Algorithm_for_Routing_Capsules_in_All_Domains.pdf), shows a two-dimensional approximation of the trajectories of the pose vectors of an activated class capsule as we change viewpoint elevation of the same object from one image to the next:
+Moreover, we find evidence that our learning algorithm, when we apply it to a visual recognition task, _learns to perform a form of "reverse graphics."_ The following visualization, from our [paper](https://arxiv.org/abs/1911.00792), shows a two-dimensional approximation of the trajectories of the pose vectors of an activated class capsule as we change viewpoint elevation of the same object from one image to the next:
 
 > ![Fig. 4 from paper](assets/draft_paper_fig4.png)
 
-Our routing algorithm is a new variant of "EM routing" ([Hinton et al., 2018](https://ai.google/research/pubs/pub46653)), a form of "routing by agreement" which uses expectation-maximization (EM) to cluster similar votes from input capsules to output capsules in a layer of a neural network. A capsule is a group of neurons whose outputs represent different properties of the same entity in different contexts. Routing by agreement is an iterative form of clustering in which each output capsule detects an entity by looking for agreement among votes from input capsules that have already detected parts of the entity in a previous layer.
-
-Recent research has shown that capsule networks with routing by agreement can be more effective than convolutional neural networks for segmenting highly overlapping images ([Sabour et al., 2017](https://arxiv.org/pdf/1710.09829.pdf)) and for generalizing to different poses of objects embedded in images and resisting white-box adversarial image attacks ([Hinton et al., 2018](https://ai.google/research/pubs/pub46653)).
-
-We show that capsule networks with our routing algorithm can be more effective than other models in two domains, vision and language. Our routing algorithm is readily usable in other domains too. Please see our paper for details.
+Our algorithm is a new, general-purpose form of "routing by agreement" ([Hinton et al., 2018](https://ai.google/research/pubs/pub46653)) which uses expectation-maximization (EM) to cluster similar votes from input capsules to output capsules in a layer of a neural network. A capsule is a group of neurons whose outputs represent different properties of the same entity in different contexts. Routing by agreement is an iterative form of clustering in which each output capsule detects an entity by looking for agreement among votes from input capsules that have already detected parts of the entity in a previous layer.details.
 
 ## Replication of results in paper
 
@@ -116,15 +112,15 @@ for FILE in *.gz; do gunzip -k $FILE; done
 cd ../..
 ```
 
-7. Launch Jupyter notebook:
+7. Run the Jupyter notebooks:
 
-```
-jupyter notebook
-```
+Make sure the virtual environment is activated beforehand. Also, you may want to modify the code to use more than one GPU device (recommended). You can run the notebooks non-interactively or interactively:
 
-Make sure the virtual environment is activated before you do this.
+* To run the notebooks non-interactively, use `jupyter nbconvert --execute`, optionally specifying whether you want the output, including visualizations, in nicely formatted html, pdf, or some other format. See [these instructions](https://nbconvert.readthedocs.io/en/latest/execute_api.html).
 
-You should see two notebooks that replicate the results in our paper. Open and run them.
+* To run the notebooks interactively, run `jupyter notebook`. You should see two notebooks that replicate the results in our paper. Open and run them using the Jupyter interface.
+
+The results shown in the paper were obtained by training each model 10 times and using the end-of-training snapshot with the lowest validation error for testing. Some variability in training is normal, because each routing layer must learn to execute an expectation-maximization (EM) loop, which is known to be [sensitive to initialization](https://www.google.com/search?q=em+algorithm+initialization). As we mention in the paper, you may be able to obtain better performance with more careful tweaking of layer sizes and training regime.
 
 ## Pretrained weights
 
@@ -149,7 +145,7 @@ model.load_state_dict(torch.load('SST5R_pretrained_model_state_dict.pt'))
 
 ## Notes
 
-Our paper is still work-in-progress, subject to revision. We will upload it to Arxiv after receiving a bit more feedback from other AI researchers. Comments and suggestions are welcome!  We typeset the paper with the ACL conference's LaTeX template for no other reason than we find its two-column format, with fewer words per line, easier to read. We briefly considered submitting our work to an academic conference, but by the time we had finished running experiments on academic datasets, documenting and writing up the results, and removing all traces of internal code, the deadline for NIPS had passed and we didn't want to wait much longer. We decided to post everything here and let the work speak for itself.
+Our paper is still work-in-progress, subject to revision. Comments and suggestions are welcome!  We typeset the paper with the ACL conference's LaTeX template for no other reason than we find its two-column format, with fewer words per line, easier to read. We briefly considered submitting our work to an academic conference, but by the time we had finished running experiments on academic datasets, documenting and writing up the results, and removing all traces of internal code, the deadline for NIPS had passed and we didn't want to wait much longer. We decided to post everything here and let the work speak for itself.
 
 We have tested our code only on Ubuntu Linux 18.04 with Python 3.6+.
 
