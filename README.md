@@ -116,7 +116,7 @@ cd ../..
 
 Make sure the virtual environment is activated beforehand. Also, you may want to modify the code to use more than one GPU device (recommended). You can run the notebooks non-interactively or interactively:
 
-* To run the notebooks non-interactively, use `jupyter nbconvert --execute`, optionally specifying whether you want the output, including visualizations, in nicely formatted html, pdf, or some other format. See [these instructions](https://nbconvert.readthedocs.io/en/latest/execute_api.html).
+* To run the notebooks non-interactively, use `jupyter nbconvert --execute`, optionally specifying whether you want the output, including visualizations, in nicely formatted html, pdf, or some other format. See [these instructions](https://nbconvert.readthedocs.io/en/latest/usage.html).
 
 * To run the notebooks interactively, run `jupyter notebook`. You should see two notebooks that replicate the results in our paper. Open and run them using the Jupyter interface.
 
