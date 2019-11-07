@@ -6,7 +6,8 @@ import torch.nn as nn
 class Routing(nn.Module):
     """
     Official implementation of the routing algorithm proposed by "An
-    Algorithm for Routing Capsules in All Domains" (Heinsen, 2019).
+    Algorithm for Routing Capsules in All Domains" (Heinsen, 2019),
+    https://arxiv.org/abs/1911.00792.
 
     Args:
         d_cov: int, dimension 1 of input and output capsules.
