@@ -35,8 +35,7 @@ class Routing(nn.Module):
     Output:
         a_out: [..., n_out] output scores.
         mu_out: [..., n_out, d_cov, d_out] capsules of shape d_cov x d_out.
-        sig2_out: [..., n_out, d_cov, d_out] variances of shape d_cov x d_out
-            (returned only if use_em is True).
+        sig2_out: [..., n_out, d_cov, d_out] variances of shape d_cov x d_out.
 
     Sample usage:
         >>> a_inp = torch.randn(100)  # 100 input scores
