@@ -16,20 +16,27 @@ class Routing(nn.Module):
         n_inp: (optional) int, number of input capsules. If not provided, any
             number of input capsules will be accepted, limited by memory.
         n_out: (optional) int, number of output capsules. If not provided, it
-            will be equal to the number of input capsules, limited by memory.
+            can be passed to the forward method; otherwise it will be equal
+            to the number of input capsules, limited by memory.
         n_iters: (optional) int, number of routing iterations. Default is 3.
-        single_beta: (optional) bool, if True, beta_use and beta_ign are the
+        single_beta: (optional) bool; if True, beta_use and beta_ign are the
             same parameter, otherwise they are distinct. Default: False.
+        p_model: (optional) str, specifies how to compute probability of input
+            votes at each output capsule. Choices are 'gaussian' for Gaussian
+            mixtures and 'skm' for soft k-means. Default: 'gaussian'.
         eps: (optional) small positive float << 1.0 for numerical stability.
 
     Input:
-        a_inp: [..., n_inp] input scores
-        mu_inp: [..., n_inp, d_cov, d_inp] capsules of shape d_cov x d_inp
+        a_inp: [..., n_inp] input scores.
+        mu_inp: [..., n_inp, d_cov, d_inp] capsules of shape d_cov x d_inp.
+        n_out: (optional) int, number of output capsules. Valid as an input
+            only if not already specified as an argument at initialization.
 
     Output:
-        a_out: [..., n_out] output scores
-        mu_out: [..., n_out, d_cov, d_out] capsules of shape d_cov x d_out
+        a_out: [..., n_out] output scores.
+        mu_out: [..., n_out, d_cov, d_out] capsules of shape d_cov x d_out.
         sig2_out: [..., n_out, d_cov, d_out] variances of shape d_cov x d_out
+            (returned only if use_em is True).
 
     Sample usage:
         >>> a_inp = torch.randn(100)  # 100 input scores
@@ -38,9 +45,10 @@ class Routing(nn.Module):
         >>> a_out, mu_out, sig2_out = m(a_inp, mu_inp)
         >>> print(mu_out)  # 10 capsules of shape 4 x 4
     """
-    def __init__(self, d_cov, d_inp, d_out, n_inp=-1, n_out=-1, n_iters=3, single_beta=False, eps=1e-5):
+    def __init__(self, d_cov, d_inp, d_out, n_inp=-1, n_out=-1, n_iters=3, single_beta=False, p_model='gaussian', eps=1e-5):
         super().__init__()
-        self.n_iters, self.eps = (n_iters, eps)
+        assert p_model in ['gaussian', 'skm'], 'Unrecognized value for p_model.'
+        self.n_iters, self.p_model, self.eps = (n_iters, p_model, eps)
         self.n_inp_is_fixed, self.n_out_is_fixed = (n_inp > 0, n_out > 0)
         one_or_n_inp, one_or_n_out = (max(1, n_inp), max(1, n_out))
         self.register_buffer('CONST_one', torch.tensor(1.0))
@@ -48,17 +56,18 @@ class Routing(nn.Module):
         self.B = nn.Parameter(torch.zeros(one_or_n_inp, one_or_n_out, d_cov, d_out))
         self.beta_use = nn.Parameter(torch.zeros(one_or_n_inp, one_or_n_out))
         self.beta_ign = self.beta_use if single_beta else nn.Parameter(torch.zeros(one_or_n_inp, one_or_n_out))
-        self.f = nn.Sigmoid()
-        self.log_f = nn.LogSigmoid()
-        self.softmax = nn.Softmax(dim=-1)
+        self.f, self.log_f = (nn.Sigmoid(), nn.LogSigmoid())
+        self.softmax, self.log_softmax = (nn.Softmax(dim=-1), nn.LogSoftmax(dim=-1))
 
-    def forward(self, a_inp, mu_inp):
+    def forward(self, a_inp, mu_inp, **kwargs):
+        if ('n_out' in kwargs) and self.n_out_is_fixed: raise ValueError('n_out is fixed!')
         n_inp = a_inp.shape[-1]
-        n_out = self.W.shape[1] if self.n_out_is_fixed else n_inp
+        n_out = self.W.shape[1] if self.n_out_is_fixed else (kwargs['n_out'] if ('n_out' in kwargs) else n_inp)
         W = self.W
         W = W if self.n_inp_is_fixed else W.expand(n_inp, -1, -1, -1)
         W = W if self.n_out_is_fixed else W.expand(-1, n_out, -1, -1)
         V = torch.einsum('ijdh,...icd->...ijch', W, mu_inp) + self.B
+        f_a_inp = self.f(a_inp).unsqueeze(-1)  # [...i1]
         for iter_num in range(self.n_iters):
 
             # E-step.
@@ -67,11 +76,11 @@ class Routing(nn.Module):
             else:
                 log_p_simplified = \
                     - torch.einsum('...ijch,...jch->...ij', V_less_mu_out_2, 1.0 / (2.0 * sig2_out)) \
-                    - sig2_out.sqrt().log().sum((-2, -1)).unsqueeze(-2)
+                    - sig2_out.sqrt().log().sum((-2, -1)).unsqueeze(-2) if (self.p_model == 'gaussian') \
+                    else self.log_softmax(-V_less_mu_out_2.sum((-2, -1)))  # soft k-means otherwise
                 R = self.softmax(self.log_f(a_out).unsqueeze(-2) + log_p_simplified)  # [...ij]
 
             # D-step.
-            f_a_inp = self.f(a_inp).unsqueeze(-1)  # [...i1]
             D_use = f_a_inp * R
             D_ign = f_a_inp - D_use
 
