@@ -39,6 +39,21 @@ print(class_scores)                  # 2 scores, one per class
 print(class_embs)                    # 2 capsules, each a 1 x 8 matrix
 ```
 
+Predict variable numbers of targets:
+
+```python
+from heinsen_routing import Routing
+
+attr_scores = torch.randn(10)        # 10 scores
+attr_caps = torch.randn(10, 1, 256)  # 10 capsules with 1 x 256 features
+
+predict = Routing(d_cov=1, d_inp=256, d_out=64, n_inp=10)  # variable n_out
+pred_scores, pred_caps, pred_caps_sig2 = predict(attr_scores, attr_caps, n_out=n)
+
+print(pred_scores)                   # n scores, one per prediction
+print(pred_caps)                     # n capsules with 1 x 64 features
+```
+
 ## Installation
 
 1. Download one file: [heinsen_routing.py](heinsen_routing.py).
@@ -145,7 +160,7 @@ model.load_state_dict(torch.load('SST5R_pretrained_model_state_dict.pt'))
 
 ## Notes
 
-Our paper is still work-in-progress, subject to revision. Comments and suggestions are welcome!  We typeset the paper with the ACL conference's LaTeX template for no other reason than we find its two-column format, with fewer words per line, easier to read. We briefly considered submitting our work to an academic conference, but by the time we had finished running experiments on academic datasets, documenting and writing up the results, and removing all traces of internal code, the deadline for NIPS had passed and we didn't want to wait much longer. We decided to post everything here and let the work speak for itself.
+Our paper is still work-in-progress, subject to revision. Comments and suggestions are welcome!  We typeset the paper with the ACL conference's LaTeX template for no other reason than we find its two-column format, with fewer words per line, easier to read. We briefly considered submitting our work to an academic conference, but by the time we had finished running illustrative evaluations on academic datasets, documenting and writing up the results, and removing all traces of internal code, the deadline for NIPS had passed and we didn't want to wait much longer. We decided to post everything here and let the work speak for itself.
 
 We have tested our code only on Ubuntu Linux 18.04 with Python 3.6+.
 
