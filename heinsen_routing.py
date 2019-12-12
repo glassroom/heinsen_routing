@@ -59,13 +59,17 @@ class Routing(nn.Module):
         self.softmax, self.log_softmax = (nn.Softmax(dim=-1), nn.LogSoftmax(dim=-1))
 
     def forward(self, a_inp, mu_inp, **kwargs):
-        if ('n_out' in kwargs) and self.n_out_is_fixed: raise ValueError('n_out is fixed!')
         n_inp = a_inp.shape[-1]
-        n_out = self.W.shape[1] if self.n_out_is_fixed else (kwargs['n_out'] if ('n_out' in kwargs) else n_inp)
-        W = self.W
-        W = W if self.n_inp_is_fixed else W.expand(n_inp, -1, -1, -1)
-        W = W if self.n_out_is_fixed else W.expand(-1, n_out, -1, -1)
-        V = torch.einsum('ijdh,...icd->...ijch', W, mu_inp) + self.B
+        W = self.W if self.n_inp_is_fixed else self.W.expand(n_inp, -1, -1, -1)
+        B = self.B
+        if self.n_out_is_fixed:
+            if ('n_out' in kwargs): raise ValueError('n_out is fixed!')
+            n_out = W.shape[1]
+        else:
+            n_out = kwargs['n_out'] if ('n_out' in kwargs) else n_inp
+            W = W.expand(-1, n_out, -1, -1)
+            B = B + torch.linspace(-1, 1, n_out, device=B.device)[:, None, None]  # break symmetry
+        V = torch.einsum('ijdh,...icd->...ijch', W, mu_inp) + B
         f_a_inp = self.f(a_inp).unsqueeze(-1)  # [...i1]
         for iter_num in range(self.n_iters):
 
