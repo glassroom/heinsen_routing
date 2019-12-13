@@ -53,6 +53,7 @@ class Routing(nn.Module):
         self.register_buffer('CONST_one', torch.tensor(1.0))
         self.W = nn.Parameter(torch.empty(one_or_n_inp, one_or_n_out, d_inp, d_out).normal_() / d_inp)
         self.B = nn.Parameter(torch.zeros(one_or_n_inp, one_or_n_out, d_cov, d_out))
+        if not self.n_out_is_fixed: self.B_brk = nn.Parameter(torch.zeros(1, d_cov, d_out))
         self.beta_use = nn.Parameter(torch.zeros(one_or_n_inp, one_or_n_out))
         self.beta_ign = self.beta_use if single_beta else nn.Parameter(torch.zeros(one_or_n_inp, one_or_n_out))
         self.f, self.log_f = (nn.Sigmoid(), nn.LogSigmoid())
@@ -68,7 +69,7 @@ class Routing(nn.Module):
         else:
             n_out = kwargs['n_out'] if ('n_out' in kwargs) else n_inp
             W = W.expand(-1, n_out, -1, -1)
-            B = B + torch.linspace(-1, 1, n_out, device=B.device)[:, None, None]  # break symmetry
+            B = B + self.B_brk * torch.linspace(-1, 1, n_out, device=B.device)[:, None, None]  # break symmetry
         V = torch.einsum('ijdh,...icd->...ijch', W, mu_inp) + B
         f_a_inp = self.f(a_inp).unsqueeze(-1)  # [...i1]
         for iter_num in range(self.n_iters):
