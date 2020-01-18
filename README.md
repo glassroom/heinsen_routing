@@ -60,6 +60,8 @@ print(pred_caps)                     # n capsules with 1 x 64 features
 2. Import the module: `from heinsen_routing import Routing`.
 3. Use it as shown above.
 
+Note: requires a working installation of [PyTorch](https://pytorch.org).
+
 ## Why?
 
 Initial evaluations show that our learning algorithm, without change, achieves state-of-the-art results in two domains, vision and language. In our experience, this is unusual, and therefore worthy of attention and further research:
@@ -70,7 +72,7 @@ Moreover, we find evidence that our learning algorithm, when we apply it to a vi
 
 > ![Fig. 4 from paper](assets/draft_paper_fig4.png)
 
-Our algorithm is a new, general-purpose form of "routing by agreement" ([Hinton et al., 2018](https://ai.google/research/pubs/pub46653)) which uses expectation-maximization (EM) to cluster similar votes from input capsules to output capsules in a layer of a neural network. A capsule is a group of neurons whose outputs represent different properties of the same entity in different contexts. Routing by agreement is an iterative form of clustering in which each output capsule detects an entity by looking for agreement among votes from input capsules that have already detected parts of the entity in a previous layer.details.
+Our algorithm is a new, general-purpose form of "routing by agreement" ([Hinton et al., 2018](https://ai.google/research/pubs/pub46653)) which uses expectation-maximization (EM) to cluster similar votes from input capsules to output capsules in a layer of a neural network. A capsule is a group of neurons whose outputs represent different properties of the same entity in different contexts. Routing by agreement is an iterative form of clustering in which each output capsule detects an entity by looking for agreement among votes from input capsules that have already detected parts of the entity in a previous layer.
 
 ## Replication of results in paper
 
