@@ -30,7 +30,7 @@ class Routing(nn.Module):
         a_inp: [..., n_inp] input scores.
         mu_inp: [..., n_inp, d_cov, d_inp] capsules of shape d_cov x d_inp.
         return_R: (optional) bool, if True, return routing probabilities R
-            in addition to other outputs. Default: False
+            in addition to other outputs. Default: False.
         n_out: (optional) int, number of output capsules. Valid as an input
             only if not already specified as an argument at initialization.
 
