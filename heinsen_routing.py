@@ -29,6 +29,8 @@ class Routing(nn.Module):
     Input:
         a_inp: [..., n_inp] input scores.
         mu_inp: [..., n_inp, d_cov, d_inp] capsules of shape d_cov x d_inp.
+        return_R: (optional) bool, if True, return routing probabilities R
+            in addition to other outputs. Default: False
         n_out: (optional) int, number of output capsules. Valid as an input
             only if not already specified as an argument at initialization.
 
@@ -59,7 +61,7 @@ class Routing(nn.Module):
         self.f, self.log_f = (nn.Sigmoid(), nn.LogSigmoid())
         self.softmax, self.log_softmax = (nn.Softmax(dim=-1), nn.LogSoftmax(dim=-1))
 
-    def forward(self, a_inp, mu_inp, **kwargs):
+    def forward(self, a_inp, mu_inp, return_R=False, **kwargs):
         n_inp = a_inp.shape[-1]
         W = self.W if self.n_inp_is_fixed else self.W.expand(n_inp, -1, -1, -1)
         B = self.B
@@ -95,4 +97,4 @@ class Routing(nn.Module):
             V_less_mu_out_2 = (V - mu_out.unsqueeze(-4)) ** 2  # [...ijch]
             sig2_out = torch.einsum('...ij,...ijch,...j->...jch', D_use, V_less_mu_out_2, over_D_use_sum) + self.eps
 
-        return a_out, mu_out, sig2_out
+        return (a_out, mu_out, sig2_out, R) if return_R else (a_out, mu_out, sig2_out)
