@@ -12,7 +12,7 @@ class EfficientVectorRouting(nn.Module):
     memory use, and computation by orders of magnitude. Each vector is a
     capsule representing an entity in a context (e.g., a word in a paragraph,
     an object in an image). See "An Algorithm for Routing Vectors in
-    Sequences" (Heinsen, 2022), https://arxiv.org/abs/1911.00792.
+    Sequences" (Heinsen, 2022).
 
     Args:
         n_inp: int, number of input vectors. If -1, the number is variable.
@@ -113,8 +113,7 @@ class DefinableVectorRouting(nn.Module):
     by best predicting them, as specified by four neural networks provided
     as PyTorch module instances. Each vector is a capsule representing an
     entity in a context (e.g., a word in a sentence, an object in an image).
-    See "An Algorithm for Routing Vectors in Sequencces" (Heinsen, 2022),
-    https://arxiv.org/abs/1911.00792.
+    See "An Algorithm for Routing Vectors in Sequencces" (Heinsen, 2022).
 
     Args:
         A: nn.Module instance that accepts input vectors and computes input
