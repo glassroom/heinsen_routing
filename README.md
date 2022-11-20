@@ -1,176 +1,367 @@
 # heinsen_routing
 
-Official implementation of "[An Algorithm for Routing Capsules in All Domains](https://arxiv.org/abs/1911.00792)" (Heinsen, 2019) in PyTorch. This learning algorithm, _without change_, achieves state-of-the-art results in two domains, vision and language.
+Reference implementation of the routing algorithm proposed in "[An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)" (Heinsen, 2022), and an earlier variant, "[An Algorithm for Routing Capsules in All Domains](https://arxiv.org/abs/1911.00792)" (Heinsen, 2019), for composing deep neural networks.
 
-For example, a capsule network using this algorithm outperforms [Hinton et al. (2018)](https://ai.google/research/pubs/pub46653)'s capsule network on a visual task using _fewer parameters_ and requiring _an order of magnitude less training_. A capsule network using the same algorithm outperforms [BERT](https://arxiv.org/abs/1810.04805) on a language task. In both of these examples, the same training regime was used to train the model (same hyperparameters, learning rate schedule, regularization, etc.).
-
-You can easily add the algorithm as a new layer to any model to improve its performance. Try it!
-
-## Sample usage
-
-Detect objects from their component parts in images:
-
-```python
-from heinsen_routing import Routing
-
-part_scores = torch.randn(100)       # 100 scores, one per detected part
-part_poses = torch.randn(100, 4, 4)  # 100 capsules, each a 4 x 4 pose matrix
-
-detect_objs = Routing(d_cov=4, d_inp=4, d_out=4, n_inp=100, n_out=10)
-obj_scores, obj_poses, obj_poses_sig2 = detect_objs(part_scores, part_poses)
-
-print(obj_scores)                    # 10 scores, one per detected object
-print(obj_poses)                     # 10 capsules, each a 4 x 4 pose matrix
-```
-
-Classify sequences of token embeddings:
-
-```python
-from heinsen_routing import Routing
-
-tok_scores = torch.randn(n)          # token scores, n is variable
-tok_embs = torch.randn(n, 1024)      # token embeddings, n is variable
-tok_embs = tok_embs.unsqueeze(1)     # reshape to n x 1 x 1024 (n matrices)
-
-classify = Routing(d_cov=1, d_inp=1024, d_out=8, n_out=2)  # variable n_inp
-class_scores, class_embs, class_embs_sig2 = classify(tok_scores, tok_embs)
-
-print(class_scores)                  # 2 scores, one per class
-print(class_embs)                    # 2 capsules, each a 1 x 8 matrix
-```
-
-Predict variable numbers of targets:
-
-```python
-from heinsen_routing import Routing
-
-attr_scores = torch.randn(10)        # 10 scores
-attr_caps = torch.randn(10, 1, 256)  # 10 capsules with 1 x 256 features
-
-predict = Routing(d_cov=1, d_inp=256, d_out=64, n_inp=10)  # variable n_out
-pred_scores, pred_caps, pred_caps_sig2 = predict(attr_scores, attr_caps, n_out=n)
-
-print(pred_scores)                   # n scores, one per prediction
-print(pred_caps)                     # n capsules with 1 x 64 features
-```
-
-## Installation
-
-1. Download one file: [heinsen_routing.py](heinsen_routing.py).
-2. Import the module: `from heinsen_routing import Routing`.
-3. Use it as shown above.
-
-Note: requires a working installation of [PyTorch](https://pytorch.org).
-
-## Why?
-
-Initial evaluations show that our learning algorithm, without change, achieves state-of-the-art results in two domains, vision and language. In our experience, this is unusual, and therefore worthy of attention and further research:
-
-> ![Figs. 1 and 2 from paper](assets/draft_paper_fig1_and_fig2.png)
-
-Moreover, we find evidence that our learning algorithm, when we apply it to a visual recognition task, _learns to perform a form of "reverse graphics."_ The following visualization, from our [paper](https://arxiv.org/abs/1911.00792), shows a two-dimensional approximation of the trajectories of the pose vectors of an activated class capsule as we change viewpoint elevation of the same object from one image to the next:
-
-> ![Fig. 4 from paper](assets/draft_paper_fig4.png)
-
-Our algorithm is a new, general-purpose form of "routing by agreement" ([Hinton et al., 2018](https://ai.google/research/pubs/pub46653)) which uses expectation-maximization (EM) to cluster similar votes from input capsules to output capsules in a layer of a neural network. A capsule is a group of neurons whose outputs represent different properties of the same entity in different contexts. Routing by agreement is an iterative form of clustering in which each output capsule detects an entity by looking for agreement among votes from input capsules that have already detected parts of the entity in a previous layer.
-
-## Replication of results in paper
-
-If you wish to replicate our results, we recommend recreating our setup in a virtual Python environment, with the same versions of all libraries and dependencies. Runing the code requires at least one Nvidia GPU with 11GB+ RAM, along with a working installation of CUDA 10 or newer. The code is meant to be easily modifiable to work with greater numbers of GPUs, or with TPUs. It is also meant to be easily modifiable to work with frameworks other than PyTorch (as long as they support Einsten summation notation for describing multilinear operations), such as TensorFlow.
-
-To replicate our environment and results, follow these steps:
-
-1. Change to the directory in which you cloned this repository:
-
-```
-cd /home/<my_name>/<my_directory>
-```
-
-2. Create a new Python 3 virtual environment:
-
-```
-virtualenv --python=python3 python
-```
-
-3. Activate the virtual environment:
-
-```
-source ./python/bin/activate
-```
-
-4. Install required Python libraries in environment:
-
-```
-pip install --upgrade pip
-pip install --upgrade -r requirements.txt
-```
-
-5. Install other dependencies:
-
-```
-mkdir deps
-git clone https://github.com/glassroom/torch_train_test_loop.git deps/torch_train_test_loop
-git clone https://github.com/ndrplz/small_norb.git deps/small_norb
-```
-
-6. Download and decompress smallNORB files:
-
-```
-mkdir .data
-mkdir .data/smallnorb
-cd .data/smallnorb
-wget https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/smallnorb-5x46789x9x18x6x2x96x96-training-dat.mat.gz
-wget https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/smallnorb-5x46789x9x18x6x2x96x96-training-cat.mat.gz
-wget https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/smallnorb-5x46789x9x18x6x2x96x96-training-info.mat.gz
-wget https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/smallnorb-5x01235x9x18x6x2x96x96-testing-dat.mat.gz
-wget https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/smallnorb-5x01235x9x18x6x2x96x96-testing-cat.mat.gz
-wget https://cs.nyu.edu/~ylclab/data/norb-v1.0-small/smallnorb-5x01235x9x18x6x2x96x96-testing-info.mat.gz
-for FILE in *.gz; do gunzip -k $FILE; done
-cd ../..
-```
-
-7. Run the Jupyter notebooks:
-
-Make sure the virtual environment is activated beforehand. Also, you may want to modify the code to use more than one GPU device (recommended). You can run the notebooks non-interactively or interactively:
-
-* To run the notebooks non-interactively, use `jupyter nbconvert --execute`, optionally specifying whether you want the output, including visualizations, in nicely formatted html, pdf, or some other format. See [these instructions](https://nbconvert.readthedocs.io/en/latest/usage.html).
-
-* To run the notebooks interactively, run `jupyter notebook`. You should see two notebooks that replicate the results in our paper. Open and run them using the Jupyter interface.
-
-The results shown in the paper were obtained by training each model 10 times and using the end-of-training snapshot with the lowest validation error for testing. Some variability in training is normal, because each output capsule must learn to execute an expectation-maximization (EM) loop, which is known to be [sensitive to initialization](https://www.google.com/search?q=em+algorithm+initialization). As we mention in the paper, you may be able to obtain better performance with more careful tweaking of layer sizes and training regime.
-
-## Pretrained weights
-
-We have made pretrained weights available for the smallNORB and SST models:
+A toy example is worth more than a thousand words:
 
 ```python
 import torch
-from models import SmallNORBClassifier, SSTClassifier
+from heinsen_routing import EfficientVectorRouting as Routing
 
-# Load pretrained smallNORM model.
-model = SmallNORBClassifier(n_objs=5, n_parts=64, d_chns=64)
-model.load_state_dict(torch.load('smallNORB_pretrained_model_state_dict.pt'))
+model = torch.nn.Sequential(
+    Routing(n_inp=10000, n_out=1000, d_inp=1024, d_out=2048),
+    Routing(n_inp= 1000, n_out= 100, d_inp=2048, d_out=3072),
+    Routing(n_inp=  100, n_out=  10, d_inp=3072, d_out=4096),
+)
 
-# Load SST model pretrained on binary dataset.
-model = SSTClassifier(d_depth=37, d_emb=1280, d_inp=64, d_cap=2, n_parts=64, n_classes=2)
-model.load_state_dict(torch.load('SST2R_pretrained_model_state_dict.pt'))
-
-# Load SST model pretrained on fine-grained dataset.
-model = SSTClassifier(d_depth=37, d_emb=1280, d_inp=64, d_cap=2, n_parts=64, n_classes=5)
-model.load_state_dict(torch.load('SST5R_pretrained_model_state_dict.pt'))
+x_inp = torch.randn(10_000, 1024)  # 10,000 vectors of size 1024
+x_out = model(x_inp)               # 10 vectors of size 4096
 ```
+
+## Table of Contents
+
+* [Installing](#installing)
+
+* [How Does it Work?](#how-does-it-work)
+
+* [Variants of the Algorithm in this Repository](#variants-of-the-algorithm-in-this-repository)
+  * [EfficientVectorRouting](#efficientvectorrouting)
+  * [DefinableVectorRouting](#definablevectorrouting)
+  * [GenerativeMatrixRouting](#generativematrixrouting)
+
+* [Sample Usage of EfficientVectorRouting](#sample-usage-of-efficientvectorrouting)
+  * [Sequence to Sequence](#sequence-to-sequence)
+  * [Sequence to Vector](#sequence-to-vector)
+  * [Routing Sequences of Varying Length](#routing-sequences-of-varying-length)
+  * [Routing Very Long Sequences](#routing-very-long-sequences)
+  * [Recurrent Routings](#recurrent-routings)
+  * [Composable Credit Assignments](#composable-credit-assignments)
+
+* [Frequently Asked Questions](#frequently-Asked-Questions)
+
+* [Replicating Published Results](#replicating-published-results)
+
+* [Notes](#notes)
+
+* [Citing](#citing)
+
+
+## Installing
+
+`pip install -e git+https://github.com/glassroom/heinsen_routing`
+
+Alternatively, you can download a single file to your project directory: [heinsen_routing.py](heinsen_routing/heinsen_routing.py).
+
+The only dependency is PyTorch.
+
+
+## How Does it Work?
+
+Our routing algorithm takes a sequence of `n_inp` input capsules and computes a new sequence of `n_out` output capsules. A capsule is a group of artificial neurons, such as a vector or a matrix, representing the properties of an entity in a context (e.g., a word in a paragraph, an object in an image, a topic in a conversation). Each input and output capsule represents a different entity.
+
+The algorithm is iterative. In each iteration, we update the state of all output capsules in parallel. Each output capsule maximizes "bang per bit," or the difference between a net benefit to use and net cost to ignore data, by better explaining (e.g., predicting, generating) the input capsules. The output sequence's final state maximizes "bang per bit" by best explaining the input sequence.
+
+
+## Variants of the Algorithm in this Repository
+
+This repository contains three variants of our routing algorithm, implemented as PyTorch modules:
+
+### EfficientVectorRouting
+
+`EfficientVectorRouting` is the efficient implementation proposed in "[An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)" (Heinsen, 2022). It incorporates optimizations that reduce parameter count, memory use, and computation by orders of magnitude compared to the other two variants, making it the best choice for most use cases. This README focuses primarily on this PyTorch module. __If you're not sure which module you should use, we recommend this one.__ [See the next section for sample usage](#sample-usage-of-efficientvectorrouting).
+
+### DefinableVectorRouting
+
+`DefinableVectorRouting` implements the general form of "[An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)" (Heinsen, 2022). It requires you to define, instantiate, and pass at initialization four PyTorch modules named A, F, G, and S (corresponding to neural networks A, F, G, and S in the paper), which specify routing behavior. In principle, you could define A, F, G, and S to replicate `EfficientVectorRouting`'s behavior---but not its optimizations. See the module's docstring for sample usage.
+
+### GenerativeMatrixRouting
+
+`GenerativeMatrixRouting` implements the original variant, "[An Algorithm for Routing Capsules in All Domains](https://arxiv.org/abs/1911.00792)" (Heinsen, 2019). It routes matrices as the capsules, and uses Gaussian mixture models to generate the output matrices, weighted by separate activations that maximize "bang per bit." This module is the least scalable of the three, so we now recommend using it mainly for small-scale tasks. See the module's docstring for sample usage.
+
+
+## Sample Usage of EfficientVectorRouting
+
+### Sequence to Sequence
+
+`EfficientVectorRouting` takes a sequence of input vectors `[..., n_inp, d_inp]` and computes a sequence of output vectors `[..., n_out, d_out]`, where "`...`" denotes zero or more preserved dimensions. Each vector is a capsule representing a different entity. The output sequence maximizes "bang per bit" by best predicting (i.e., explaining) the given input sequence:
+
+```python
+import torch
+from heinsen_routing import EfficientVectorRouting as Routing
+
+batch_sz = 4
+n_inp, d_inp = (2000, 1024)  # input seqs will have 2000 vectors of size 1024
+n_out, d_out = (1000, 2048)  # we will route them to 1000 vectors of size 2048
+
+model = Routing(n_inp=n_inp, n_out=n_out, d_inp=d_inp, d_out=d_out)
+
+x_inp = torch.randn(batch_sz, n_inp, d_inp)  # shape is [batch_sz, n_inp, d_inp]
+x_out = model(x_inp)                         # shape is [batch_sz, n_out, d_out]
+```
+
+
+### Sequence to Vector
+
+If you set `d_out` equal to 1, `EfficientVectorRouting` routes each sequence of input vectors to a sequence of one-dimensional vectors, or scalars, which you can concatenate into a single vector. Each scalar value is a capsule representing a different entity:
+
+```python
+import torch
+from heinsen_routing import EfficientVectorRouting as Routing
+
+batch_sz = 4
+n_inp, d_inp = (1000, 1024)  # input seqs will have 1000 vectors of size 1024
+d_vec = 2048                 # we will route each seq to a vector of size 2048
+
+model = Routing(n_inp=n_inp, n_out=d_vec, d_inp=d_inp, d_out=1)
+
+x_inp = torch.randn(batch_sz, n_inp, d_inp)  # shape is [batch_sz, n_inp, d_inp]
+x_out = model(x_inp).squeeze(-1)             # shape is [batch_sz, d_vec]
+```
+
+
+### Routing Sequences of Varying Length
+
+If you set `n_inp` equal to -1, `EfficientVectorRouting` routes input sequences of *any* length, limited only by available memory, to output sequences of fixed length. Train the module with input sequences of varying lengths and it will learn to explain them.
+
+
+```python
+import torch
+from heinsen_routing import EfficientVectorRouting as Routing
+
+batch_sz = 4
+n_inp, d_inp = (  -1, 1024)  # length of input seq will vary
+n_out, d_out = (1000, 1024)  # length of output seq is fixed
+
+model = Routing(n_inp=n_inp, n_out=n_out, d_inp=d_inp, d_out=d_out)
+
+random_seq_len = torch.randint(1, 10_000, []).item()
+x_inp = torch.randn(batch_sz, random_seq_len, d_inp)  # seqs of random length
+x_out = model(x_inp)                                  # seqs of fixed length 
+```
+
+Note: When `n_inp` is set to -1, `EfficientVectorRouting` treats every input vector as being in the same shared feature space (i.e., each element represents the same feature in all input vectors). In contrast, when `n_inp` is fixed, each input vector may be in a different feature space (i.e., the same element may represent a different feature in each input vector).
+
+
+### Routing Very Long Sequences
+
+`EfficientVectorRouting`'s memory footprint is proportional to each of `n_inp`, `n_out`, `d_inp`, and `d_out`, giving you fine-grained control over memory consumption. To route input sequences of greater length, you can reduce the length of the output sequence, and vice versa. If you have at least 18GB of memory available, you can route sequences with 1 million vectors:
+
+```python
+import torch
+from heinsen_routing import EfficientVectorRouting as Routing
+
+n_inp, d_inp = (1_000_000, 1024)  # very long input seq
+n_out, d_out = (      100, 1024)  # short output seq
+
+model = Routing(n_inp=n_inp, n_out=n_out, d_inp=d_inp, d_out=d_out)
+
+x_inp = torch.randn(n_inp, d_inp)  # data alone occupies ~4.8GB of memory at 32-bit precision
+x_out = model(x_inp)               # allocates up to ~12.8GB at 32-bit precision, w/gradients
+```
+
+A handy technique for routing very long sequences is to route them *twice*: First to a short hidden sequence of much larger vectors representing "summaries," and then to an output sequence with the desired shape. Here, we apply this technique to route 250,000 to 1,000 vectors of size 1024 at 32-bit precision, keeping track of all gradients, requiring only ~5.6GB of memory:
+
+```python
+import torch
+import torch.nn as nn
+from heinsen_routing import EfficientVectorRouting as Routing
+
+n_inp, d_inp = (250_000,  1024)  # very long input seq
+n_hid, d_hid = (    100, 10240)  # short hidden seq of higher-dimensional "summaries"
+n_out, d_out = (   1000,  1024)  # output seq with final desired shape
+
+model = nn.Sequential(
+    Routing(n_inp=n_inp, n_out=n_hid, d_inp=d_inp, d_out=d_hid), # "summarize"
+    Routing(n_inp=n_hid, n_out=n_out, d_inp=d_hid, d_out=d_out), # "rewrite"
+)
+
+x_inp = torch.randn(n_inp, d_inp)
+x_out = model(x_inp)
+```
+ 
+
+### Recurrent Routings
+
+You can apply `EfficientVectorRouting` recurrently, inducing it each time to compute a new sequence that best predicts (explains) the previously computed sequence. You can also apply recurrent routings as *residuals*, inducing the module to compute new residual sequences that best predict (explain) the recurrent accumulation of all previous sequences. For example:
+
+```python
+import torch
+import torch.nn as nn
+from heinsen_routing import EfficientVectorRouting as Routing
+
+class RecurrentResidualRoutings(nn.Module):
+
+    def __init__(self, n_emb, d_emb, n_iters, seq_compression_factor=8):
+        super().__init__()
+        n_hid = max(2, n_emb // seq_compression_factor)
+        self.n_iters = n_iters
+        self.normalize = nn.LayerNorm(d_emb)
+        self.residualize = nn.Sequential(
+            Routing(n_inp=n_emb, n_out=n_hid, d_inp=d_emb, d_out=d_emb),
+            Routing(n_inp=n_hid, n_out=n_emb, d_inp=d_emb, d_out=d_emb),
+        )
+
+    def forward(self, x):
+        for _ in range(self.n_iters):
+            x = self.normalize(x)
+            x = x + self.residualize(x)
+        return x
+
+batch_sz = 4
+n_emb, d_emb = (1000, 1024)
+
+model = RecurrentResidualRoutings(n_emb, d_emb, n_iters=5)
+
+x_inp = torch.randn(batch_sz, n_emb, d_emb)
+x_out = model(x_inp)
+```
+
+
+### Composable Credit Assignments
+
+Each instance of `EfficientVectorRouting` internally computes a credit assignment matrix of shape `[..., n_inp, n_out]`, consisting of the credit assigned to each input vector by each output vector. To obtain the credit assignments, instantiate the module with `return_dict=True`, and it will return a dictionary with output vectors as key `'x_out'` and credit assignments as key `'phi'`. For example:
+
+```python
+import torch
+from heinsen_routing import EfficientVectorRouting as Routing
+
+batch_sz = 4
+n_inp, d_inp = (100, 1024)
+n_out, d_out = ( 10, 1024)
+
+model = Routing(n_inp=n_inp, n_out=n_out, d_inp=d_inp, d_out=d_out, return_dict=True)
+
+x_inp = torch.randn(batch_sz, n_inp, d_inp)
+outputs = model(x_inp)
+
+x_out = outputs['x_out']  # [batch_sz, n_out, d_out] output vectors
+phi = outputs['phi']      # [batch_sz, n_inp, n_out] credit assigned to input by output vecs
+```
+
+The credit assignments are additive, like Shapley values, and composable on their own, independently of data transformations, making it possible for to compute end-to-end credit assignments over a network of routings, as explained in Subsection 3.2 of [An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)." For *how-to recipes* to compute end-to-end credit assignments over common compositions, including residual layers, see Appendix A of the same paper. For example:
+
+```python
+import torch
+import torch.nn as nn
+from heinsen_routing import EfficientVectorRouting as Routing
+
+class SequentialRoutingsWithCreditAssignments(nn.Module):
+    """
+    Apply routings sequentially and compute end-to-end credit assignments by
+    following the recipe for sequential routings in Appendix A of the paper.
+    """
+    def __init__(self, kwds_by_routing, eps=1e-5):
+        super().__init__()
+        self.eps = eps
+        self.routings = nn.ModuleList(
+            [Routing(**kwds, return_dict=True) for kwds in kwds_by_routing]
+        )
+
+    def forward(self, x):
+        prod = None
+        for routing in self.routings:
+            outputs = routing(x)
+            x = outputs['x_out']
+            phi = outputs['phi']
+            prod = phi if prod is None else prod @ phi  # chain of matrix products
+            prod = prod / (prod.std() + self.eps)       # scale the matrix products
+        return x, prod
+
+kwds_by_routing = [
+    { 'n_inp': 500, 'n_out': 400, 'd_inp': 1024, 'd_out': 1024, },
+    { 'n_inp': 400, 'n_out': 300, 'd_inp': 1024, 'd_out': 1024, },
+    { 'n_inp': 300, 'n_out': 200, 'd_inp': 1024, 'd_out': 1024, },
+    { 'n_inp': 200, 'n_out': 100, 'd_inp': 1024, 'd_out': 1024, },
+]
+model = SequentialRoutingsWithCreditAssignments(kwds_by_routing)
+
+x_inp = torch.randn(kwds_by_routing[0]['n_inp'], kwds_by_routing[0]['d_inp'])
+x_out, credit_assignments = model(x_inp)
+```
+
+If you run the code above, `x_out` will have shape `[100, 1024]` and `credit_assignments` will have shape `[500, 100]`, consisting of the end-to-end credit assigned to the first routing's 500 input vectors by the final routing's 100 output vectors.
+
+
+## Frequently Asked Questions
+
+Q: "Is it true that `EfficientVectorRouting` can route sequences with *a million* vectors in only 18GB of memory?"
+
+A: Yes. See [here](#routing-very-long-sequences).
+
+
+Q: "Can I use `EfficientVectorRouting` to reshape sequences between residual blocks in Transformers?"
+
+A: Yes. For example, you can use `EfficientVectorRouting` to reduce sequence length and increase embedding size as the residual blocks get deeper, inducing shallower blocks to learn to embed long sequences of simple entities that are representable with fewer features (e.g., subword tokens) and deeper blocks to learn to embed shorter sequences of more complex entities requiring higher-dimensional representations (e.g., abstract notions).
+
+
+Q: "Can I use `EfficientVectorRouting` *instead of self-attention* as a component of models?"
+
+A: Yes. There is in fact a connection between the self-attention mechanism used in Transformers and the algorithm implemented by `EfficientVectorRouting`: Transformer self-attention is a special case of modern Hopfield networks with bipartite structure, a class of dense associative memories which are in turn a special case of the routing algorithm we propose in "[An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)." `EfficientVectorRouting` is one possible implementation of our algorithm.
+
+
+Q: "Can I use `EfficientVectorRouting` to classify a sequence of vector embeddings?"
+
+A: Yes. Route them to a vector (see [here](#sequence-to-vector)) and use the vector's elements as predicted class scores. In training, the module will learn to compute class scores that minimize classification error and simultaneously best predict (i.e., explain) the sequence being classified.
+
+
+Q: "Can I use `EfficientVectorRouting` to build "deep autoencoders for sequences"?
+
+A: Yes. You can build deep autoencoders that apply multiple `EfficientVectorRouting` layers to encode an input sequence to progressively shorter sequences and then progressively decode the shortest sequence back to the original length, in a typical "bowtie" arrangement. The autoencoders can of course be variational, using the reparametrization trick to sample the inner shortest sequence from a specified distribution.
+
+
+Q: "Can I use `EfficientVectorRouting` to build a generative difussion model, or a generative flow network (GFlowNet), or other kinds of generative model?
+
+A: Yes. `EfficientVectorRouting` is a general-purpose PyTorch module. You can use it as a component to build any kind of model.
+
+
+Q: "Is it true that each output vector computed by `EfficientVectorRouting` can have its own feature space?"
+
+A: Yes. Each output vector is computed in a different basis, possibly representing different features (i.e., the same element may represent different features in different vectors). The number of representable features can be as large as `n_out` × `d_out`. This increase in representational capacity may enable you to work with shorter sequences and/or smaller vector sizes than otherwise necessary. See Subsection 3.1 of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf).
+
+Note: If you treat every output vector as being in the same shared feature space (e.g., if you always apply the same transformations to all output vectors, instead of different transformations to each one), you *can* induce all vector bases to represent the same features. If that's what you want, great---but if not, please exercise a bit of care to avoid doing it unintentionally!
+
+
+Q: "Is it true that I can get end-to-end credit assignments over a network of `EfficientVectorRouting` layers?"
+
+A: Yes. Either follow the "how-to" recipes in Appendix A of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf), or make sure you thoroughly understand how the credit assignments work before straying away from the proven recipes. For a discussion of credit assignments, see Subsection 3.2 of the same paper. For a concrete example of end-to-end credit assignment, see [here](#credit-assignments).
+
+
+Q: "Is it true that `EfficientVectorRouting` implements a model of associative memory?"
+
+A: Yes. In Subsection 3.3 of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf), we describe input vectors as *keys* to content-addressable memory values and biases, and output vectors as *queries* whose states are iteratively updated until they stabilize in a local maximum of a "bang per bit" landscape (or, equivalently, a local minimum of an energy landscape). We also show that with significant simplifications, the routing algorithm implemented by `EfficientVectorRouting` reduces to modern Hopfield networks with bipartite structure, a class of dense associative memories of which Transformer self-attention is a notable special case.
+
+
+Q: "Is it true that `EfficientVectorRouting` implements a "block" in a model of a Society of Mind (Minsky, 1986)?"
+
+A: Yes. In Subsection 3.4 of of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf), we describe output vectors as multidimensional agents competing against each other to use or ignore scarce resources in a block via knowledge lines, or K-lines, in a model of a Society of Mind. Agents iteratively improve the shares of each scarce resource they use or ignore by better predicting (i.e., explaining) it. Note that when Minsky wrote ``The Society of Mind" in 1986, he was certainly aware of early models of associative memory, including Hopfield networks (formulated by John Hopfield and others between 1974 and 1984) and restricted Boltzmann machines (first proposed as the "Harmonium" by Paul Smolensky in 1986).
+
+
+## Replicating Published Results
+
+To replicate the results published in "[An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)" (Heinsen, 2022), follow the intructions [here](https://github.com/glassroom/heinsen_routing_2022_paper).
+
+To replicate the results published in "[An Algorithm for Routing Capsules in All Domains](https://arxiv.org/abs/1911.00792)" (Heinsen, 2019), follow the intructions [here](https://github.com/glassroom/heinsen_routing_2019_paper).
+
 
 ## Notes
 
-Our paper is still work-in-progress, subject to revision. Comments and suggestions are welcome!  We typeset the paper with the ACL conference's LaTeX template for no other reason than we find its two-column format, with fewer words per line, easier to read. We briefly considered submitting our work to an academic conference, but by the time we had finished running illustrative evaluations on academic datasets, documenting and writing up the results, and removing all traces of internal code, the deadline for NIPS had passed and we didn't want to wait much longer. We decided to post everything here and let the work speak for itself.
+We have tested the code in this repository only on Ubuntu Linux 20.04 with Python 3.8+.
 
-We have tested our code only on Ubuntu Linux 18.04 with Python 3.6+.
 
 ## Citing
 
 If our work is helpful to your research, please cite it:
 
 ```
+@misc{heinsen2022algorithm,
+    title={An Algorithm for Routing Vectors in Sequences},
+    author={Franz A. Heinsen},
+    year={2022},
+    eprint={PENDING},
+    archivePrefix={arXiv},
+    primaryClass={cs.LG}
+}
+
 @misc{heinsen2019algorithm,
     title={An Algorithm for Routing Capsules in All Domains},
     author={Franz A. Heinsen},
@@ -183,8 +374,6 @@ If our work is helpful to your research, please cite it:
 
 ## How is this used at GlassRoom?
 
-We conceived and implemented this routing algorithm to be a component (i.e., a layer) of larger models that are in turn part of our AI software, nicknamed Graham. Our implementation of the algorithm is designed to be plugged into or tacked onto existing PyTorch models with minimal hassle.
+We conceived and implemented this routing algorithm to be a component (i.e., a layer) of larger models that are in turn part of our AI software, nicknamed Graham. Most of the original work we do at GlassRoom tends to be either proprietary in nature or tightly coupled to internal code, so we cannot share it with outsiders. In this case, however, we were able to isolate our code and release it as stand-alone open-source software without having to disclose any key intellectual property. We hope others find our work and our code useful.
 
-Most of the original work we do at GlassRoom tends to be either proprietary in nature or tightly coupled to internal code, so we cannot share it with outsiders. In this case, however, we were able to isolate our code and release it as stand-alone open-source software without having to disclose any key intellectual property.
 
-We hope others find our work and our code useful.
