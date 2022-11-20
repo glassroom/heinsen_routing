@@ -48,7 +48,7 @@ x_out = model(x_inp)               # 10 vectors of size 4096
 
 ## Installing
 
-`pip install -e git+https://github.com/glassroom/heinsen_routing`
+`pip install git+https://github.com/glassroom/heinsen_routing`
 
 Alternatively, you can download a single file to your project directory: [heinsen_routing.py](heinsen_routing/heinsen_routing.py).
 
