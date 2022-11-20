@@ -68,7 +68,7 @@ This repository contains three variants of our routing algorithm, implemented as
 
 ### EfficientVectorRouting
 
-`EfficientVectorRouting` is the efficient implementation proposed in "[An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)" (Heinsen, 2022). It incorporates optimizations that reduce parameter count, memory use, and computation by orders of magnitude compared to the other two variants, making it the best choice for most use cases. This README focuses primarily on this PyTorch module. __If you're not sure which module you should use, we recommend this one.__ [See the next section for sample usage](#sample-usage-of-efficientvectorrouting).
+`EfficientVectorRouting` is the efficient implementation proposed in "[An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)" (Heinsen, 2022). It incorporates optimizations that reduce parameter count, memory use, and computation by orders of magnitude compared to the other two variants, making it the best choice for most use cases. This README focuses primarily on this PyTorch module. *If you're not sure which module you should use, we recommend this one.* [See the next section for sample usage](#sample-usage-of-efficientvectorrouting).
 
 ### DefinableVectorRouting
 
@@ -285,54 +285,54 @@ If you run the code above, `x_out` will have shape `[100, 1024]`, computed by th
 
 ## Frequently Asked Questions
 
-__Q: "Is it true that `EfficientVectorRouting` can route sequences with *a million* vectors in a single GPU?"__
+*Q: "Is it true that `EfficientVectorRouting` can route sequences with 1,000,000+ vectors in a single GPU?"*
 
 A: Yes. See [here](#routing-very-long-sequences).
 
 
-__Q: "Can I use `EfficientVectorRouting` to reshape sequences between residual blocks in Transformers?"__
+*Q: "Can I use `EfficientVectorRouting` to reshape sequences between residual blocks in Transformers?"*
 
 A: Yes. For example, you can use `EfficientVectorRouting` to reduce sequence length and increase embedding size as the residual blocks get deeper, inducing shallower blocks to learn to embed long sequences of simple entities that are representable with fewer features (e.g., subword tokens), and inducing deeper blocks to learn to embed shorter sequences of more complex entities requiring higher-dimensional representations (e.g., abstract notions).
 
 
-__Q: "Can I use `EfficientVectorRouting` *instead of self-attention* as a component of models?"__
+*Q: "Can I use `EfficientVectorRouting` instead of self-attention as a component of models?"*
 
 A: Yes. There is in fact a connection between the self-attention mechanism used in Transformers and the algorithm implemented by `EfficientVectorRouting`: Transformer self-attention is a special case of modern Hopfield networks with bipartite structure, a class of dense associative memories which are in turn a special case of the routing algorithm we propose in "[An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)." `EfficientVectorRouting` is one possible implementation of our algorithm.
 
 
-__Q: "Can I use `EfficientVectorRouting` to classify a sequence of vector embeddings?"__
+*Q: "Can I use `EfficientVectorRouting` to classify a sequence of vector embeddings?"*
 
 A: Yes. Route them to a vector (see [here](#sequence-to-vector)) and use the vector's elements as the predicted classification scores. In training, the module will learn to compute class scores that minimize classification error and simultaneously best explain (predict) the sequence being classified.
 
 
-__Q: "Can I use `EfficientVectorRouting` to build "deep autoencoders for sequences"?__
+*Q: "Can I use `EfficientVectorRouting` to build "deep autoencoders for sequences"?*
 
 A: Yes. You can build deep autoencoders that apply multiple `EfficientVectorRouting` layers to encode an input sequence to progressively shorter sequences and then progressively decode the shortest sequence back to the original length, in a typical "bowtie" arrangement. The autoencoders can of course be variational, using the reparametrization trick to sample the inner shortest sequence from a specified distribution.
 
 
-__Q: "Can I use `EfficientVectorRouting` to build a generative difussion model, a generative flow network (GFlowNet), and other kinds of generative models?__
+*Q: "Can I use `EfficientVectorRouting` to build a generative difussion model or a generative flow network (GFlowNet)?*
 
-A: Yes. `EfficientVectorRouting` is a general-purpose PyTorch module. You can use it as a component to build any kind of model, generative and otherwise.
+A: Yes. `EfficientVectorRouting` is a general-purpose PyTorch module. You can use it as a component to build any deep neural network model, generative and otherwise.
 
 
-__Q: "Is it true that each output vector computed by `EfficientVectorRouting` can have its own feature space?"__
+*Q: "Is it true that each output vector computed by `EfficientVectorRouting` can have its own feature space?"*
 
 A: Yes. Each output vector is computed in a different basis, possibly representing different features (i.e., the same element may represent different features in different vectors). The number of representable features can be as large as `n_out` × `d_out`. This increase in representational capacity may enable you to work with shorter sequences and/or smaller vector sizes than otherwise necessary. See Subsection 3.1 of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf).
 
 Note: If you treat every output vector as being in the same shared feature space (e.g., if you always apply the same transformations to all output vectors, instead of different transformations to each one), you *can* induce all vector bases to represent the same features. If that's what you want, great -- but if not, please exercise a bit of care to avoid doing it unintentionally!
 
 
-__Q: "Is it true that I can get end-to-end credit assignments over a network of `EfficientVectorRouting` layers?"__
+*Q: "Is it true that I can get end-to-end credit assignments over a network of `EfficientVectorRouting` layers?"*
 
 A: Yes. Follow the "how-to" recipes in Appendix A of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf), or make sure you thoroughly understand how the credit assignments work before straying away from the proven recipes. For a discussion of credit assignments, see Subsection 3.2 of the paper. For a concrete example of end-to-end credit assignment, see [here](#credit-assignments).
 
 
-__Q: "Is it true that `EfficientVectorRouting` implements a model of associative memory?"__
+*Q: "Is it true that `EfficientVectorRouting` implements a model of associative memory?"*
 
 A: Yes. In Subsection 3.3 of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf), we describe input vectors as *keys* to content-addressable memory values and biases, and output vectors as *queries* whose states are iteratively updated until they stabilize in a local maximum of a "bang per bit" landscape (or, equivalently, a local minimum of an energy landscape). We also show that with significant simplifications, the routing algorithm implemented by `EfficientVectorRouting` reduces to modern Hopfield networks with bipartite structure, a class of dense associative memories of which Transformer self-attention is a notable special case.
 
 
-__Q: "Is it true that `EfficientVectorRouting` implements a "block" in a model of a Society of Mind (Minsky, 1986)?"__
+*Q: "Is it true that `EfficientVectorRouting` implements a "block" in a model of a Society of Mind (Minsky, 1986)?"*
 
 A: Yes. In Subsection 3.4 of of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf), we describe output vectors as multidimensional agents competing against each other to use or ignore scarce resources in a block via knowledge lines, or K-lines, in a model of a Society of Mind. Agents iteratively improve the shares of each scarce resource they use or ignore by better predicting (i.e., explaining) it. Note that when Minsky wrote ``The Society of Mind" in 1986, he was certainly aware of early models of associative memory, including Hopfield networks (formulated by John Hopfield and others between 1974 and 1984) and restricted Boltzmann machines (first proposed as the "Harmonium" by Paul Smolensky in 1986).
 
