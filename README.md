@@ -310,7 +310,7 @@ A: Yes. Route them to a vector (see [here](#sequence-to-vector)) and use the vec
 A: Yes. You can build deep autoencoders that apply multiple `EfficientVectorRouting` layers to encode an input sequence to progressively shorter sequences and then progressively decode the shortest sequence back to the original length, in a typical "bowtie" arrangement. The autoencoders can of course be variational, using the reparametrization trick to sample the inner shortest sequence from a specified distribution.
 
 
-*Q: "Can I use `EfficientVectorRouting` to build a generative difussion model or a generative flow network (GFlowNet)?*
+*Q: "Can I use `EfficientVectorRouting` to build generative difussion models or GFlowNets?*
 
 A: Yes. `EfficientVectorRouting` is a general-purpose PyTorch module. You can use it as a component to build any deep neural network model, generative and otherwise.
 
@@ -324,7 +324,7 @@ Note: If you treat every output vector as being in the same shared feature space
 
 *Q: "Is it true that I can get end-to-end credit assignments over a network of `EfficientVectorRouting` layers?"*
 
-A: Yes. Follow the "how-to" recipes in Appendix A of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf), or make sure you thoroughly understand how the credit assignments work before straying away from the proven recipes. For a discussion of credit assignments, see Subsection 3.2 of the paper. For a concrete example of end-to-end credit assignment, see [here](#credit-assignments).
+A: Yes. To compute end-to-end credit assignments, follow the "how-to" recipes in Appendix A of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf) -- or make sure you thoroughly understand how the credit assignments work before straying away from the proven recipes. For a discussion of credit assignments, see Subsection 3.2 of the paper. For a concrete example of end-to-end credit assignment, see [here](#credit-assignments).
 
 
 *Q: "Is it true that `EfficientVectorRouting` implements a model of associative memory?"*
