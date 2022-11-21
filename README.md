@@ -299,7 +299,7 @@ A: Yes. For example, you can use `EfficientVectorRouting` to reduce sequence len
 
 *Q: "Can I use `EfficientVectorRouting` instead of self-attention as a component of models?"*
 
-A: Yes. There is in fact a connection between the self-attention mechanism used in Transformers and the algorithm implemented by `EfficientVectorRouting`: Transformer self-attention is a special case of modern Hopfield networks with bipartite structure, a class of dense associative memories which are in turn a special case of the routing algorithm we propose in "[An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)." `EfficientVectorRouting` is one possible implementation of our algorithm.
+A: Yes. There is in fact a connection between the query-key-value self-attention mechanism used in Transformers and the algorithm implemented by `EfficientVectorRouting`: Transformer self-attention is a special case of modern Hopfield networks with bipartite structure, a class of dense associative memories which are in turn a special case of the routing algorithm we propose in "[An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)." `EfficientVectorRouting` is one possible implementation of our algorithm.
 
 
 *Q: "Can I use `EfficientVectorRouting` to classify a sequence of vector embeddings?"*
