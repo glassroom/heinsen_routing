@@ -169,14 +169,11 @@ class DefinableVectorRouting(nn.Module):
         super().__init__()
         assert n_inp > 0 or n_inp == -1, "Number of input vectors must be > 0 or -1 (variable)."
         assert n_out >= 2, "Number of output vectors must be at least 2."
+        one_or_n_inp = max(1, n_inp)
         self.A, self.F, self.G, self.S, self.n_iters, self.return_dict = (A, F, G, S, n_iters, return_dict)
         self.register_buffer('CONST_ones_over_n_out', torch.ones(n_out) / n_out)
-        if n_inp > 0:
-            self.beta_use = nn.Parameter(torch.empty(n_inp, n_out).normal_())
-            self.beta_ign = nn.Parameter(torch.empty(n_inp, n_out).normal_())
-        else:
-            self.compute_beta_use = nn.Linear(d_inp, n_out)
-            self.compute_beta_ign = nn.Linear(d_inp, n_out)
+        self.beta_use = nn.Parameter(torch.empty(one_or_n_inp, n_out).normal_())
+        self.beta_ign = nn.Parameter(torch.empty(one_or_n_inp, n_out).normal_())
         self.f, self.softmax = (nn.Sigmoid(), nn.Softmax(dim=-1))
 
     def __repr__(self):
@@ -184,7 +181,6 @@ class DefinableVectorRouting(nn.Module):
         return '{}({})'.format(self._get_name(), cfg_str)
 
     def forward(self, x_inp):
-        beta_use, beta_ign = (self.beta_use, self.beta_ign) if hasattr(self, 'beta_use') else (self.compute_beta_use(x_inp), self.compute_beta_ign(x_inp))
         a_inp = self.A(x_inp).view(*x_inp.shape[:-1])  # [...i]
         V = self.F(x_inp).view(*a_inp.shape, beta_use.shape[-1], -1)  # [...ijh]
         f_a_inp = self.f(a_inp).unsqueeze(-1)  # [...i1]
@@ -203,7 +199,7 @@ class DefinableVectorRouting(nn.Module):
             D_ign = f_a_inp - D_use  # [...ij]
 
             # M-step.
-            phi = beta_use * D_use - beta_ign * D_ign  # [...ij] "bang per bit" coefficients
+            phi = self.beta_use * D_use - self.beta_ign * D_ign  # [...ij] "bang per bit" coefficients
             x_out = einsum('...ij,...ijh->...jh', phi, V)
 
         if self.return_dict:
