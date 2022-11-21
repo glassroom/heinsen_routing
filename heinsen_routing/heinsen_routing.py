@@ -126,7 +126,7 @@ class DefinableVectorRouting(nn.Module):
             (the latter computed by G) and computes their similary scores:
             [..., n_inp, d_inp], [...,n_out, d_inp] -> [..., n_inp , n_out].
         n_inp: int, number of input vectors. If -1, the number is variable (in
-            which case modules A, F, G, and S must accept a variable number).
+            which case A, F, and S must be able to handle a variable number).
         n_out: int, number of output vectors.
         n_iters: (optional) int, number of iterations. Default: 2.
         return_dict: (optional) bool, if True, return a dictionary with the
