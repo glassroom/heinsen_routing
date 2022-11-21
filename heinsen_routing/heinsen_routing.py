@@ -170,6 +170,7 @@ class DefinableVectorRouting(nn.Module):
         assert n_inp > 0 or n_inp == -1, "Number of input vectors must be > 0 or -1 (variable)."
         assert n_out >= 2, "Number of output vectors must be at least 2."
         one_or_n_inp = max(1, n_inp)
+        self.n_inp, self.n_out = (n_inp, n_out)
         self.A, self.F, self.G, self.S, self.n_iters, self.return_dict = (A, F, G, S, n_iters, return_dict)
         self.register_buffer('CONST_ones_over_n_out', torch.ones(n_out) / n_out)
         self.beta_use = nn.Parameter(torch.empty(one_or_n_inp, n_out).normal_())
@@ -182,7 +183,7 @@ class DefinableVectorRouting(nn.Module):
 
     def forward(self, x_inp):
         a_inp = self.A(x_inp).view(*x_inp.shape[:-1])  # [...i]
-        V = self.F(x_inp).view(*a_inp.shape, beta_use.shape[-1], -1)  # [...ijh]
+        V = self.F(x_inp).view(*a_inp.shape, self.n_out, -1)  # [...ijh]
         f_a_inp = self.f(a_inp).unsqueeze(-1)  # [...i1]
         for iter_num in range(self.n_iters):
 
