@@ -287,7 +287,7 @@ If you run the code above, `x_out` will have shape `[100, 1024]`, computed by th
 
 ## Frequently Asked Questions
 
-*Q: "Is it true that `EfficientVectorRouting` can route sequences with 1,000,000+ vectors in a single GPU?"*
+*Q: "Is it true that `EfficientVectorRouting` can route sequences with 1,000,000+ vectors in a single GPU/TPU?"*
 
 A: Yes. See [here](#routing-very-long-sequences).
 
