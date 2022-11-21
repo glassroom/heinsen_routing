@@ -33,7 +33,7 @@ class EfficientVectorRouting(nn.Module):
 
     Output:
         x_out: float tensor of output vectors [..., n_out, d_out] by default,
-            or a dict with output vectors as 'x_out' if return_dict is False.
+            or a dict with output vectors as 'x_out' if return_dict is True.
 
     Sample usage:
         >>> # Route 100 vectors of size 1024 to 10 vectors of size 4096.
@@ -138,7 +138,7 @@ class DefinableVectorRouting(nn.Module):
 
     Output:
         x_out: float tensor of output vectors [..., n_out, d_out] by default,
-            or a dict with output vectors as 'x_out' if return_dict is False.
+            or a dict with output vectors as 'x_out' if return_dict is True.
 
     Sample usage:
         >>> class LearnedMemories(nn.Module):
