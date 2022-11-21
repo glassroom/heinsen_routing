@@ -146,7 +146,7 @@ Note: When `n_inp` is set to -1, `EfficientVectorRouting` treats every input vec
 
 ### Routing Very Long Sequences
 
-`EfficientVectorRouting`'s memory footprint is linearly proportional to each of `n_inp`, `n_out`, `d_inp`, and `d_out`, giving you fine-grained control over memory consumption. To route input sequences of greater length, you can reduce the length of the output sequence, and vice versa. For example, if you have at least ~18GB of memory available (many recent GPUs and TPUs have more), you can route sequences with 1,000,000+ vectors:
+`EfficientVectorRouting`'s memory footprint is linearly proportional to each of `n_inp`, `n_out`, `d_inp`, and `d_out`, giving you fine-grained control over memory consumption. To route input sequences of greater length, you can reduce the length of the output sequence, and vice versa. If you have at least ~18GB of memory available (less than some recent GPUs/TPUs), you can route sequences with 1,000,000+ vectors:
 
 ```python
 import torch
