@@ -72,8 +72,7 @@ class EfficientVectorRouting(nn.Module):
         cfg_str = ', '.join(f'{s}={getattr(self, s)}' for s in 'n_inp n_out d_inp d_out n_iters normalize memory_efficient return_dict'.split())
         return '{}({})'.format(self._get_name(), cfg_str)
 
-    def forward(self, inp_obj):
-        x_inp = inp_obj['x_out'] if isinstance(inp_obj, dict) else inp_obj  # if inp_obj is a dict, use the previous output vectors as input vectors
+    def forward(self, x_inp):
         beta_use, beta_ign = (self.beta_use, self.beta_ign) if hasattr(self, 'beta_use') else (self.compute_beta_use(x_inp), self.compute_beta_ign(x_inp))
         scaled_x_inp = x_inp * x_inp.shape[-2]**-0.5  # [...id]
         a_inp = (scaled_x_inp * self.W_A).sum(dim=-1) + self.B_A  # [...i]
@@ -184,8 +183,7 @@ class DefinableVectorRouting(nn.Module):
         cfg_str = ',\n '.join(f'{s}={getattr(self, s)}' for s in 'A F G S n_inp n_out n_iters return_dict'.split())
         return '{}({})'.format(self._get_name(), cfg_str)
 
-    def forward(self, inp_obj):
-        x_inp = inp_obj['x_out'] if isinstance(inp_obj, dict) else inp_obj  # if inp_obj is a dict, use the previous output vectors as the input vectors
+    def forward(self, x_inp):
         beta_use, beta_ign = (self.beta_use, self.beta_ign) if hasattr(self, 'beta_use') else (self.compute_beta_use(x_inp), self.compute_beta_ign(x_inp))
         a_inp = self.A(x_inp).view(*x_inp.shape[:-1])  # [...i]
         V = self.F(x_inp).view(*a_inp.shape, beta_use.shape[-1], -1)  # [...ijh]
