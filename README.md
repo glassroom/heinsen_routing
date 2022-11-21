@@ -2,7 +2,7 @@
 
 Reference implementation of the routing algorithm proposed in "[An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)" (Heinsen, 2022), and an earlier variant, "[An Algorithm for Routing Capsules in All Domains](https://arxiv.org/abs/1911.00792)" (Heinsen, 2019), for composing deep neural networks.
 
-A toy example is worth more than a thousand words:
+A toy example is helpful for conveying quickly what the algorithm does:
 
 ```python
 import torch
