@@ -123,7 +123,7 @@ x_out = model(x_inp).squeeze(-1)             # shape is [batch_sz, d_vec]
 
 ### Routing Sequences of Varying Length
 
-If you set `n_inp` equal to -1, `EfficientVectorRouting` routes input sequences of *any* length, limited only by available memory, to output sequences of fixed length. Train the module with input sequences of varying lengths and it will learn to explain them.
+If you set `n_inp` equal to -1, `EfficientVectorRouting` routes input sequences of *any* length, limited only by available memory, to output sequences of fixed length. Train the module with input sequences of varying lengths and it will learn to predict (explain) them.
 
 
 ```python
@@ -304,7 +304,7 @@ A: Yes. There is in fact a connection between the query-key-value self-attention
 
 *Q: "Can I use `EfficientVectorRouting` to classify a sequence of vector embeddings?"*
 
-A: Yes. Route them to a vector (see [here](#sequence-to-vector)) and use the vector's elements as the predicted classification scores. In training, the module will learn to compute class scores that minimize classification error and simultaneously best explain (predict) the sequence being classified.
+A: Yes. Route them to a vector (see [here](#sequence-to-vector)) and use the vector's elements as the predicted classification scores. In training, the module will learn to compute class scores that minimize classification error and simultaneously best predict (explain) the sequence being classified.
 
 
 *Q: "Can I use `EfficientVectorRouting` to build "deep autoencoders for sequences"?*
