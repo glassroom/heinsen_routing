@@ -184,7 +184,7 @@ class DefinableVectorRouting(nn.Module):
             self.compute_beta_ign = nn.Linear(d_inp, n_out)
         self.f, self.softmax = (nn.Sigmoid(), nn.Softmax(dim=-1))
 
-    def __repr__(self) -> None:
+    def __repr__(self) -> str:
         cfg_str = ',\n '.join(f'{s}={getattr(self, s)}' for s in 'A F G S n_inp n_out n_iters return_dict'.split())
         return '{}({})'.format(self._get_name(), cfg_str)
 
