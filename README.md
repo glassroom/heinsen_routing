@@ -240,7 +240,7 @@ x_out = outputs['x_out']  # [batch_sz, n_out, d_out] output vectors
 phi = outputs['phi']      # [batch_sz, n_inp, n_out] credit assigned to input by output vecs
 ```
 
-The credit assignments are additive, like Shapley values, and composable on their own, independently of data transformations, making it possible for to compute end-to-end credit assignments over a network of routings, as explained in Subsection 3.2 of "[An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)." For *how-to recipes* to compute end-to-end credit assignments over common compositions, including residual layers, see Appendix A of the same paper. For example:
+The credit assignments are additive, like Shapley values, and composable on their own, independently of data transformations, making it possible for to compute end-to-end credit assignments over a network of routings, as explained in Subsection 3.2 of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf). For *how-to recipes* to compute end-to-end credit assignments over common compositions, including residual layers, see Appendix A of the same paper. For example:
 
 ```python
 import torch
