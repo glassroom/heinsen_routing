@@ -246,8 +246,8 @@ class GenerativeMatrixRouting(nn.Module):
     Output:
         If return_dict is False (default):
             a_out: [..., n_out] output scores.
-            mu_out: [..., n_out, d_cov, d_out] matrices, each d_cov x d_out.
-            sig2_out: [..., n_out, d_cov, d_out] matrices, each d_cov x d_out.
+            mu_out: [..., n_out, d_cov, d_out] output matrices.
+            sig2_out: [..., n_out, d_cov, d_out] output variances.
         Otherwise:
             Python dict with multiple tensors, including the default output
             tensors as keys 'a_out', 'mu_out', and 'sig2_out'.
@@ -289,7 +289,7 @@ class GenerativeMatrixRouting(nn.Module):
 
             # E-step.
             if iter_num == 0:
-                R = (self.CONST_one / n_out).expand(V.shape[:-2])  # [...ij]
+                R = (self.CONST_one / self.n_out).expand(V.shape[:-2])  # [...ij]
             else:
                 log_p = \
                     - einsum('...ijch,...jch->...ij', V_less_mu_out_2, 1.0 / (2.0 * sig2_out)) \
