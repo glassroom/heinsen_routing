@@ -251,7 +251,8 @@ class GenerativeMatrixRouting(nn.Module):
     Sample usage:
         >>> a_inp = torch.randn(100)  # 100 input scores
         >>> mu_inp = torch.randn(100, 4, 4)  # 100 capsules of shape 4 x 4
-        >>> m = Routing(d_cov=4, d_inp=4, d_out=4, n_inp=100, n_out=10)
+        >>> m = GenerativeMatrixRounting(
+        >>>     d_cov=4, d_inp=4, d_out=4, n_inp=100, n_out=10)
         >>> a_out, mu_out, sig_2_out = m(a_inp, mu_inp)
         >>> print(a_out)  # 10 activation scores
         >>> print(mu_out)  # 10 matrices of shape 4 x 4 (means)
