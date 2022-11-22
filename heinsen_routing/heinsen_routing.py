@@ -1,5 +1,8 @@
 # coding: utf-8
 
+from __future__ import annotations
+from typing import Union
+
 import torch
 import torch.nn as nn
 from torch import einsum
@@ -41,7 +44,8 @@ class EfficientVectorRouting(nn.Module):
         >>> x_inp = torch.randn(100, 1024)  # 100 vectors of size 1024
         >>> x_out = m(x_inp)  # 10 vectors of size 4096
     """
-    def __init__(self, n_inp, n_out, d_inp, d_out, n_iters=2, normalize=True, memory_efficient=True, return_dict=False):
+    def __init__(self, n_inp: int, n_out: int, d_inp: int, d_out: int, n_iters: int = 2,
+                 normalize: bool = True, memory_efficient: bool = True, return_dict: bool = False) -> None:
         super().__init__()
         assert n_inp > 0 or n_inp == -1, "Number of input vectors must be > 0 or -1 (variable)."
         assert n_out >= 2, "Number of output vectors must be at least 2."
@@ -68,11 +72,11 @@ class EfficientVectorRouting(nn.Module):
         self.N = nn.LayerNorm(d_out, elementwise_affine=False) if d_out > 1 else nn.Identity()
         self.f, self.log_f, self.softmax = (nn.Sigmoid(), nn.LogSigmoid(), nn.Softmax(dim=-1))
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         cfg_str = ', '.join(f'{s}={getattr(self, s)}' for s in 'n_inp n_out d_inp d_out n_iters normalize memory_efficient return_dict'.split())
         return '{}({})'.format(self._get_name(), cfg_str)
 
-    def forward(self, x_inp):
+    def forward(self, x_inp: torch.Tensor) -> Union[torch.Tensor, dict]:
         beta_use, beta_ign = (self.beta_use, self.beta_ign) if hasattr(self, 'beta_use') else (self.compute_beta_use(x_inp), self.compute_beta_ign(x_inp))
         scaled_x_inp = x_inp * x_inp.shape[-2]**-0.5  # [...id]
         a_inp = (scaled_x_inp * self.W_A).sum(dim=-1) + self.B_A  # [...i]
@@ -165,7 +169,7 @@ class DefinableVectorRouting(nn.Module):
         >>> x_inp = torch.randn(100, 1024)  # 100 vectors of size 1024
         >>> x_out = m(x_inp)  # 10 vectors of size 4096
     """
-    def __init__(self, A, F, G, S, n_inp, n_out, n_iters=2, return_dict=False):
+    def __init__(self, A: nn.Module, F: nn.Module, G: nn.Module, S: nn.Module, n_inp: int, n_out: int, n_iters: int = 2, return_dict: bool = False) -> None:
         super().__init__()
         assert n_inp > 0 or n_inp == -1, "Number of input vectors must be > 0 or -1 (variable)."
         assert n_out >= 2, "Number of output vectors must be at least 2."
@@ -180,11 +184,11 @@ class DefinableVectorRouting(nn.Module):
             self.compute_beta_ign = nn.Linear(d_inp, n_out)
         self.f, self.softmax = (nn.Sigmoid(), nn.Softmax(dim=-1))
 
-    def __repr__(self):
+    def __repr__(self) -> None:
         cfg_str = ',\n '.join(f'{s}={getattr(self, s)}' for s in 'A F G S n_inp n_out n_iters return_dict'.split())
         return '{}({})'.format(self._get_name(), cfg_str)
 
-    def forward(self, x_inp):
+    def forward(self, x_inp: torch.Tensor) -> Union[torch.Tensor, dict]:
         beta_use, beta_ign = (self.beta_use, self.beta_ign) if hasattr(self, 'beta_use') else (self.compute_beta_use(x_inp), self.compute_beta_ign(x_inp))
         a_inp = self.A(x_inp).view(*x_inp.shape[:-1])  # [...i]
         V = self.F(x_inp).view(*a_inp.shape, self.n_out, -1)  # [...ijh]
@@ -251,14 +255,15 @@ class GenerativeMatrixRouting(nn.Module):
     Sample usage:
         >>> a_inp = torch.randn(100)  # 100 input scores
         >>> mu_inp = torch.randn(100, 4, 4)  # 100 capsules of shape 4 x 4
-        >>> m = GenerativeMatrixRounting(
+        >>> m = GenerativeMatrixRouting(
         >>>     d_cov=4, d_inp=4, d_out=4, n_inp=100, n_out=10)
-        >>> a_out, mu_out, sig_2_out = m(a_inp, mu_inp)
+        >>> a_out, mu_out, sig2_out = m(a_inp, mu_inp)
         >>> print(a_out)  # 10 activation scores
         >>> print(mu_out)  # 10 matrices of shape 4 x 4 (means)
         >>> print(sig2_out)  # 10 matrices of shape 4 x 4 (variances)
     """
-    def __init__(self, n_inp, n_out, d_cov, d_inp, d_out, n_iters=3, single_beta=False, p_model='gaussian', eps=1e-5, return_dict=False):
+    def __init__(self, n_inp: int, n_out: int, d_cov: int, d_inp: int, d_out: int, n_iters: int = 3,
+                 single_beta: bool = False, p_model: str ='gaussian', eps: float = 1e-5, return_dict: bool = False) -> None:
         super().__init__()
         assert n_inp > 0 or n_inp == -1, "Number of input matrices must be > 0 or -1 (variable)."
         assert n_out >= 2, "Number of output matrices must be at least 2."
@@ -274,11 +279,11 @@ class GenerativeMatrixRouting(nn.Module):
         self.beta_ign = nn.Parameter(torch.zeros(one_or_n_inp, n_out)) if not single_beta else self.beta_use
         self.f, self.log_f, self.softmax, self.log_softmax = (nn.Sigmoid(), nn.LogSigmoid(), nn.Softmax(dim=-1), nn.LogSoftmax(dim=-1))
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         cfg_str = ', '.join(f'{s}={getattr(self, s)}' for s in 'n_inp n_out d_cov d_inp d_out n_iters single_beta p_model eps return_dict'.split())
         return '{}({})'.format(self._get_name(), cfg_str)
 
-    def forward(self, a_inp, mu_inp):
+    def forward(self, a_inp: torch.Tensor, mu_inp: torch.Tensor) -> Union[torch.Tensor, dict]:
         W = self.W if self.n_inp_is_fixed else self.W.expand(a_inp.shape[-1], -1, -1, -1)
         V = einsum('...icd,ijdh->...ijch', mu_inp, W) + self.B
         f_a_inp = self.f(a_inp).unsqueeze(-1)  # [...i1]
