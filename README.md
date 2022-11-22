@@ -161,7 +161,7 @@ x_inp = torch.randn(n_inp, d_inp)  # data alone occupies ~4.8GB of memory at 32-
 x_out = model(x_inp)               # allocates up to ~12.8GB at 32-bit precision, w/gradients
 ```
 
-A handy technique for routing very long sequences is to route them *twice*: First to a short hidden sequence of larger vectors representing "summaries," and then to an output sequence with the desired shape. The motivation is to reduce the computation incurred and memory allocated by a Softmax function over the output vectors, executed in each iteration of the first routing. Here, we apply this technique to route 250,000 to 1,000 vectors of size 1024 at 32-bit precision, keeping track of all gradients, requiring only ~5.6GB of memory (on a recent Nvidia GPU):
+A handy technique for routing very long sequences is to route them *twice*: First to a short hidden sequence of larger vectors representing "summaries," and then to an output sequence with the desired shape. The motivation is to reduce the computation incurred and memory allocated by the execution of `n_inp` Softmax functions over the output vectors in each iteration of the first routing. Here, we apply this technique to route 250,000 to 1,000 vectors of size 1024 at 32-bit precision, keeping track of all gradients, requiring only ~5.6GB of memory (on a recent Nvidia GPU):
 
 ```python
 import torch
