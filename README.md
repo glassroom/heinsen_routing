@@ -336,7 +336,7 @@ A: Yes. In Subsection 3.3 of [the paper](assets/An_Algorithm_for_Routing_Vectors
 
 *Q: "Is it true that `EfficientVectorRouting` implements a "block" in a model of a Society of Mind (Minsky, 1986)?"*
 
-A: Yes. In Subsection 3.4 of of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf), we describe output vectors as multidimensional agents competing against each other to use or ignore scarce resources in a block via knowledge lines, or K-lines, in a model of a Society of Mind. Agents iteratively improve the shares of each scarce resource they use or ignore by better predicting (i.e., explaining) it. Note that when Minsky wrote ``The Society of Mind" in 1986, he was certainly aware of early models of associative memory, including Hopfield networks (formulated by John Hopfield and others between 1974 and 1984) and restricted Boltzmann machines (first proposed as the "Harmonium" by Paul Smolensky in 1986).
+A: Yes. In Subsection 3.4 of of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf), we describe output vectors as multidimensional agents competing against each other to use or ignore scarce resources in a block via knowledge lines, or K-lines, in a model of a Society of Mind. Agents iteratively improve the shares of each scarce resource they use or ignore by better predicting (i.e., explaining) it. Note that when Minsky wrote ``The Society of Mind" in 1986, he was certainly aware of early models of associative memory, including Hopfield networks (formulated by John Hopfield in 1982 and 1984, building on prior work going back to the early 1970's) and restricted Boltzmann machines (first proposed as the "Harmonium" by Paul Smolensky in 1986).
 
 
 ## Replicating Published Results
