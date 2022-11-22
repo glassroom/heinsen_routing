@@ -302,9 +302,9 @@ A: Yes. For example, you can use `EfficientVectorRouting` to reduce sequence len
 A: Yes. There is in fact a connection between the query-key-value self-attention mechanism used in Transformers and the algorithm implemented by `EfficientVectorRouting`: Transformer self-attention is a special case of modern Hopfield networks with bipartite structure, a class of dense associative memories which are in turn a special case of the routing algorithm we propose in "[An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)." `EfficientVectorRouting` is one possible implementation of our algorithm.
 
 
-*Q: "Can I use `EfficientVectorRouting` to classify a sequence of vector embeddings?"*
+*Q: "Can I use `EfficientVectorRouting` to classify a sequence of token embeddings?"*
 
-A: Yes. Route them to a vector (see [here](#sequence-to-vector)) and use the vector's elements as the predicted classification scores. In training, the module will learn to compute class scores that minimize classification error and simultaneously best predict (explain) the sequence being classified.
+A: Yes. Route the sequence to a vector (see [here](#sequence-to-vector)) and use the vector's elements as the predicted classification scores. In training, the module will learn to compute scores that minimize classification error and simultaneously best predict (explain) the sequence being classified.
 
 
 *Q: "Can I use `EfficientVectorRouting` to build "deep autoencoders for sequences"?*
@@ -336,7 +336,7 @@ A: Yes. In Subsection 3.3 of [the paper](assets/An_Algorithm_for_Routing_Vectors
 
 *Q: "Is it true that `EfficientVectorRouting` implements a "block" in a model of a Society of Mind (Minsky, 1986)?"*
 
-A: Yes. In Subsection 3.4 of of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf), we describe output vectors as multidimensional agents competing against each other to use or ignore scarce resources in a block via knowledge lines, or K-lines, in a model of a Society of Mind. Agents iteratively improve the shares of each scarce resource they use or ignore by better predicting (i.e., explaining) it. Note that when Minsky wrote ``The Society of Mind" in 1986, he was certainly aware of early models of associative memory, including Hopfield networks (formulated by John Hopfield in 1982 and 1984, building on prior work going back to the early 1970's) and restricted Boltzmann machines (first proposed as the "Harmonium" by Paul Smolensky in 1986).
+A: Yes. In Subsection 3.4 of of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf), we describe output vectors as multidimensional agents competing against each other to use or ignore scarce resources in a block via knowledge lines, or K-lines, in a model of a Society of Mind. Agents iteratively improve the shares of each scarce resource they use or ignore by better predicting (i.e., explaining) it. Note that when Minsky was working on ``The Society of Mind," published in in 1986, he was certainly aware of early models of associative memory, including Hopfield networks (formulated by John Hopfield in 1982 and 1984, building on prior work going back to the early 1970's) and restricted Boltzmann machines (first proposed as the "Harmonium" by Paul Smolensky in 1986).
 
 
 ## Replicating Published Results
