@@ -240,7 +240,7 @@ x_out = outputs['x_out']  # [batch_sz, n_out, d_out] output vectors
 phi = outputs['phi']      # [batch_sz, n_inp, n_out] credit assigned to input by output vecs
 ```
 
-The credit assignments are additive, like Shapley values, and composable on their own, independently of data transformations, making it possible for to compute end-to-end credit assignments over a network of routings, as explained in Subsection 3.2 of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf). For *how-to recipes* to compute end-to-end credit assignments over common compositions, including residual layers, see Appendix A of the same paper. For example:
+The credit assignments are additive, like Shapley values, and composable on their own, independently of data transformations, making it possible to compute end-to-end credit assignments over a network of routings, as explained in Subsection 3.2 of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf). For *how-to recipes* to compute end-to-end credit assignments over common compositions, including residual layers, see Appendix A of the same paper. For example:
 
 ```python
 import torch
@@ -326,7 +326,7 @@ Note: If you treat every output vector as being in the same shared feature space
 
 *Q: "Is it true that I can get end-to-end credit assignments over a network of `EfficientVectorRouting` layers?"*
 
-A: Yes. To compute end-to-end credit assignments, follow the "how-to" recipes in Appendix A of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf) -- or make sure you thoroughly understand how the credit assignments work before straying away from the proven recipes. For a discussion of credit assignments, see Subsection 3.2 of the paper. For a concrete example of end-to-end credit assignment, see [here](#composable-credit-assignments).
+A: Yes. To compute end-to-end credit assignments, follow the "how-to" recipes in Appendix A of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf) -- or make sure you thoroughly understand how the credit assignments work before straying away from the proven recipes. For a discussion of credit assignments, see Subsection 3.2 of the same paper. For a concrete example of end-to-end credit assignment, see [here](#composable-credit-assignments).
 
 
 *Q: "Is it true that `EfficientVectorRouting` implements a model of associative memory?"*
