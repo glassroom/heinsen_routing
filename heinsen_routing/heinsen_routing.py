@@ -222,7 +222,6 @@ class GenerativeMatrixRouting(nn.Module):
     with an activation score quantifying detection of the corresponding entity.
     See "An Algorithm for Routing Capsules in All Domains" (Heinsen, 2019),
     https://arxiv.org/abs/1911.00792.
-
     Args:
         n_inp: int, number of input matrices. If -1, the number is variable.
         n_out: int, number of output matrices.
@@ -238,25 +237,22 @@ class GenerativeMatrixRouting(nn.Module):
         eps: (optional) small positive float << 1.0 for numerical stability.
         return_dict: (optional) bool, if True, return a dictionary with the
             final state of all internal and output tensors. Default: False.
-
     Input:
         a_inp: [..., n_inp] input scores.
         mu_inp: [..., n_inp, d_cov, d_inp] matrices of shape d_cov x d_inp.
-
     Output:
         If return_dict is False (default):
             a_out: [..., n_out] output scores.
-            mu_out: [..., n_out, d_cov, d_out] output matrices.
-            sig2_out: [..., n_out, d_cov, d_out] output variances.
+            mu_out: [..., n_out, d_cov, d_out] matrices, each d_cov x d_out.
+            sig2_out: [..., n_out, d_cov, d_out] matrices, each d_cov x d_out.
         Otherwise:
             Python dict with multiple tensors, including the default output
             tensors as keys 'a_out', 'mu_out', and 'sig2_out'.
-
     Sample usage:
         >>> a_inp = torch.randn(100)  # 100 input scores
         >>> mu_inp = torch.randn(100, 4, 4)  # 100 capsules of shape 4 x 4
         >>> m = Routing(d_cov=4, d_inp=4, d_out=4, n_inp=100, n_out=10)
-        >>> a_out, mu_out, sig_2_out = m(a_inp, x_inp)
+        >>> a_out, mu_out, sig_2_out = m(a_inp, mu_inp)
         >>> print(a_out)  # 10 activation scores
         >>> print(mu_out)  # 10 matrices of shape 4 x 4 (means)
         >>> print(sig2_out)  # 10 matrices of shape 4 x 4 (variances)
