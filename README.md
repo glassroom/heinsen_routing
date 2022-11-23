@@ -35,7 +35,8 @@ x_out = model(x_inp)               # 10 vectors of size 4096
   * [Routing Sequences of Varying Length](#routing-sequences-of-varying-length)
   * [Routing Very Long Sequences](#routing-very-long-sequences)
   * [Recurrent Routings](#recurrent-routings)
-  * [Composable Credit Assignments](#composable-credit-assignments)
+  * [Assigning Credit to Input Vectors](#assigning-credit-to-input-vectors)
+  * [Assigning Credit End-to-End](#assigning-credit-end-to-end) ([Example](#example-of-end-to-end-credit-assignment))
 
 * [Frequently Asked Questions](#frequently-Asked-Questions)
 
@@ -218,8 +219,7 @@ x_inp = torch.randn(batch_sz, n_emb, d_emb)
 x_out = model(x_inp)
 ```
 
-
-### Composable Credit Assignments
+### Assigning Credit to Input Vectors
 
 Each instance of `EfficientVectorRouting` internally computes a credit assignment matrix of shape `[..., n_inp, n_out]`, consisting of the credit assigned to each input vector by each output vector. To obtain the credit assignments, instantiate the module with `return_dict=True`, and it will return a dictionary with output vectors as key `'x_out'` and credit assignments as key `'phi'`. For example:
 
@@ -239,6 +239,8 @@ outputs = model(x_inp)
 x_out = outputs['x_out']  # [batch_sz, n_out, d_out] output vectors
 phi = outputs['phi']      # [batch_sz, n_inp, n_out] credit assigned to input by output vecs
 ```
+
+### Assigning Credit End-to-End
 
 The credit assignments are additive, like Shapley values, and composable on their own, independently of data transformations, making it possible to compute end-to-end credit assignments over a network of routings, as explained in Subsection 3.2 of [the paper](https://arxiv.org/abs/2211.11754). For *how-to recipes* to compute end-to-end credit assignments over common compositions, including residual layers, see Appendix A of the same paper. For example:
 
@@ -283,6 +285,7 @@ x_out, credit_assignments = model(x_inp)
 ```
 
 If you run the code above, `x_out` will have shape `[100, 1024]`, computed by the last routing, and `credit_assignments` will have shape `[500, 100]`, consisting of the end-to-end credit assigned to the first routing's 500 input vectors by the final routing's 100 output vectors.
+
 
 #### Example of End-to-End Credit Assignment
 
