@@ -15,7 +15,7 @@ class EfficientVectorRouting(nn.Module):
     memory use, and computation by orders of magnitude. Each vector is a
     capsule representing an entity in a context (e.g., a word in a paragraph,
     an object in an image). See "An Algorithm for Routing Vectors in
-    Sequences" (Heinsen, 2022).
+    Sequences" (Heinsen, 2022), https://arxiv.org/abs/2211.11754.
 
     Args:
         n_inp: int, number of input vectors. If -1, the number is variable.
@@ -117,6 +117,7 @@ class DefinableVectorRouting(nn.Module):
     as PyTorch module instances. Each vector is a capsule representing an
     entity in a context (e.g., a word in a sentence, an object in an image).
     See "An Algorithm for Routing Vectors in Sequencces" (Heinsen, 2022).
+    https://arxiv.org/abs/2211.11754.
 
     Args:
         A: nn.Module instance that accepts input vectors and computes input
@@ -226,6 +227,7 @@ class GenerativeMatrixRouting(nn.Module):
     with an activation score quantifying detection of the corresponding entity.
     See "An Algorithm for Routing Capsules in All Domains" (Heinsen, 2019),
     https://arxiv.org/abs/1911.00792.
+
     Args:
         n_inp: int, number of input matrices. If -1, the number is variable.
         n_out: int, number of output matrices.
