@@ -1,6 +1,6 @@
 # heinsen_routing
 
-Reference implementation of the routing algorithm proposed in "[An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)" (Heinsen, 2022), and an earlier variant, "[An Algorithm for Routing Capsules in All Domains](https://arxiv.org/abs/1911.00792)" (Heinsen, 2019), for composing deep neural networks.
+Reference implementation of the routing algorithm proposed in "[An Algorithm for Routing Vectors in Sequences](https://arxiv.org/abs/2211.11754)" (Heinsen, 2022), and an earlier variant, "[An Algorithm for Routing Capsules in All Domains](https://arxiv.org/abs/1911.00792)" (Heinsen, 2019), for composing deep neural networks.
 
 A toy example is helpful for conveying quickly what the algorithm does:
 
@@ -70,11 +70,11 @@ This repository contains three variants of our routing algorithm, implemented as
 
 ### EfficientVectorRouting
 
-`EfficientVectorRouting` is the efficient implementation proposed in "[An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)" (Heinsen, 2022). It incorporates optimizations that reduce parameter count, memory use, and computation by orders of magnitude compared to the other two variants, making it the best choice for most use cases. This README focuses primarily on this PyTorch module. *If you're not sure which module you should use, we recommend this one.* [See the next section for sample usage](#sample-usage-of-efficientvectorrouting).
+`EfficientVectorRouting` is the efficient implementation proposed in "[An Algorithm for Routing Vectors in Sequences](https://arxiv.org/abs/2211.11754)" (Heinsen, 2022). It incorporates optimizations that reduce parameter count, memory use, and computation by orders of magnitude compared to the other two variants, making it the best choice for most use cases. This README focuses primarily on this PyTorch module. *If you're not sure which module you should use, we recommend this one.* [See the next section for sample usage](#sample-usage-of-efficientvectorrouting).
 
 ### DefinableVectorRouting
 
-`DefinableVectorRouting` implements the general form of "[An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)" (Heinsen, 2022). It requires you to define, instantiate, and pass at initialization four PyTorch modules named A, F, G, and S (corresponding to neural networks A, F, G, and S in the paper), which specify routing behavior. In principle, you could define A, F, G, and S to replicate `EfficientVectorRouting`'s behavior -- but not its optimizations. See the module's docstring for sample usage.
+`DefinableVectorRouting` implements the general form of "[An Algorithm for Routing Vectors in Sequences](https://arxiv.org/abs/2211.11754)" (Heinsen, 2022). It requires you to define, instantiate, and pass at initialization four PyTorch modules named A, F, G, and S (corresponding to neural networks A, F, G, and S in the paper), which specify routing behavior. In principle, you could define A, F, G, and S to replicate `EfficientVectorRouting`'s behavior -- but not its optimizations. See the module's docstring for sample usage.
 
 ### GenerativeMatrixRouting
 
@@ -240,7 +240,7 @@ x_out = outputs['x_out']  # [batch_sz, n_out, d_out] output vectors
 phi = outputs['phi']      # [batch_sz, n_inp, n_out] credit assigned to input by output vecs
 ```
 
-The credit assignments are additive, like Shapley values, and composable on their own, independently of data transformations, making it possible to compute end-to-end credit assignments over a network of routings, as explained in Subsection 3.2 of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf). For *how-to recipes* to compute end-to-end credit assignments over common compositions, including residual layers, see Appendix A of the same paper. For example:
+The credit assignments are additive, like Shapley values, and composable on their own, independently of data transformations, making it possible to compute end-to-end credit assignments over a network of routings, as explained in Subsection 3.2 of [the paper](https://arxiv.org/abs/2211.11754). For *how-to recipes* to compute end-to-end credit assignments over common compositions, including residual layers, see Appendix A of the same paper. For example:
 
 ```python
 import torch
@@ -299,7 +299,7 @@ A: Yes. For example, you can use `EfficientVectorRouting` to reduce sequence len
 
 *Q: "Can I use `EfficientVectorRouting` instead of self-attention as a component of models?"*
 
-A: Yes. There is in fact a connection between the query-key-value self-attention mechanism used in Transformers and the algorithm implemented by `EfficientVectorRouting`: Transformer self-attention is a special case of modern Hopfield networks with bipartite structure, a class of dense associative memories which are in turn a special case of the routing algorithm we propose in "[An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)." `EfficientVectorRouting` is one possible implementation of our algorithm.
+A: Yes. There is in fact a connection between the query-key-value self-attention mechanism used in Transformers and the algorithm implemented by `EfficientVectorRouting`: Transformer self-attention is a special case of modern Hopfield networks with bipartite structure, a class of dense associative memories which are in turn a special case of the routing algorithm we propose in "[An Algorithm for Routing Vectors in Sequences](https://arxiv.org/abs/2211.11754)." `EfficientVectorRouting` is one possible implementation of our algorithm.
 
 
 *Q: "Can I use `EfficientVectorRouting` to classify a sequence of token embeddings?"*
@@ -319,29 +319,29 @@ A: Yes. `EfficientVectorRouting` is a general-purpose PyTorch module. You can us
 
 *Q: "Is it true that each output vector computed by `EfficientVectorRouting` can have its own feature space?"*
 
-A: Yes. Each output vector is computed in a different basis, possibly representing different features (i.e., the same element may represent different features in different vectors). The number of representable features can be as large as `n_out` × `d_out`. This increase in representational capacity may enable you to work with shorter sequences and/or smaller vector sizes than otherwise necessary. See Subsection 3.1 of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf).
+A: Yes. Each output vector is computed in a different basis, possibly representing different features (i.e., the same element may represent different features in different vectors). The number of representable features can be as large as `n_out` × `d_out`. This increase in representational capacity may enable you to work with shorter sequences and/or smaller vector sizes than otherwise necessary. See Subsection 3.1 of [the paper](https://arxiv.org/abs/2211.11754).
 
 Note: If you treat every output vector as being in the same shared feature space (e.g., if you always apply the same transformations to all output vectors, instead of different transformations to each one), you *can* induce all vector bases to represent the same features. If that's what you want, great -- but if not, please exercise a bit of care to avoid doing it unintentionally!
 
 
 *Q: "Is it true that I can get end-to-end credit assignments over a network of `EfficientVectorRouting` layers?"*
 
-A: Yes. To compute end-to-end credit assignments, follow the "how-to" recipes in Appendix A of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf) -- or make sure you thoroughly understand how the credit assignments work before straying away from the proven recipes. For a discussion of credit assignments, see Subsection 3.2 of the same paper. For a concrete example of end-to-end credit assignment, see [here](#composable-credit-assignments).
+A: Yes. To compute end-to-end credit assignments, follow the "how-to" recipes in Appendix A of [the paper](https://arxiv.org/abs/2211.11754) -- or make sure you thoroughly understand how the credit assignments work before straying away from the proven recipes. For a discussion of credit assignments, see Subsection 3.2 of the same paper. For a concrete example of end-to-end credit assignment, see [here](#composable-credit-assignments).
 
 
 *Q: "Is it true that `EfficientVectorRouting` implements a model of associative memory?"*
 
-A: Yes. In Subsection 3.3 of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf), we describe input vectors as *keys* to content-addressable memory values and biases, and output vectors as *queries* whose states are iteratively updated until they stabilize in a local maximum of a "bang per bit" landscape (or, equivalently, a local minimum of an energy landscape). We also show that with significant simplifications, the routing algorithm implemented by `EfficientVectorRouting` reduces to modern Hopfield networks with bipartite structure, a class of dense associative memories of which Transformer self-attention is a notable special case.
+A: Yes. In Subsection 3.3 of [the paper](https://arxiv.org/abs/2211.11754), we describe input vectors as *keys* to content-addressable memory values and biases, and output vectors as *queries* whose states are iteratively updated until they stabilize in a local maximum of a "bang per bit" landscape (or, equivalently, a local minimum of an energy landscape). We also show that with significant simplifications, the routing algorithm implemented by `EfficientVectorRouting` reduces to modern Hopfield networks with bipartite structure, a class of dense associative memories of which Transformer self-attention is a notable special case.
 
 
 *Q: "Is it true that `EfficientVectorRouting` implements a "block" in a model of a Society of Mind (Minsky, 1986)?"*
 
-A: Yes. In Subsection 3.4 of of [the paper](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf), we describe output vectors as multidimensional agents competing against each other to use or ignore scarce resources in a block via knowledge lines, or K-lines, in a model of a Society of Mind. Agents iteratively improve the shares of each scarce resource they use or ignore by better predicting (i.e., explaining) it. Note that when Minsky was working on ``The Society of Mind," published in in 1986, he was certainly aware of early models of associative memory, including Hopfield networks (formulated by John Hopfield in 1982 and 1984, building on prior work going back to the early 1970's) and restricted Boltzmann machines (first proposed as the "Harmonium" by Paul Smolensky in 1986).
+A: Yes. In Subsection 3.4 of of [the paper](https://arxiv.org/abs/2211.11754), we describe output vectors as multidimensional agents competing against each other to use or ignore scarce resources in a block via knowledge lines, or K-lines, in a model of a Society of Mind. Agents iteratively improve the shares of each scarce resource they use or ignore by better predicting (i.e., explaining) it. Note that when Minsky was working on ``The Society of Mind," published in in 1986, he was certainly aware of early models of associative memory, including Hopfield networks (formulated by John Hopfield in 1982 and 1984, building on prior work going back to the early 1970's) and restricted Boltzmann machines (first proposed as the "Harmonium" by Paul Smolensky in 1986).
 
 
 ## Replicating Published Results
 
-To replicate the results published in "[An Algorithm for Routing Vectors in Sequences](assets/An_Algorithm_for_Routing_Vectors_in_Sequences.pdf)" (Heinsen, 2022), follow the intructions here: <https://github.com/glassroom/heinsen_routing_2022_paper>.
+To replicate the results published in "[An Algorithm for Routing Vectors in Sequences](https://arxiv.org/abs/2211.11754)" (Heinsen, 2022), follow the intructions here: <https://github.com/glassroom/heinsen_routing_2022_paper>.
 
 To replicate the results published in "[An Algorithm for Routing Capsules in All Domains](https://arxiv.org/abs/1911.00792)" (Heinsen, 2019), follow the intructions here: <https://github.com/glassroom/heinsen_routing_2019_paper>.
 
@@ -360,7 +360,7 @@ If our work is helpful to your research, please cite it:
     title={An Algorithm for Routing Vectors in Sequences},
     author={Franz A. Heinsen},
     year={2022},
-    eprint={PENDING},
+    eprint={2211.11754},
     archivePrefix={arXiv},
     primaryClass={cs.LG}
 }
