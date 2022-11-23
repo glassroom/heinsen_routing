@@ -284,10 +284,11 @@ x_out, credit_assignments = model(x_inp)
 
 If you run the code above, `x_out` will have shape `[100, 1024]`, computed by the last routing, and `credit_assignments` will have shape `[500, 100]`, consisting of the end-to-end credit assigned to the first routing's 500 input vectors by the final routing's 100 output vectors.
 
-Below is a typical example of end-to-end credit assignment for visual classification, computed by three sequential routings, after training them to classify all hidden embeddings at 25 levels of depth in a Transformer, flattened into a single sequence, into ImageNet-1k classes. The code for recreating this visualization is online (see [here](#replicating-published-results)). For a higher-resolution version of this visualization and a more in-depth explanation of it, see [the paper](https://arxiv.org/abs/2211.11754). The end-to-end credit assignments are additive, so we can add them over all levels of depth to obtain the end-to-end credit assigned to each pixel patch. The three routings assign credit end-to-end to the dog's entire body in shallower Transformer layers, and to its nose, mouth, ears, and paws in deeper Transformer layers:
+Below is a typical example of end-to-end credit assignment for visual classification, computed by three sequential routings, after training them to classify all hidden embeddings at 25 levels of depth in a Transformer, flattened into a single sequence, into ImageNet-1k classes. The end-to-end credit assignments are additive, so we add them over all depths to obtain the end-to-end credit assigned to each pixel patch. As we can see, the algorithm assigns credit end-to-end to the dog's entire body in shallower Transformer layers, and to its nose, mouth, ears, and paws in deeper Transformer layers:
 
 > ![Sample end-to-end credit assignment in vision](assets/fig_sample_credit_assignments_vision_from_paper.png)
 
+The code for recreating the visualization above is online (see [here](#replicating-published-results)). For a higher-resolution version and a more in-depth explanation of it, see [the paper](https://arxiv.org/abs/2211.11754).
 
 ## Frequently Asked Questions
 
