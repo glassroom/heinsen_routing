@@ -288,7 +288,8 @@ Below is a typical example of end-to-end credit assignment for visual classifica
 
 > ![Sample end-to-end credit assignment in vision](assets/fig_sample_credit_assignments_vision_from_paper.png)
 
-The code for recreating the visualization above is online (see [here](#replicating-published-results)). For a higher-resolution version and a more in-depth explanation of it, see [the paper](https://arxiv.org/abs/2211.11754).
+The code and a pretrained model necessary for recreating the visualization above are online (see [here](#replicating-published-results)). For a higher-resolution version and a more in-depth explanation of this visualization, see [the paper](https://arxiv.org/abs/2211.11754).
+
 
 ## Frequently Asked Questions
 
