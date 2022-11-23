@@ -306,6 +306,8 @@ A: Yes. There is in fact a connection between the query-key-value self-attention
 
 A: Yes. Route the sequence to a vector (see [here](#sequence-to-vector)) and use the vector's elements as the predicted classification scores. In training, the module will learn to compute scores that minimize classification error and simultaneously best predict (explain) the sequence being classified.
 
+Note: If the number of classes is large (say, more than a few thousand classes), it may be more efficient to route the sequence to a hidden vector, and then apply a linear transformation to that hidden vector to predict classification scores, as is conventional.
+
 
 *Q: "Can I use `EfficientVectorRouting` to build "deep autoencoders for sequences"?*
 
