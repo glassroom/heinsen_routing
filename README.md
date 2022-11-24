@@ -124,7 +124,7 @@ x_out = model(x_inp).squeeze(-1)             # shape is [batch_sz, d_vec]
 
 ### Routing Sequences of Varying Length
 
-If you set `n_inp` equal to -1, `EfficientVectorRouting` routes input sequences of *any* length, limited only by available memory, to output sequences of fixed length. Train the module with input sequences of varying lengths and it will learn to predict (explain) them.
+If you set `n_inp` equal to -1, `EfficientVectorRouting` routes input sequences of *any* length, limited only by available memory, to output sequences of fixed length. If the order of input vectors matters, embed position information in them beforehand. Train the module with input sequences of varying lengths and it will learn to predict (explain) them. Here, we route sequences of random length:
 
 
 ```python
@@ -137,12 +137,12 @@ n_out, d_out = (1000, 1024)  # length of output seq is fixed
 
 model = Routing(n_inp=n_inp, n_out=n_out, d_inp=d_inp, d_out=d_out)
 
-random_seq_len = torch.randint(1, 10_000, []).item()
-x_inp = torch.randn(batch_sz, random_seq_len, d_inp)  # seqs of random length
-x_out = model(x_inp)                                  # seqs of fixed length 
+random_len = torch.randint(1, 10_000, []).item()
+x_inp = torch.randn(batch_sz, random_len, d_inp)  # seqs of random length; order unimportant
+x_out = model(x_inp)                              # seqs of fixed length
 ```
 
-Note: When `n_inp` is set to -1, `EfficientVectorRouting` treats every input vector as being in the same shared feature space (i.e., each element represents the same feature in all input vectors). In contrast, when `n_inp` is fixed, each input vector may be in a different feature space (i.e., the same element may represent a different feature in each input vector).
+Note: When `n_inp` is set to -1, `EfficientVectorRouting` treats every input vector as being in the same shared feature space (i.e., each element represents the same feature in all input vectors). In contrast, when `n_inp` is fixed, the module treats each input vector differently, so each input vector *may* be in a different feature space (i.e., the same element may represent a different feature in each input vector).
 
 
 ### Routing Very Long Sequences
