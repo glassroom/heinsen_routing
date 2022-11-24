@@ -242,7 +242,7 @@ phi = outputs['phi']      # [batch_sz, n_inp, n_out] credit assigned to input by
 
 ### Assigning Credit End-to-End
 
-The credit assignments are additive, like Shapley values, and composable on their own, independently of data transformations, making it possible to compute end-to-end credit assignments over a network of routings, as explained in Subsection 3.2 of [the paper](https://arxiv.org/abs/2211.11754). For *how-to recipes* to compute end-to-end credit assignments over common compositions, including residual layers, see Appendix A of the same paper. For example:
+The credit assignments are additive, like Shapley values, and composable on their own, independently of data transformations, making it possible to compute end-to-end credit assignments over a network of routings, as explained in Subsection 3.2 of [the paper](https://arxiv.org/abs/2211.11754). For "how-to" recipes to compute end-to-end credit assignments over common compositions, including residual layers, see Appendix A of the same paper. For example:
 
 ```python
 import torch
