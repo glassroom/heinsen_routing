@@ -289,7 +289,7 @@ If you run the code above, `x_out` will have shape `[100, 1024]`, computed by th
 
 #### Example of End-to-End Credit Assignment
 
-Here is a typical example of end-to-end credit assignment, in this case for a visual task. The credit assignments are computed by three sequential routings, after we train them to route all hidden embeddings in a Transformer (at 25 levels of depth, flattened into a single sequence) to a sequence of predicted scores for ImageNet-1k classification. The end-to-end credit assignments are additive, so we add them over all depths to obtain the end-to-end credit assigned to each pixel patch. As we can see, our algorithm assigns credit end-to-end to the dog's body in shallower layers, and to its nose, mouth, ears, and paws in deeper layers:
+Here is a typical example of end-to-end credit assignment, in this case for a visual task. The credit assignments are computed by three sequential routings, after we train them to route all hidden embeddings in a Transformer (at 25 levels of depth, flattened into a single sequence) to a sequence of predicted scores for ImageNet-1k classification. The end-to-end credit assignments are additive, so we add them over all depths to obtain the end-to-end credit assigned to each pixel patch. *As you can see, our algorithm assigns credit end-to-end to the dog's body in shallower layers, and to its nose, mouth, ears, and paws in deeper layers*:
 
 > ![Sample end-to-end credit assignment in vision](assets/fig_sample_credit_assignments_vision_from_paper.png)
 
