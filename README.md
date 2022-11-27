@@ -147,7 +147,7 @@ Note: When `n_inp` is set to -1, `EfficientVectorRouting` treats every input vec
 
 ### Routing Very Long Sequences
 
-`EfficientVectorRouting`'s memory footprint is linear in each of `n_inp`, `n_out`, `d_inp`, and `d_out`, giving you fine-grained control over memory consumption. To route input sequences of greater length, you can reduce the length of the output sequence, and vice versa. For example, here we route an input sequence with 1,000,000 vectors at full (32-bit) precision, keeping track of all gradients for backpropagation, consuming under ~18GB of memory (on a recent Nvidia GPU, excluding ~1GB of PyTorch and CUDA overhead):
+`EfficientVectorRouting`'s memory footprint is linear in each of `n_inp`, `n_out`, `d_inp`, and `d_out`, giving you fine-grained control over memory consumption. To route input sequences of greater length, you can reduce the length of the output sequence, and vice versa. For example, here we route an input sequence with 1,000,000 vectors at full (32-bit) precision, keeping track of gradients for backpropagation, consuming under ~18GB of memory (on a recent Nvidia GPU, excluding ~1GB of PyTorch and CUDA overhead):
 
 ```python
 import torch
@@ -162,7 +162,7 @@ x_inp = torch.randn(n_inp, d_inp)  # uses ~4GB of memory
 x_out = model(x_inp)               # uses ~8GB of memory
 ```
 
-A handy technique for routing very long sequences is to route them *twice*: First to a short hidden sequence of larger vectors representing "summaries," and then to an output sequence with the desired shape. The motivation is to reduce the computation incurred and memory allocated by the execution of `n_inp` Softmax functions, each over `n_out` output vectors, in each iteration of the first routing. Here, we apply this technique to route 250,000 vectors to 1,000 vectors of size 1024 at 32-bit precision, keeping track of all gradients, requiring only ~5.6GB of memory (on a recent Nvidia GPU, excluding ~1GB of PyTorch and CUDA overhead):
+A handy technique for routing very long sequences is to route them *twice*: First to a short hidden sequence of larger vectors representing "summaries," and then to an output sequence with the desired shape. The motivation is to reduce the computation incurred and memory allocated by the execution of `n_inp` Softmax functions, each over `n_out` proposed output vectors, in each iteration of the first routing. Here, we apply this technique to route 250,000 to 1,000 vectors of size 1024 at 32-bit precision, keeping track of gradients, requiring only ~5.6GB of memory (on a recent Nvidia GPU, excluding ~1GB of PyTorch and CUDA overhead):
 
 ```python
 import torch
