@@ -98,8 +98,8 @@ class EfficientVectorRouting(nn.Module):
 
             # M-step.
             phi = beta_use * D_use - beta_ign * D_ign  # [...ij] "bang per bit" coefficients
-            x_out = einsum('...ij,...id,jd,dh->...jh', phi, scaled_x_inp, self.W_F1, self.W_F2) + einsum('...ij,jh->...jh', phi, self.B_F2) if V is None \
-                else einsum('...ij,...ijh->...jh', phi, V)  # use precomputed V if available
+            x_out = einsum('...jd,jd,dh->...jh', einsum('...ij,...id->...jd', phi, scaled_x_inp), self.W_F1, self.W_F2) \
+                + einsum('...ij,jh->...jh', phi, self.B_F2) if V is None else einsum('...ij,...ijh->...jh', phi, V)  # use precomputed V if available
 
         if self.normalize:
             x_out = self.N(x_out)
