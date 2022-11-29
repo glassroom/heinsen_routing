@@ -1,7 +1,7 @@
 # coding: utf-8
 
 from __future__ import annotations
-from typing import Union
+from typing import Union, Tuple
 
 import torch
 import torch.nn as nn
@@ -285,7 +285,7 @@ class GenerativeMatrixRouting(nn.Module):
         cfg_str = ', '.join(f'{s}={getattr(self, s)}' for s in 'n_inp n_out d_cov d_inp d_out n_iters single_beta p_model eps return_dict'.split())
         return '{}({})'.format(self._get_name(), cfg_str)
 
-    def forward(self, a_inp: torch.Tensor, mu_inp: torch.Tensor) -> Union[torch.Tensor, dict]:
+    def forward(self, a_inp: torch.Tensor, mu_inp: torch.Tensor) -> Union[Tuple[torch.Tensor, torch.Tensor, torch.Tensor], dict]:
         W = self.W if self.n_inp_is_fixed else self.W.expand(a_inp.shape[-1], -1, -1, -1)
         V = einsum('...icd,ijdh->...ijch', mu_inp, W) + self.B
         f_a_inp = self.f(a_inp).unsqueeze(-1)  # [...i1]
