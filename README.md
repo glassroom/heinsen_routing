@@ -1,6 +1,6 @@
 # heinsen_routing
 
-Reference implementation of the routing algorithm proposed in "[An Algorithm for Routing Vectors in Sequences](https://arxiv.org/abs/2211.11754)" (Heinsen, 2022), and an earlier variant, "[An Algorithm for Routing Capsules in All Domains](https://arxiv.org/abs/1911.00792)" (Heinsen, 2019), for computing output sequences that best explain input sequences in deep neural networks.
+Reference implementation of the routing algorithm proposed in "[An Algorithm for Routing Vectors in Sequences](https://arxiv.org/abs/2211.11754)" (Heinsen, 2022), and an earlier variant, "[An Algorithm for Routing Capsules in All Domains](https://arxiv.org/abs/1911.00792)" (Heinsen, 2019), for computing output sequences that best explain given input sequences.
 
 A toy example is helpful for conveying quickly what the algorithm does:
 
