@@ -1,6 +1,6 @@
 # heinsen_routing
 
-Reference implementation of "[An Algorithm for Routing Vectors in Sequences](https://arxiv.org/abs/2211.11754)" (Heinsen, 2022), and an earlier variant, "[An Algorithm for Routing Capsules in All Domains](https://arxiv.org/abs/1911.00792)" (Heinsen, 2019), for computing a sequence of capsules (e.g., vectors) that best explain (e.g., predict, generate) a given input sequence.
+Reference implementation of "[An Algorithm for Routing Vectors in Sequences](https://arxiv.org/abs/2211.11754)" (Heinsen, 2022), and an earlier variant, "[An Algorithm for Routing Capsules in All Domains](https://arxiv.org/abs/1911.00792)" (Heinsen, 2019), for computing a sequence of capsules (e.g., vectors, matrices) that best explain (e.g., predict, generate) a given input sequence.
 
 A toy example is helpful for conveying quickly what the algorithm does:
 
