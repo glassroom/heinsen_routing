@@ -18,6 +18,9 @@ x_inp = torch.randn(10_000, 1024)  # 10,000 vectors of size 1024
 x_out = model(x_inp)               # 10 vectors of size 4096
 ```
 
+For an example of end-to-end credit assignment, see [here](#example-of-end-to-end-credit-assignment). For replicating published results, see [here](#replicating-published-results).
+
+
 ## Table of Contents
 
 * [Installing](#installing)
