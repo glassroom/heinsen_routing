@@ -65,7 +65,7 @@ The only dependency is PyTorch.
 
 Our routing algorithm takes a sequence of `n_inp` input capsules and computes a new sequence of `n_out` output capsules. A capsule is a group of artificial neurons, such as a vector or a matrix, representing the properties of an entity in a context (e.g., a word in a paragraph, an object in an image, a topic in a conversation). Each input and output capsule represents a different entity.
 
-The algorithm is iterative. In each iteration, we update the state of all output capsules in parallel. Each output capsule maximizes "bang per bit," or the difference between a net benefit to use and net cost to ignore data, by better explaining (e.g., predicting, generating) the input capsules. The output sequence's final state maximizes "bang per bit" by best explaining the input sequence.
+The algorithm is iterative. In each iteration, we update the state of all output capsules in parallel. Each output capsule maximizes "bang per bit," the difference between a net benefit to use and net cost to ignore data, by better explaining (e.g., predicting, generating) the input capsules. The output sequence's final state maximizes "bang per bit" by best explaining the input sequence.
 
 
 ## Variants of the Algorithm in this Repository
@@ -338,6 +338,11 @@ A: Yes. `EfficientVectorRouting` is a general-purpose PyTorch module. You can us
 A: Yes. Each output vector is computed in a different basis, possibly representing different features (i.e., the same element may represent different features in different vectors). The number of representable features can be as large as `n_out` × `d_out`. This increase in representational capacity may enable you to work with shorter sequences and/or smaller vector sizes than otherwise necessary. See Subsection 3.1 of [the paper](https://arxiv.org/abs/2211.11754).
 
 Note: If you treat every output vector as being in the same shared feature space (e.g., if you always apply the same transformations to all output vectors, instead of different transformations to each one), you *can* induce all vector bases to represent the same features. If that's what you want, great -- but if not, please exercise a bit of care to avoid doing it unintentionally!
+
+
+*Q: "Can I set `n_inp` to -1 in `EfficientVectorRouting` even if all input sequences have the same length?"*
+
+A: Yes, but note that when you set `n_inp` to -1, `EfficientVectorRouting` treats all input vectors as being in the same shared feature space (i.e., each element represents the same feature in all input vectors). If all input vectors are indeed in the same shared feature space, then, yes, it makes sense to do it even if input sequence length is fixed. Setting `n_inp` to -1 will reduce the module's parameter count by a multiple of `n_inp`, but may cause the module to incur more computation, depending on input sequence length.
 
 
 *Q: "Is it true that I can get end-to-end credit assignments over a network of `EfficientVectorRouting` layers?"*
