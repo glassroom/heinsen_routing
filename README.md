@@ -342,7 +342,7 @@ Note: If you treat every output vector as being in the same shared feature space
 
 *Q: "Can I set `n_inp` to -1 in `EfficientVectorRouting` even if all input sequences have the same length?"*
 
-A: Yes, but note that when you set `n_inp` to -1, `EfficientVectorRouting` treats all input vectors as being in the same shared feature space (i.e., each element represents the same feature in all input vectors). If all input vectors are indeed in the same shared feature space, then, yes, it makes sense to do it even if input sequence length is fixed. Setting `n_inp` to -1 will reduce the module's parameter count by a multiple of `n_inp`, but may cause the module to incur more computation, depending on input sequence length.
+A: Yes, but note that when you set `n_inp` to -1, `EfficientVectorRouting` treats all input vectors as being in the same shared feature space (i.e., each element represents the same feature in all input vectors). If all input vectors are indeed in the same shared feature space, then, yes, it can makes sense to set `n_inp` to -1 even if input sequence length is fixed. Note: Setting `n_inp` to -1 may cause the module to incur more computation, depending on the shape of input sequences.
 
 
 *Q: "Is it true that I can get end-to-end credit assignments over a network of `EfficientVectorRouting` layers?"*
