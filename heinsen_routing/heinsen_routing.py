@@ -116,7 +116,7 @@ class DefinableVectorRouting(nn.Module):
     by best predicting them, as specified by four neural networks provided
     as PyTorch module instances. Each vector is a capsule representing an
     entity in a context (e.g., a word in a sentence, an object in an image).
-    See "An Algorithm for Routing Vectors in Sequencces" (Heinsen, 2022).
+    See "An Algorithm for Routing Vectors in Sequences" (Heinsen, 2022).
     https://arxiv.org/abs/2211.11754.
 
     Args:
