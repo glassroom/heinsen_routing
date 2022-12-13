@@ -130,6 +130,8 @@ class DefinableVectorRouting(nn.Module):
         S: nn.Module instance that accepts actual and predicted input vectors
             (the latter computed by G) and computes their similary scores:
             [..., n_inp, d_inp], [...,n_out, d_inp] -> [..., n_inp , n_out].
+            If G is generative, S should ideally compute the log-probability
+            density of each actual input vector given each predicted one.
         n_inp: int, number of input vectors. If -1, the number is variable (in
             which case A, F, and S must be able to handle a variable number).
         n_out: int, number of output vectors.
@@ -306,7 +308,7 @@ class GenerativeMatrixRouting(nn.Module):
             D_ign = f_a_inp - D_use  # [...ij]
 
             # M-step.
-            a_out = (self.beta_use * D_use).sum(dim=-2) - (self.beta_ign * D_ign).sum(dim=-2)  # [...j] "bang per bit" activations
+            a_out = (self.beta_use * D_use).sum(dim=-2) - (self.beta_ign * D_ign).sum(dim=-2)  # [...j] "bang per bit" activation scores
             normalized_D_use = D_use / (D_use.sum(dim=-2, keepdims=True) + self.eps)  # [...ij]
             mu_out = einsum('...ij,...ijch->...jch', normalized_D_use, V)
             V_less_mu_out_2 = (V - mu_out.unsqueeze(-4)) ** 2  # [...ijch]
