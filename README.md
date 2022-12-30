@@ -18,7 +18,7 @@ x_inp = torch.randn(10_000, 1024)  # 10,000 vectors of size 1024
 x_out = model(x_inp)               # 10 vectors of size 4096
 ```
 
-For instructions to route very long sequences (e.g., 1,000,000+ token embeddings in 18GB of VRAM), see [here](#routing-very-long-sequences). For an example of end-to-end credit assignment, see [here](#example-of-end-to-end-credit-assignment). For replicating published results, see [here](#replicating-published-results).
+For instructions to route very long sequences (e.g., 1,000,000+ token embeddings in 18GB of VRAM), see [here](#routing-very-long-sequences). For an example of end-to-end credit assignment, see [here](#assigning-credit-end-to-end). For replicating published results, see [here](#replicating-published-results).
 
 
 ## Table of Contents
@@ -184,7 +184,9 @@ model = nn.Sequential(
 x_inp = torch.randn(n_inp, d_inp)
 x_out = model(x_inp)
 ```
- 
+
+Note: If the long input sequences have varying lengths, or if all input vectors are in the same feature space, you can set `n_inp` to -1, which can reduce memory footprint but may increase computation (see [here](#routing-sequences-of-varying-length)).
+
 
 ### Recurrent Routings
 
