@@ -14,8 +14,8 @@ model = torch.nn.Sequential(
     Routing(n_inp=  100, n_out=  10, d_inp=3072, d_out=4096),
 )
 
-x_inp = torch.randn(10_000, 1024)  # 10,000 vectors of size 1024
-x_out = model(x_inp)               # 10 vectors of size 4096
+x_inp = torch.randn(10_000, 1024)  # 10,000 vectors of size 1024 (e.g., embedded tokens)
+x_out = model(x_inp)               # 10 vectors of size 4096 that best explain x_inp
 ```
 
 For instructions to route very long sequences (e.g., 1,000,000+ token embeddings in 18GB of VRAM), see [here](#routing-very-long-sequences). For an example of end-to-end credit assignment, see [here](#assigning-credit-end-to-end). For replicating published results, see [here](#replicating-published-results).
