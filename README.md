@@ -63,9 +63,11 @@ The only dependency is PyTorch.
 
 ## How Does it Work?
 
-Our routing algorithm takes a sequence of `n_inp` input capsules and computes a new sequence of `n_out` output capsules. A capsule is a group of artificial neurons, such as a vector or a matrix, representing the properties of an entity in a context (e.g., a word in a paragraph, an object in an image, a topic in a conversation). Each input and output capsule represents a different entity.
+Our routing algorithm takes a sequence of `n_inp` input capsules and computes a new sequence of `n_out` output capsules. A capsule is a group of artificial neurons, such as a vector or a matrix, representing the properties of an entity in a context (e.g., a word in a paragraph, an object in an image, a topic in a conversation). Each input and output capsule represents (i.e., is a *symbol* for) a different entity.
 
 The algorithm is iterative. In each iteration, we update the state of all output capsules in parallel. Each output capsule maximizes "bang per bit," the difference between a net benefit to use and net cost to ignore data, by better explaining (e.g., predicting, generating) the input capsules. The output sequence's final state maximizes "bang per bit" by best explaining the input sequence.
+
+The algorithm is differentiable. When you train it with stochastic gradient descent, it learns to compute the output sequence that best explains the input sequence, in order to minimize the training loss you specify.
 
 
 ## Variants of the Algorithm in this Repository
