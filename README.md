@@ -129,7 +129,7 @@ x_out = model(x_inp).squeeze(-1)             # shape is [batch_sz, d_vec]
 
 ### Routing Sequences of Varying Length
 
-If you set `n_inp` equal to -1, `EfficientVectorRouting` routes input sequences of *any* length, limited only by available memory, to output sequences of fixed length. If the order of input vectors matters, embed position information in them beforehand. Train the module with input sequences of varying lengths and it will learn to predict (explain) them. Here, we route sequences of random length:
+If you set `n_inp` equal to -1, `EfficientVectorRouting` routes input sequences of *any* length, limited only by available memory, to output sequences of fixed length. *If the order of input vectors matters, embed position information in them beforehand.* Train the module with input sequences of varying lengths and it will learn to predict (explain) them. Here, we route sequences of random length:
 
 
 ```python
