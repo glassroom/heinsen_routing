@@ -187,7 +187,7 @@ x_inp = torch.randn(n_inp, d_inp)
 x_out = model(x_inp)
 ```
 
-Note: If the long input sequences have varying lengths, or if your application will work with all input vectors in each sequence being in the same feature space, you can set `n_inp` to -1 to reduce parameter count and memory footprint. For example, in the code snippet above, you can replace `model` with:
+Note: If the long input sequences have varying lengths, or if your application will work well with all input vectors in each sequence being in the same feature space, you can set `n_inp` to -1 to reduce parameter count and memory footprint. For example, in the code snippet above, you can replace `model` with:
 
 ```python
 model = nn.Sequential(
@@ -196,7 +196,7 @@ model = nn.Sequential(
 )
 ```
 
-and the memory required to route 250,000 to 1,000 vectors of size 1024 at 32-bit precision, keeping track of gradients, is now only ~3.9GB (on a recent Nvidia GPU, excluding ~1GB of PyTorch and CUDA overhead).
+and the memory required to route 250,000 to 1,000 vectors of size 1024 at 32-bit precision, keeping track of gradients, shrinks to ~3.9GB (on a recent Nvidia GPU, excluding ~1GB of PyTorch and CUDA overhead).
 
 
 ### Recurrent Routings
