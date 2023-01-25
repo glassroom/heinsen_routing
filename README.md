@@ -319,9 +319,9 @@ The code and a pretrained model necessary for recreating the visualization above
 A: Yes. See [here](#routing-very-long-sequences).
 
 
-*Q: "Can I use `EfficientVectorRouting` to reshape sequences between residual blocks in Transformers?"*
+*Q: "Can I use `EfficientVectorRouting` in a Transformer? CNN? RNN? Autoencoder? Generative model? Any model?"*
 
-A: Yes. For example, you can use `EfficientVectorRouting` to reduce sequence length and increase embedding size as the residual blocks get deeper, inducing shallower blocks to learn to embed long sequences of simple entities that are representable with fewer features (e.g., subword tokens), and inducing deeper blocks to learn to embed shorter sequences of more complex entities requiring higher-dimensional representations (e.g., abstract notions).
+A: Yes. `EfficientVectorRouting` is a general-purpose PyTorch module. You can use it as a component of any model.
 
 
 *Q: "Can I use `EfficientVectorRouting` instead of self-attention as a component of models?"*
@@ -339,11 +339,6 @@ Note: If the number of classes is large (say, more than a few thousand classes),
 *Q: "Can I use `EfficientVectorRouting` to build "deep autoencoders for sequences"?*
 
 A: Yes. You can build deep autoencoders that apply multiple `EfficientVectorRouting` layers to encode an input sequence to progressively shorter sequences and then progressively decode the shortest sequence back to the original length, in a typical "bowtie" arrangement. The autoencoders can of course be variational, using the reparametrization trick to sample the inner shortest sequence from a specified distribution.
-
-
-*Q: "Can I use `EfficientVectorRouting` to build generative difussion models or GFlowNets?*
-
-A: Yes. `EfficientVectorRouting` is a general-purpose PyTorch module. You can use it as a component to build any deep neural network model, generative and otherwise.
 
 
 *Q: "Is it true that each output vector computed by `EfficientVectorRouting` can have its own feature space?"*
