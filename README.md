@@ -321,7 +321,7 @@ A: Yes. See [here](#routing-very-long-sequences).
 
 *Q: "Can I use `EfficientVectorRouting` in a Transformer? CNN? RNN? Autoencoder? Generative model? Any model?"*
 
-A: Yes. `EfficientVectorRouting` is a general-purpose PyTorch module. You can use it as a component of any model.
+A: Yes. `EfficientVectorRouting` is a general-purpose PyTorch module.
 
 
 *Q: "Can I use `EfficientVectorRouting` instead of self-attention as a component of models?"*
