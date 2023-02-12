@@ -98,8 +98,11 @@ class EfficientVectorRouting(nn.Module):
 
             # M-step.
             phi = beta_use * D_use - beta_ign * D_ign  # [...ij] "bang per bit" coefficients
-            x_out = einsum('...jd,jd,dh->...jh', einsum('...ij,...id->...jd', phi, scaled_x_inp), self.W_F1, self.W_F2) \
-                + einsum('...ij,jh->...jh', phi, self.B_F2) if V is None else einsum('...ij,...ijh->...jh', phi, V)  # use precomputed V if available
+            if V is None:
+                _einsum_phi_scaled_x_inp = einsum('...ij,...id->...jd', phi, scaled_x_inp)
+                x_out = einsum('...jd,jd,dh->...jh', _einsum_phi_scaled_x_inp, self.W_F1, self.W_F2) + einsum('...ij,jh->...jh', phi, self.B_F2)
+            else:
+                x_out = einsum('...ij,...ijh->...jh', phi, V)
 
         if self.normalize:
             x_out = self.N(x_out)
@@ -297,10 +300,10 @@ class GenerativeMatrixRouting(nn.Module):
             if iter_num == 0:
                 R = (self.CONST_one / self.n_out).expand(V.shape[:-2])  # [...ij]
             else:
-                log_p = \
-                    - einsum('...ijch,...jch->...ij', V_less_mu_out_2, 1.0 / (2.0 * sig2_out)) \
-                    - sig2_out.sqrt().log().sum((-2, -1)).unsqueeze(-2) if self.p_model == 'gaussian' \
-                    else self.log_softmax(-V_less_mu_out_2.sum((-2, -1)))  # soft k-means otherwise
+                if self.p_model == 'gaussian':
+                    log_p = - einsum('...ijch,...jch->...ij', V_less_mu_out_2, 1.0 / (2.0 * sig2_out)) - sig2_out.sqrt().log().sum((-2, -1)).unsqueeze(-2)
+                else:
+                    log_p = self.log_softmax(-V_less_mu_out_2.sum((-2, -1)))  # soft k-means
                 R = self.softmax(self.log_f(a_out).unsqueeze(-2) + log_p)  # [...ij]
 
             # D-step.
