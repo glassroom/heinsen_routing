@@ -249,7 +249,7 @@ batch_sz = 4
 n_tok, d_tok = (100, 1024)
 causal_mask = torch.tril(torch.ones(n_tok, n_tok), diagonal=-1).bool()
 
-# Set n_inp=-1 because all tokens are normally embedded in the same feature space:
+# Set n_inp=-1 (assumes all tokens are embedded in the same feature space):
 model = Routing(n_inp=-1, n_out=n_tok, d_inp=d_tok, d_out=d_tok)
 
 tok_embs = torch.randn(batch_sz, n_tok, d_tok)  # normally provided by a model
@@ -259,7 +259,7 @@ x_inp = torch.nn.functional.layer_norm(tok_embs + pos_embs, [d_tok])
 x_out = model(x_inp, mask=causal_mask)
 ```
 
-Note: The mask does *not* have to be square. For example, you can specify a causal mask of shape `[n_ltc + n_tok, n_tok]`, where `n_ltc` is a specified number of vectors providing long-term context to all tokens.
+Note: The mask does *not* have to be square. For example, you can specify a causal mask of shape `[n_ltc + n_tok, n_tok]`, where `n_ltc` is a specified number of vectors providing long-term context to all tokens, `n_ltc + n_tok` is the number of input vectors, and `n_tok` is the number of output vectors.
 
 
 ### Assigning Credit to Input Vectors
