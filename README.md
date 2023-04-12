@@ -239,7 +239,7 @@ x_out = model(x_inp)
 
 ### Masking Input from Output Vectors
 
-You can mask a different subset of input vectors for each output vector by passing a boolean mask of shape `[n_inp, n_out]` as an argument to the forward pass. The mask should be True for each input vector you want to mask from an output vector, and False everywhere else. For example, here we use masking to restrict `EfficientVectorRouting` to model only causal relationships over an ordered sequence of vectors, each representing a token. For each output vector in a given position, the module can route data only from input vectors located in up to that position:
+You can mask a different subset of input vectors for each output vector by passing a boolean mask of shape `[n_inp, n_out]` as an input to the forward pass. The mask should be True for each input vector you want to mask from an output vector, and False everywhere else. For example, here we use masking to restrict `EfficientVectorRouting` to model only causal relationships over an ordered sequence of vectors, each representing a token. For each output vector in a given position, the module can route data only from input vectors located in up to that position:
 
 ```python
 import torch
@@ -249,13 +249,14 @@ batch_sz = 4
 n_tok, d_tok = (100, 1024)
 causal_mask = torch.tril(torch.ones(n_tok, n_tok), diagonal=-1).bool()
 
-# Set n_inp=-1 because all tokens will be in same feature space:
+# Set n_inp=-1 because all tokens are normally embedded in the same feature space:
 model = Routing(n_inp=-1, n_out=n_tok, d_inp=d_tok, d_out=d_tok)
 
-tok_embs = torch.randn(batch_sz, n_tok, d_tok)      # normally provided by a model
-pos_embs = torch.randn(n_tok, d_tok)                # normally provided by a model
-x_inp = F.layer_norm(tok_embs + pos_embs, [d_tok])  # sequence with position information
-x_out = model(x_inp, mask=causal_mask)              # route over causal relationships
+tok_embs = torch.randn(batch_sz, n_tok, d_tok)  # normally provided by a model
+pos_embs = torch.randn(n_tok, d_tok)            # normally provided by a model
+
+x_inp = torch.nn.functional.layer_norm(tok_embs + pos_embs, [d_tok])
+x_out = model(x_inp, mask=causal_mask)
 ```
 
 Note: The mask does *not* have to be square. For example, you can specify a causal mask of shape `[n_ltc + n_tok, n_tok]`, where `n_ltc` is a specified number of vectors providing long-term context to all tokens.
