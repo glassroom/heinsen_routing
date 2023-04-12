@@ -32,10 +32,12 @@ class EfficientVectorRouting(nn.Module):
             final state of all internal and output tensors. Default: False.
 
     Input:
-        x_inp: float tensor of input vectors [..., n_inp, d_inp].
+        x_inp: tensor of input vectors [..., n_inp, d_inp].
+        mask: (optional) bool tensor of shape [n_inp, n_out], True if an input
+            vector will be ignored by an output vector, False everywhere else.
 
     Output:
-        x_out: float tensor of output vectors [..., n_out, d_out] by default,
+        x_out: tensor of output vectors [..., n_out, d_out] by default,
             or a dict with output vectors as 'x_out' if return_dict is True.
 
     Sample usage:
@@ -76,21 +78,21 @@ class EfficientVectorRouting(nn.Module):
         cfg_str = ', '.join(f'{s}={getattr(self, s)}' for s in 'n_inp n_out d_inp d_out n_iters normalize memory_efficient return_dict'.split())
         return '{}({})'.format(self._get_name(), cfg_str)
 
-    def forward(self, x_inp: torch.Tensor) -> Union[torch.Tensor, dict]:
+    def forward(self, x_inp: torch.Tensor, mask: Union[torch.BoolTensor, None] = None) -> Union[torch.Tensor, dict]:
         beta_use, beta_ign = (self.beta_use, self.beta_ign) if hasattr(self, 'beta_use') else (self.compute_beta_use(x_inp), self.compute_beta_ign(x_inp))
         scaled_x_inp = x_inp * x_inp.shape[-2]**-0.5  # [...id]
         a_inp = (scaled_x_inp * self.W_A).sum(dim=-1) + self.B_A  # [...i]
         V = None if self.memory_efficient else einsum('...id,jd,dh->...ijh', scaled_x_inp, self.W_F1, self.W_F2) + self.B_F2
-        f_a_inp = self.f(a_inp).unsqueeze(-1)  # [...i1]
+        f_a_inp = self.f(a_inp).unsqueeze(-1) if mask is None else self.f(a_inp.unsqueeze(-1).masked_fill(mask, float('-inf')))  # [...i1] or [...ij]
         for iter_num in range(self.n_iters):
 
             # E-step.
             if iter_num == 0:
-                R = self.CONST_ones_over_n_out  # [j]
+                R = self.CONST_ones_over_n_out if mask is None else self.softmax(self.CONST_ones_over_n_out.log().masked_fill(mask, float('-inf')))
             else:
                 pred_x_inp = einsum('...jh,hd,jd->...jd', self.N(x_out), self.W_G1, self.W_G2) + self.B_G2
                 S = self.log_f(einsum('...id,...jd->...ij', x_inp, pred_x_inp) * self.W_S + self.B_S)
-                R = self.softmax(S)  # [...ij]
+                R = self.softmax(S) if mask is None else self.softmax(S.masked_fill(mask, float('-inf')))  # [...ij]
 
             # D-step.
             D_use = f_a_inp * R  # [...ij]
@@ -143,10 +145,12 @@ class DefinableVectorRouting(nn.Module):
             final state of all internal and output tensors. Default: False.
 
     Input:
-        x_inp: float tensor of input vectors [..., n_inp, d_inp].
+        x_inp: tensor of input vectors [..., n_inp, d_inp].
+        mask: (optional) bool tensor of shape [n_inp, n_out], True if an input
+            vector will be ignored by an output vector, False everywhere else.
 
     Output:
-        x_out: float tensor of output vectors [..., n_out, d_out] by default,
+        x_out: tensor of output vectors [..., n_out, d_out] by default,
             or a dict with output vectors as 'x_out' if return_dict is True.
 
     Sample usage:
@@ -194,20 +198,20 @@ class DefinableVectorRouting(nn.Module):
         cfg_str = ',\n '.join(f'{s}={getattr(self, s)}' for s in 'A F G S n_inp n_out n_iters return_dict'.split())
         return '{}({})'.format(self._get_name(), cfg_str)
 
-    def forward(self, x_inp: torch.Tensor) -> Union[torch.Tensor, dict]:
+    def forward(self, x_inp: torch.Tensor, mask: Union[torch.BoolTensor, None] = None) -> Union[torch.Tensor, dict]:
         beta_use, beta_ign = (self.beta_use, self.beta_ign) if hasattr(self, 'beta_use') else (self.compute_beta_use(x_inp), self.compute_beta_ign(x_inp))
         a_inp = self.A(x_inp).view(*x_inp.shape[:-1])  # [...i]
         V = self.F(x_inp).view(*a_inp.shape, self.n_out, -1)  # [...ijh]
-        f_a_inp = self.f(a_inp).unsqueeze(-1)  # [...i1]
+        f_a_inp = self.f(a_inp).unsqueeze(-1) if mask is None else self.f(a_inp.unsqueeze(-1).masked_fill(mask, float('-inf')))  # [...i1] or [...ij]
         for iter_num in range(self.n_iters):
 
             # E-step.
             if iter_num == 0:
-                R = self.CONST_ones_over_n_out  # [j]
+                R = self.CONST_ones_over_n_out if mask is None else self.softmax(self.CONST_ones_over_n_out.log().masked_fill(mask, float('-inf')))
             else:
                 pred_x_inp = self.G(x_out)  # [...jd]
                 S = self.S(x_inp, pred_x_inp)  # [...ij]
-                R = self.softmax(S)  # [...ij]
+                R = self.softmax(S) if mask is None else self.softmax(S.masked_fill(mask, float('-inf')))  # [...ij]
 
             # D-step.
             D_use = f_a_inp * R  # [...ij]
