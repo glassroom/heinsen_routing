@@ -239,7 +239,7 @@ x_out = model(x_inp)
 
 ### Masking Input from Output Vectors
 
-You can mask a different subset of input vectors for each output vector by passing a boolean mask of shape `[n_inp, n_out]` as an input to the forward pass. The mask should be True for each input vector you want to mask from an output vector, and False everywhere else. For example, here we use masking to restrict `EfficientVectorRouting` to model only causal relationships over an ordered sequence of vectors, each representing a token. For each output vector in a given position, the module can route data only from input vectors located in up to that position:
+You can mask input vectors differently for each output vector by passing a boolean mask of shape `[n_inp, n_out]` as an input to the forward pass. True values mask input vector data and False values don't. For example, here we use masking to restrict `EfficientVectorRouting` to model only causal relationships over an ordered sequence of vectors, each representing a token. For each output vector in a given position, the module can route data only from input vectors located in up to that position:
 
 ```python
 import torch
